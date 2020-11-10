@@ -17,7 +17,6 @@ mut:
 	sequence int
 	heartbeat_interval u64
 	last_heartbeat u64
-	heartbeat_asked bool
 }
 
 pub fn new(token string) ?&Client{
@@ -50,7 +49,7 @@ pub fn (mut c Client) stay_connected() ? {
 	go c.ws.listen()?
 	for true {
 		time.sleep(1)
-		if time.now().unix - c.last_heartbeat > c.heartbeat_interval {
+		if time.now().unix_time_milli() - c.last_heartbeat > c.heartbeat_interval {
 			heartbeat := HeartbeatPacket {
 				op: Op.heartbeat,
 				data: c.sequence
@@ -58,8 +57,7 @@ pub fn (mut c Client) stay_connected() ? {
 			println("[discord.v] Heartbeat $c.sequence")
 			message := heartbeat.to_json()
 			c.ws.write(message.bytes(), .text_frame)
-			c.last_heartbeat = time.now().unix
-			c.heartbeat_asked = false
+			c.last_heartbeat = time.now().unix_time_milli()
 		}
 	}
 }

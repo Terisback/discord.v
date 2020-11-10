@@ -26,13 +26,10 @@ fn (mut c Client) on_hello(packet GatewayPacket){
 		}
 	}.to_json()
 	c.ws.write_str(message)
-	c.last_heartbeat = time.now().unix
+	c.last_heartbeat = time.now().unix_time_milli()
 }
 
 fn (mut c Client) on_heartbeat_ack(packet GatewayPacket){
-	if c.heartbeat_asked {
-		return
-	}
 	heartbeat := HeartbeatPacket {
 		op: Op.heartbeat,
 		data: c.sequence
@@ -41,5 +38,4 @@ fn (mut c Client) on_heartbeat_ack(packet GatewayPacket){
 	message := heartbeat.to_json()
 	println(message)
 	c.ws.write_str(message)
-	c.heartbeat_asked = true
 }

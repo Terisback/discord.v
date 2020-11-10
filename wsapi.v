@@ -19,7 +19,7 @@ fn ws_on_message(mut ws websocket.Client, msg &websocket.Message, mut c &Client)
 			match Op(packet.op){
 				.dispatch { c.on_dispatch(packet) }
 				.hello { c.on_hello(packet) }
-				.heartbeat_ack { c.on_heartbeat_ack(packet) }
+				//.heartbeat_ack { c.on_heartbeat_ack(packet) }
 				else {
 					thing := Op(packet.op)
 					println('[discord.v] Unhandled opcode: $packet.op ($thing)')
