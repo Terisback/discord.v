@@ -20,14 +20,14 @@ fn main(){
 
 fn on_ready(mut c vd.Client, r &vd.Ready){
 	println('Bot is ready!')
-    println('Your username is $r.user.username')
+	println('Your username is $r.user.username')
 }
 ```
 
 ## TODO()
 
 - [x] Do basic connection through websocket
-- [ ] Handle heartbeat
+- [x] Handle heartbeat (partly)
 - [ ] Think about more usable event system
 - [ ] Do message related REST things
 - [ ] Observe rate limits
