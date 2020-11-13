@@ -12,7 +12,7 @@ pub fn log(txt string) {
 	match colors_supported {
 		true { 
 			v := term.rgb(95, 155, 230, 'v')
-			println(term.bright_white('[discord.$v] ') + txt) 
+			println(term.bright_white('[discord.$v] ') + term.gray(txt)) 
 		}
 		else { println('[discord.v] ' + txt) }
 	}

@@ -2,6 +2,7 @@ module client
 
 import time
 import discordv
+import discordv.util
 
 fn (mut client Client) on_dispatch(packet GatewayPacket){
 	event_name := packet.event.to_lower()
@@ -17,7 +18,7 @@ fn (mut client Client) on_dispatch(packet GatewayPacket){
 			client.events.publish(event_name, client, obj)
 		}
 		else {
-			log('Unhandled event: $event_name')
+			util.log('Unhandled event: $event_name')
 		}
 	}
 }
@@ -55,7 +56,7 @@ fn (mut client Client) on_invalid_session(packet GatewayPacket){
 		}.to_json()
 		client.ws.write_str(message)
 	}else{
-		log('Asking for reconnect...')
+		util.log('Asking for reconnect...')
 		go client.reconnect()
 	}
 }
@@ -74,10 +75,11 @@ fn (mut client Client) start_heartbeat() ? {
 				client.ws.connect()?
 				go client.ws.listen()?
 			}
-			> time.millisecond {
-				if time.now().unix_time_milli() - client.last_heartbeat > client.heartbeat_interval {
+			> (client.heartbeat_interval / 1000) * time.millisecond {
+				now := time.now().unix_time_milli()
+				if now - client.last_heartbeat > client.heartbeat_interval {
 					if client.heartbeat_acked != true {
-						log('Asking for reconnect...')
+						util.log('Asking for reconnect...')
 						go client.reconnect()
 						continue
 					}
@@ -87,7 +89,7 @@ fn (mut client Client) start_heartbeat() ? {
 					}
 					message := heartbeat.to_json()
 					client.ws.write(message.bytes(), .text_frame)
-					client.last_heartbeat = time.now().unix_time_milli()
+					client.last_heartbeat = now
 					client.heartbeat_acked = false
 				}
 			}

@@ -2,13 +2,14 @@ module client
 
 import x.json2 as json
 import x.websocket
+import discordv.util
 
 fn ws_on_open(mut ws websocket.Client, mut client &Client) ? {
-	log('Successfully connected to gateway [shard_id:$client.shard_id]')
+	util.log('Successfully connected to gateway [shard_id:$client.shard_id]')
 }
 
 fn ws_on_error(mut ws websocket.Client, error string, mut client &Client) ? {
-	log('Gateway error: $error')
+	util.log('Gateway error: $error')
 }
 
 fn ws_on_message(mut ws websocket.Client, msg &websocket.Message, mut client &Client) ? {
@@ -24,12 +25,12 @@ fn ws_on_message(mut ws websocket.Client, msg &websocket.Message, mut client &Cl
 				.reconnect { client.ws.close(GatewayCloseErrorCode.unknown, 'Asking for reconnect from outside') }
 				else {
 					thing := Op(packet.op)
-					log('Unhandled opcode: $packet.op ($thing)')
+					util.log('Unhandled opcode: $packet.op ($thing)')
 				}
 			}
 		}
 		else {
-			log('Unhandled websocket opcode: $msg.opcode')
+			util.log('Unhandled websocket opcode: $msg.opcode')
 		}
 	}
 }
@@ -38,13 +39,13 @@ fn ws_on_close(mut ws websocket.Client, code int, reason string, mut client &Cli
 	error := GatewayCloseErrorCode(code)
 	match error {
 		.unknown, .unknown_opcode, .invalid_sequence {
-			log('Gateway closed [shard_id: $client.shard_id, code: $error, reason: $reason]')
-			log('Going to reconnect to gateway... [shard_id: $client.shard_id]')
+			util.log('Gateway closed [shard_id: $client.shard_id, code: $error, reason: $reason]')
+			util.log('Going to reconnect to gateway... [shard_id: $client.shard_id]')
 			client.reconnect <- true
 		}
 		else {
-			log('Gateway successfully closed [shard_id: $client.shard_id, code: $error, reason: $reason]')
-			log('Stopping shard... [shard_id: $client.shard_id]')
+			util.log('Gateway successfully closed [shard_id: $client.shard_id, code: $error, reason: $reason]')
+			util.log('Stopping shard... [shard_id: $client.shard_id]')
 			client.stop <- true
 		}
 	}
