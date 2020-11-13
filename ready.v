@@ -7,9 +7,9 @@ pub mut:
 	v int
 	// user User
 	// private_channels []Channels
-	// guilds []UnavailableHuild
+	guilds []UnavailableGuild
 	session_id string
-	// shard [2]int
+	shard [2]int
 }
 
 pub fn (mut r Ready) from_json(f json.Any){
@@ -17,15 +17,23 @@ pub fn (mut r Ready) from_json(f json.Any){
 	for k, v in obj {
 		match k {
 			'v' {r.v = v.int()}
+			'guilds' {
+				mut guilds := []UnavailableGuild{}
+				mut arr := v.arr()
+				for g in arr{
+					mut guild := UnavailableGuild{}
+					guild.from_json(g)
+					guilds << guild
+				}
+				r.guilds = guilds
+			}
 			'session_id' {r.session_id = v.str()}
+			'shard' {
+				mut shards := v.arr()
+				r.shard[0] = shards[0].int()
+				r.shard[1] = shards[1].int()
+			}
 			else{}
 		}
 	}
-}
-
-pub fn (r Ready) to_json() string{
-	mut obj := map[string]json.Any
-	obj['v'] = r.v
-	obj['session_id'] = r.session_id
-	return obj.str()
 }
