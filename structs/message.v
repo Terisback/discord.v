@@ -1,11 +1,7 @@
-module discordv
+module structs
 
 import time
 import x.json2 as json
-
-pub type MessageCreate = Message
-pub type MessageUpdate = Message
-pub type MessageDelete = Message
 
 pub struct Message {
 pub mut:
@@ -19,14 +15,14 @@ pub mut:
 	tts bool
 	mention_everyone bool
 	mentions []User
-	mention_roles []Snowflake
-	mention_channels []Snowflake
+	mention_roles []string
+	mention_channels []string
 	attachments []Attachment
 	embeds []Embed
 	reactions []Reaction
 	nonce string
 	pinned bool
-	webhook_id Snowflake
+	webhook_id string
 	@type MessageType
 	activity MessageActivity
 	application MessageApplication
@@ -99,11 +95,13 @@ fn (mut m MessageApplication) from_json(f json.Any) {
 	}
 }
 
+// Contains reference data with crossposted messages
 pub struct MessageReference {
 pub mut:
 	message_id string
 	channel Channel
 }
+
 
 pub type MessageFlag = byte
 

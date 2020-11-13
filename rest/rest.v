@@ -1,4 +1,4 @@
-module discordv
+module rest
 
 import net.http
 import x.json2 as json

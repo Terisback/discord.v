@@ -1,4 +1,4 @@
-module discordv
+module structs
 
 import x.json2 as json
 

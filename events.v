@@ -1,6 +1,6 @@
 module discordv
 
-pub type EventHandler = fn(mut c Client, event voidptr)
+import discordv.structs
 
 pub enum Event {
 	hello
@@ -43,3 +43,12 @@ pub enum Event {
 	voice_server_update
 	webhooks_update
 }
+
+pub type Hello = structs.Hello
+pub type Ready = structs.Ready
+// pub type Resumed = structs.Resumed
+// pub type Reconnect = structs.Reconnect
+// pub type InvalidSession = structs.InvalidSession
+pub type MessageCreate = structs.Message
+pub type MessageUpdate = structs.Message
+pub type MessageDelete = structs.Message

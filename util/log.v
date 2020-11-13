@@ -1,4 +1,4 @@
-module discordv
+module util
 
 import term
 
@@ -8,7 +8,7 @@ const (
 	colors_supported = term.can_show_color_on_stdout()	
 )
 
-fn log(txt string) {
+pub fn log(txt string) {
 	match colors_supported {
 		true { 
 			v := term.rgb(95, 155, 230, 'v')

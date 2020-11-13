@@ -1,7 +1,8 @@
-module discordv
+module client
 
 import os
 import x.json2 as json
+import discordv
 
 enum Op {
 	dispatch
@@ -47,7 +48,7 @@ struct IdentifyPacket {
 struct Identify {
 	token string
 	properties IdentifyProperties = IdentifyProperties{}
-	intents Intent
+	intents discordv.Intent
 	shard []int
 }
 
