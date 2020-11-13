@@ -48,6 +48,7 @@ struct Identify {
 	token string
 	properties IdentifyProperties = IdentifyProperties{}
 	intents Intent
+	shard []int
 }
 
 struct IdentifyProperties {
@@ -58,11 +59,24 @@ struct IdentifyProperties {
 
 pub fn (p IdentifyPacket) to_json() string{
 	mut pack := map[string]json.Any
-	pack['op'] = 2 // Identify op code
+	pack['op'] = int(Op.identify)
 
 	mut obj := map[string]json.Any
 	obj['token'] = p.d.token
 	obj['intents'] = int(p.d.intents)
+
+	if p.d.shard.len != 2{
+		log('you fool, why your shard array isn\'n valid?!')
+		mut shards := []json.Any{}
+		shards << 0
+		shards << 1
+		obj['shard'] = shards
+	} else {
+		mut shards := []json.Any{}
+		shards << p.d.shard[0]
+		shards << p.d.shard[1]
+		obj['shard'] = shards
+	}
 
 	mut prop := map[string]json.Any
 	prop[r'$os'] = p.d.properties.os
@@ -75,21 +89,6 @@ pub fn (p IdentifyPacket) to_json() string{
 	return pack.str()
 }
 
-struct HelloPacket {
-mut:
-	heartbeat_interval u64
-}
-
-pub fn (mut p HelloPacket) from_json(f json.Any){
-	mut obj := f.as_map()
-	for k, v in obj{
-		match k {
-			'heartbeat_interval' {p.heartbeat_interval = u64(v.f64())}
-			else{}
-		}
-	}
-}
-
 struct HeartbeatPacket{
 	op int
 	data int
@@ -99,5 +98,29 @@ pub fn (p HeartbeatPacket) to_json() string{
 	mut obj := map[string]json.Any
 	obj['op'] = p.op
 	obj['d'] = p.data
+	return obj.str()
+}
+
+struct ResumePacket{
+	op int
+	data Resume
+}
+
+struct Resume {
+	token string
+	session_id string
+	sequence int
+}
+
+pub fn (p ResumePacket) to_json() string{
+	mut obj := map[string]json.Any
+	obj['op'] = p.op
+
+	mut resume := map[string]json.Any
+	resume['token'] = p.data.token
+	resume['session_id'] = p.data.session_id
+	resume['seq'] = p.data.sequence
+
+	obj['d'] = resume
 	return obj.str()
 }
