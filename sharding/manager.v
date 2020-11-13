@@ -15,5 +15,8 @@ mut:
 }
 
 pub fn new_manager(config discordv.Config) ?&ShardingManager{
-	
+	//for ___ {
+		// Create shard
+		// sleep 5 seconds https://discord.com/developers/docs/topics/gateway#rate-limiting
+	//}
 }
