@@ -3,35 +3,25 @@
 #  
 
 <p align="center">
-<b>discord.v</b> - Yet another easy to use, feature-rich, and async ready API wrapper for Discord written in V. <br><i>(Big <b>WIP</b>)</i>
+Yet another feature-rich Discord Bot Framework written in V.<br><i>(Big <b>WIP</b>)</i>
 </p>
 
 ## How it will look like
 
 ```v
 import discordv as vd
-import discordv.client as cl
+import discordv.client as nt
 
 fn main(){
-    mut client := cl.new(vd.Config{token: 'token'})?
-
-    client.on(.ready, on_ready)
+    mut client := nt.new(vd.Config{token: 'token'})?
     client.on(.message_create, on_message_create)
-
     client.run()?
 }
 
-fn on_ready(mut c &cl.Client, e &vd.Ready){
-    log('Bot is ready!')
-    log('Guilds count: $e.guilds.len')
-    log('All guilds:')
-    for i, guild in e.guilds {
-        log('${i+1}\. $guild.id')
+fn on_message_create(mut c &nt.Client, e &vd.MessageCreate){
+    if e.content == '!ping' {
+        c.send(e.channel, 'pong!')?
     }
-}
-
-fn on_message_create(mut c &cl.Client, e &vd.MessageCreate){
-    log('message: [id:$e.id, content:$e.content]')
 }
 ```
 
@@ -42,5 +32,6 @@ fn on_message_create(mut c &cl.Client, e &vd.MessageCreate){
 - [x] Think about more usable event system
 - [ ] Do message related REST things
 - [ ] Observe rate limits
+- [ ] Build cache ontop map's (memcache, redis in future)
 - [ ] Gain feedback
 - [ ] Make a cool library
