@@ -1,4 +1,4 @@
-module discordv
+module snowflake
 
 import time
 
@@ -17,7 +17,7 @@ pub:
 }
 
 // Creates a new snowflake
-fn new_snowflake(id u64) Snowflake {
+pub fn new_snowflake(id u64) Snowflake {
 	return Snowflake{
 		id: id
 		increment: id & 0xFFF
@@ -39,4 +39,8 @@ pub fn (s Snowflake) str() string {
 // Converts the snowflake to a time.Time object
 pub fn (s Snowflake) time() time.Time {
 	return time.unix(int(((s.id >> 22) + discord_epoch) / 1000))
+}
+
+pub fn (s Snowflake) is_nil() bool{
+	return s.id == 0
 }
