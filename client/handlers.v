@@ -27,14 +27,26 @@ fn (mut client Client) on_hello(packet GatewayPacket){
 	mut hello := discordv.Hello{}
 	hello.from_json(packet.data)
 	client.heartbeat_interval = hello.heartbeat_interval
-	message := IdentifyPacket{
-		d: Identify{
-			token: client.token
-			intents: client.intents
-			shard: [client.shard_id, client.shard_count]
-		}
-	}.to_json()
-	client.ws.write_str(message)
+	if client.resuming {
+		message := ResumePacket{
+			data: Resume{
+				token: client.token
+				session_id: client.session_id
+				sequence: client.sequence
+			}
+		}.to_json()
+		client.ws.write_str(message)
+		client.resuming = false
+	} else {
+		message := IdentifyPacket{
+			d: Identify{
+				token: client.token
+				intents: client.intents
+				shard: [client.shard_id, client.shard_count]
+			}
+		}.to_json()
+		client.ws.write_str(message)
+	}
 	client.last_heartbeat = time.now().unix_time_milli()
 	client.events.publish('hello', client, hello)
 }
@@ -45,54 +57,5 @@ fn (mut client Client) on_heartbeat_ack(packet GatewayPacket){
 
 fn (mut client Client) on_invalid_session(packet GatewayPacket){
     resumable := packet.data.bool()
-	if resumable {
-		message := ResumePacket{
-			op: Op.resume
-			data: Resume{
-				token: client.token
-				session_id: client.session_id
-				sequence: client.sequence
-			}
-		}.to_json()
-		client.ws.write_str(message)
-	}else{
-		util.log('Asking for reconnect...')
-		go client.reconnect()
-	}
-}
-
-fn (mut client Client) reconnect() {
-	client.reconnect <- true
-}
-
-fn (mut client Client) start_heartbeat() ? {
-	for {
-		select {
-			_ := <- client.stop {
-				return
-			}
-			_ := <- client.reconnect {
-				client.ws.connect()?
-				go client.ws.listen()?
-			}
-			> (client.heartbeat_interval / 1000) * time.millisecond {
-				now := time.now().unix_time_milli()
-				if now - client.last_heartbeat > client.heartbeat_interval {
-					if client.heartbeat_acked != true {
-						util.log('Asking for reconnect...')
-						go client.reconnect()
-						continue
-					}
-					heartbeat := HeartbeatPacket {
-						op: Op.heartbeat,
-						data: client.sequence
-					}
-					message := heartbeat.to_json()
-					client.ws.write(message.bytes(), .text_frame)
-					client.last_heartbeat = now
-					client.heartbeat_acked = false
-				}
-			}
-		}
-	}
+	client.reconnect <- resumable
 }

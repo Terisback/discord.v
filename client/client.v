@@ -1,5 +1,6 @@
 module client
 
+import time
 import x.websocket
 import discordv
 import discordv.eventbus
@@ -22,8 +23,11 @@ mut:
 	shard_id int
 	shard_count int = 1
 
+	resuming bool
 	reconnect chan bool = chan bool{}
 	stop chan bool = chan bool{}
+
+	//rl &RateLimit
 }
 
 pub fn new(config discordv.Config) ?&Client{
@@ -57,8 +61,46 @@ pub fn (mut client Client) on(event discordv.Event, handler eventbus.EventHandle
 	client.events.subscribe(event.str(), handler)
 }
 
-pub fn (mut client Client) run() ? {
+fn (mut client Client) reconnect(resume bool) {
+	client.reconnect <- resume
+}
+
+pub fn (mut client Client) close() {
+	client.stop <- true
+}
+
+pub fn (mut client Client) open() ? {
 	client.ws.connect()?
 	go client.ws.listen()?
-	client.start_heartbeat()?
+	for {
+		select {
+			_ := <- client.stop {
+				return
+			}
+			resume := <- client.reconnect {
+				time.sleep(5)
+				client.resuming = resume
+				client.ws.connect()?
+				go client.ws.listen()?
+			}
+			> time.millisecond * 45000 {
+				now := time.now().unix_time_milli()
+				if now - client.last_heartbeat > client.heartbeat_interval {
+					if client.heartbeat_acked != true {
+						client.ws.close(GatewayCloseErrorCode.unknown, "Close pls")?
+						go client.reconnect(true)
+						continue
+					}
+					heartbeat := HeartbeatPacket {
+						op: Op.heartbeat,
+						data: client.sequence
+					}
+					message := heartbeat.to_json()
+					client.ws.write(message.bytes(), .text_frame)
+					client.last_heartbeat = now
+					client.heartbeat_acked = false
+				}
+			}
+		}
+	}
 }

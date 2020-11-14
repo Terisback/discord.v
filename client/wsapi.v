@@ -22,7 +22,7 @@ fn ws_on_message(mut ws websocket.Client, msg &websocket.Message, mut client &Cl
 				.hello { client.on_hello(packet) }
 				.heartbeat_ack { client.on_heartbeat_ack(packet) }
 				.invalid_session { client.on_invalid_session(packet) }
-				.reconnect { client.ws.close(GatewayCloseErrorCode.unknown, 'Asking for reconnect from outside') }
+				.reconnect { client.reconnect <- true }
 				else {
 					thing := Op(packet.op)
 					util.log('Unhandled opcode: $packet.op ($thing)')
@@ -37,16 +37,15 @@ fn ws_on_message(mut ws websocket.Client, msg &websocket.Message, mut client &Cl
 
 fn ws_on_close(mut ws websocket.Client, code int, reason string, mut client &Client) ? {
 	error := GatewayCloseErrorCode(code)
+	util.log('Gateway closed [shard_id: $client.shard_id, code: $error, reason: $reason]')
 	match error {
-		.unknown, .unknown_opcode, .invalid_sequence {
-			util.log('Gateway closed [shard_id: $client.shard_id, code: $error, reason: $reason]')
-			util.log('Going to reconnect to gateway... [shard_id: $client.shard_id]')
-			client.reconnect <- true
+		.unknown, .unknown_opcode, .decode_error, .already_authenticated, .invalid_sequence, .rate_limited, .session_timed_out {
+			util.log('It\'s not that bad, going to reconnect... [shard_id: $client.shard_id]')
+			client.reconnect <- false
 		}
-		else {
-			util.log('Gateway successfully closed [shard_id: $client.shard_id, code: $error, reason: $reason]')
+		else {	
 			util.log('Stopping shard... [shard_id: $client.shard_id]')
-			client.stop <- true
+			client.close()
 		}
 	}
 }
