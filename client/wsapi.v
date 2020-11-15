@@ -1,5 +1,6 @@
 module client
 
+//import strings
 import x.json2 as json
 import x.websocket
 import discordv.util
@@ -15,14 +16,14 @@ fn ws_on_error(mut ws websocket.Client, error string, mut client &Client) ? {
 fn ws_on_message(mut ws websocket.Client, msg &websocket.Message, mut client &Client) ? {
 	match msg.opcode {
 		.text_frame {
-			packet := json.decode<GatewayPacket>(msg.payload.bytestr())
-			client.sequence = packet.sequence
+			packet := json.decode<GatewayPacket>(msg.payload.bytestr())	
+			client.sequence = packet.sequence	
 			match Op(packet.op){
 				.dispatch { client.on_dispatch(packet) }
 				.hello { client.on_hello(packet) }
 				.heartbeat_ack { client.on_heartbeat_ack(packet) }
 				.invalid_session { client.on_invalid_session(packet) }
-				.reconnect { client.reconnect <- true }
+				.reconnect { client.reconnect(true) }
 				else {
 					thing := Op(packet.op)
 					util.log('Unhandled opcode: $packet.op ($thing)')
@@ -36,12 +37,12 @@ fn ws_on_message(mut ws websocket.Client, msg &websocket.Message, mut client &Cl
 }
 
 fn ws_on_close(mut ws websocket.Client, code int, reason string, mut client &Client) ? {
-	error := GatewayCloseErrorCode(code)
+	error := GatewayCloseCode(code)
 	util.log('Gateway closed [shard_id: $client.shard_id, code: $error, reason: $reason]')
 	match error {
-		.unknown, .unknown_opcode, .decode_error, .already_authenticated, .invalid_sequence, .rate_limited, .session_timed_out {
+		.normal_closure, .unknown, .unknown_opcode, .decode_error, .not_authenticated, .already_authenticated, .invalid_sequence, .rate_limited, .session_timed_out {
 			util.log('It\'s not that bad, going to reconnect... [shard_id: $client.shard_id]')
-			client.reconnect <- false
+			client.reconnect(false)
 		}
 		else {	
 			util.log('Stopping shard... [shard_id: $client.shard_id]')
@@ -50,7 +51,7 @@ fn ws_on_close(mut ws websocket.Client, code int, reason string, mut client &Cli
 	}
 }
 
-enum GatewayCloseErrorCode {
+enum GatewayCloseCode {
 	normal_closure = 1000
 	unknown = 4000
 	unknown_opcode = 4001

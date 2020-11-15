@@ -47,7 +47,7 @@ pub enum Event {
 pub type Hello = structs.Hello
 pub type Ready = structs.Ready
 // pub type Resumed = structs.Resumed
-// pub type Reconnect = structs.Reconnect
+pub type Reconnect = structs.Reconnect
 // pub type InvalidSession = structs.InvalidSession
 pub type MessageCreate = structs.Message
 pub type MessageUpdate = structs.Message
