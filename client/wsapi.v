@@ -1,16 +1,19 @@
 module client
 
 //import strings
+import term
 import x.json2 as json
 import x.websocket
 import discordv.util
 
 fn ws_on_open(mut ws websocket.Client, mut client &Client) ? {
-	util.log('Successfully connected to gateway [shard_id:$client.shard_id]')
+	util.log(term.bright_green('Successfully connected to gateway [shard_id:$client.shard_id]'))
 }
 
 fn ws_on_error(mut ws websocket.Client, error string, mut client &Client) ? {
-	util.log('Gateway error: $error')
+	util.log(term.bright_red('Gateway error [shard_id:$client.shard_id]: $error'))
+	util.log('It\'s bad, going to reconnect... [shard_id: $client.shard_id]')
+	client.reconnect(false)
 }
 
 fn ws_on_message(mut ws websocket.Client, msg &websocket.Message, mut client &Client) ? {
@@ -26,12 +29,12 @@ fn ws_on_message(mut ws websocket.Client, msg &websocket.Message, mut client &Cl
 				.reconnect { client.reconnect(true) }
 				else {
 					thing := Op(packet.op)
-					util.log('Unhandled opcode: $packet.op ($thing)')
+					util.log('Unhandled opcode [shard_id:$client.shard_id]: $packet.op ($thing)')
 				}
 			}
 		}
 		else {
-			util.log('Unhandled websocket opcode: $msg.opcode')
+			util.log('Unhandled websocket opcode [shard_id:$client.shard_id]: $msg.opcode')
 		}
 	}
 }
@@ -44,6 +47,7 @@ fn ws_on_close(mut ws websocket.Client, code int, reason string, mut client &Cli
 			util.log('It\'s not that bad, going to reconnect... [shard_id: $client.shard_id]')
 			client.reconnect(false)
 		}
+		.reconnect { /* Do nothing */ }
 		else {	
 			util.log('Stopping shard... [shard_id: $client.shard_id]')
 			client.close()
@@ -67,4 +71,5 @@ enum GatewayCloseCode {
 	invalid_api_version = 4012
 	invalid_intents = 4013
 	disallowed_intents = 4014
+	reconnect = 5000
 }

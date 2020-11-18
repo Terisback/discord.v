@@ -23,8 +23,6 @@ mut:
 	heartbeat_interval u64
 	last_heartbeat u64
 
-	shard_id int
-	shard_count int = 1
 	wg &sync.WaitGroup
 
 	resuming bool
@@ -32,6 +30,10 @@ mut:
 	stop chan bool = chan bool{}
 
 	//rl &RateLimit
+
+pub mut:
+	shard_id int
+	shard_count int = 1
 }
 
 pub fn new(config discordv.Config) ?&Client{
@@ -71,6 +73,7 @@ pub fn new_shard(config discordv.Config, events &eventbus.EventBus, wg &sync.Wai
 		wg: wg
 	}
 
+	//client.ws.logger.set_output_level(.fatal)
 	client.ws.on_open_ref(ws_on_open, client)
 	client.ws.on_error_ref(ws_on_error, client)
 	client.ws.on_message_ref(ws_on_message, client)
@@ -99,10 +102,20 @@ pub fn (mut client Client) open() ? {
 			}
 			resume := <- client.reconnect {
 				time.sleep(5)
+				if client.ws.state in [.open, .connecting]{
+					client.ws.close(GatewayCloseCode.reconnect, "Oops, client isn't closed yet") or {}
+				}
 				client.resuming = resume
 				client.events.publish(
 					discordv.Event.reconnect.str(), client, 
 					structs.Reconnect{resumed: resume})
+				client.ws = websocket.new_client(default_gateway) or {
+					return error('[discord.v] Unavailable to instantiate websocket client')
+				}
+				client.ws.on_open_ref(ws_on_open, client)
+				client.ws.on_error_ref(ws_on_error, client)
+				client.ws.on_message_ref(ws_on_message, client)
+				client.ws.on_close_ref(ws_on_close, client)
 				client.ws.connect()?
 				go client.ws.listen()?
 			}
@@ -110,9 +123,6 @@ pub fn (mut client Client) open() ? {
 				now := time.now().unix_time_milli()
 				if now - client.last_heartbeat > client.heartbeat_interval {
 					if client.heartbeat_acked != true {
-						if client.ws.state == .open {
-							client.ws.close(GatewayCloseCode.unknown, "Heartbeat ack isn't pass")?
-						}
 						go client.reconnect(true)
 						continue
 					}

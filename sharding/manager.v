@@ -44,7 +44,6 @@ pub fn (mut sham ShardingManager) open() ?{
 		go sham.clients[i].open()?
 		time.sleep(5) // sleep for 5 seconds
 	}
-	util.log('[SHAM] Initialized all shards')
 	sham.wg.wait()
 }
 
