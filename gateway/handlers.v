@@ -41,7 +41,7 @@ fn on_message(mut ws websocket.Client, msg &websocket.Message, mut conn Connecti
 
 fn on_close(mut ws websocket.Client, code int, reason string, mut conn Connection) ? {
 	error := CloseCode(code)
-	util.log('[#$conn.shard_id] Gateway closed [code: $error, reason: $reason]')
+	util.log(term.bright_yellow('[#$conn.shard_id] Gateway closed [code: $error, reason: $reason]'))
 }
 
 enum CloseCode {
