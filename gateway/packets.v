@@ -8,7 +8,7 @@ import discordv.util
 
 pub struct Packet {
 pub mut:
-	op int
+	op Op
 	sequence int
 	event string
 	data json.Any
@@ -18,7 +18,7 @@ pub fn (mut p Packet) from_json(f json.Any){
 	mut obj := f.as_map()
 	for k, v in obj{
 		match k {
-			'op' {p.op = v.int()}
+			'op' {p.op = Op(v.int())}
 			's' {p.sequence = v.int()}
 			't' {p.event = v.str()}
 			'd' {p.data = v}
@@ -29,7 +29,7 @@ pub fn (mut p Packet) from_json(f json.Any){
 
 pub fn (p Packet) to_json() string {
 	mut obj := map[string]json.Any
-	obj['op'] = p.op
+	obj['op'] = int(p.op)
 	obj['s'] = p.sequence
 	obj['t'] = p.event
 	obj['d'] = p.data
