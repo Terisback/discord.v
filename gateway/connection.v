@@ -20,7 +20,7 @@ mut:
 	session_id string
 	sequence int
 	heartbeat_acked bool = true
-	heartbeat_interval u64
+	heartbeat_interval u64 = 1000
 	last_heartbeat u64
 	resuming bool
 
@@ -47,6 +47,7 @@ pub fn new_connection(config discordv.Config, shard_id int, shard_count int) ?&C
 }
 
 pub fn (mut conn Connection) open() ?{
+	go conn.run_heartbeat()?
 	conn.ws.connect()?
 	conn.ws.listen() or {
 		util.log(term.bright_blue('[#$conn.shard_id] Websocket listen: $err'))

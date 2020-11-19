@@ -29,6 +29,7 @@ fn (mut conn Connection) on_hello(packet Packet) {
 	conn.heartbeat_interval = hello.heartbeat_interval
 	if conn.resuming {
 		message := Packet{
+			op: .resume
 			data: Resume{
 				token: conn.token
 				session_id: conn.session_id
@@ -39,6 +40,7 @@ fn (mut conn Connection) on_hello(packet Packet) {
 		conn.resuming = false
 	} else {
 		message := Packet{
+			op: .identify
 			data: Identify{
 				token: conn.token
 				intents: conn.intents
@@ -60,31 +62,29 @@ fn (mut conn Connection) on_invalid_session(packet Packet) {
 
 fn (mut conn Connection) run_heartbeat() ? {
 	for {
-		select {
-			_ := <- conn.stop {
-				return
-			}
-			> time.millisecond * i64(conn.heartbeat_interval) {
-				now := time.now().unix_time_milli()
-				if now - conn.last_heartbeat > conn.heartbeat_interval {
-					if conn.heartbeat_acked != true {
-						if conn.ws.state == .open {
-							conn.ws.close(1000, "Heartbeat ack didn't come")
-						}
-						continue
-					}
-					heartbeat := Packet{
-						op: Op.heartbeat
-						data: conn.sequence
-					}
-					message := heartbeat.to_json()
-					conn.ws.write_str(message) or {
-						util.log('Something went wrong: $err')
-					}
-					conn.last_heartbeat = now
-					conn.heartbeat_acked = false
+		// Think about stop with select if it needed
+		time.sleep_ms(50)
+		if conn.ws.state in [.connecting, .closing, .closed] {
+			continue
+		}
+		now := time.now().unix_time_milli()
+		if now - conn.last_heartbeat > conn.heartbeat_interval {
+			if conn.heartbeat_acked != true {
+				if conn.ws.state == .open {
+					conn.ws.close(1000, "Heartbeat ack didn't come")
 				}
+				continue
 			}
+			heartbeat := Packet{
+				op: .heartbeat
+				data: conn.sequence
+			}
+			message := heartbeat.to_json()
+			conn.ws.write_str(message) or {
+				util.log('Something went wrong: $err')
+			}
+			conn.last_heartbeat = now
+			conn.heartbeat_acked = false
 		}
 	}
 }
