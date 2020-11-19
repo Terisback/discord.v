@@ -14,20 +14,18 @@ mut:
 	//cache &cache.Cache
 	clients []&client.Client
 	shard_count int
-	wg &sync.WaitGroup
 }
 
-pub fn new_manager(config discordv.Config) ?&ShardingManager{
+pub fn new_manager(config discordv.Config, shard_count int) ?&ShardingManager{
 	mut sham := &ShardingManager{
 		token: config.token
 		events: eventbus.new()
-		shard_count: config.shard_count
-		wg: sync.new_waitgroup()
+		shard_count: shard_count
 	}
 
-	for i in 0..config.shard_count{
+	for i in 0..shard_count{
 		// add cache into clients
-		mut client := client.new_shard(config, sham.events, sham.wg, i, config.shard_count)?
+		mut client := client.new_shard(config, sham.events, i, shard_count)?
 		sham.clients << client
 	}
 
@@ -39,16 +37,17 @@ pub fn (mut sham ShardingManager) on(event discordv.Event, handler eventbus.Even
 }
 
 pub fn (mut sham ShardingManager) open() ?{
-	util.log('[SHAM] Starting shards...')
 	for i in 0..sham.shard_count{
 		go sham.clients[i].open()?
 		time.sleep(5) // sleep for 5 seconds
 	}
-	sham.wg.wait()
+	mut wg := sync.new_waitgroup()
+	wg.add(1)
+	wg.wait()
 }
 
-pub fn (mut sham ShardingManager) close() {
-	for i in 0..sham.shard_count{
-		sham.clients[i].close()
-	}
-}
+// pub fn (mut sham ShardingManager) close() {
+// 	for i in 0..sham.shard_count{
+// 		sham.clients[i].close()
+// 	}
+// }

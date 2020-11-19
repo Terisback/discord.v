@@ -1,5 +1,0 @@
-module client
-
-struct RateLimit {
-	
-}
