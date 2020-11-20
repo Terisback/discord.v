@@ -5,7 +5,7 @@ import x.json2 as json
 pub struct Ready {
 pub mut:
 	v int
-	// user User
+	user User
 	// private_channels []Channels
 	guilds []UnavailableGuild
 	session_id string
@@ -17,6 +17,11 @@ pub fn (mut r Ready) from_json(f json.Any){
 	for k, v in obj {
 		match k {
 			'v' {r.v = v.int()}
+			'user' {
+				mut user := User{}
+				user.from_json(v)
+				r.user = user
+			}
 			'guilds' {
 				mut guilds := []UnavailableGuild{}
 				mut arr := v.arr()

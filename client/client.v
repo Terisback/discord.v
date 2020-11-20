@@ -7,6 +7,9 @@ import discordv.gateway
 pub struct Client {
 	token string
 	intents discordv.Intent
+pub:
+	shard_id int
+	shard_count int
 mut:
 	events &eventbus.EventBus
 	conn &gateway.Connection
@@ -23,6 +26,8 @@ pub fn new_shard(config discordv.Config, events &eventbus.EventBus, shard_id int
 	mut client := &Client{
 		token: config.token
 		intents: config.intents
+		shard_id: shard_id
+		shard_count: shard_count
 		events: events
 		conn: conn
 	}

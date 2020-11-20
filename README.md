@@ -9,18 +9,18 @@ Yet another feature-rich Discord Bot Framework written in V.<br><i>(Big <b>WIP</
 ## How it will look like
 
 ```v
-import discordv as vd
-import discordv.client as nt
+import discordv as d
+import discordv.client as vd
 
 fn main(){
-    mut client := nt.new(vd.Config{token: 'token'})?
+    mut client := vd.new(d.Config{token: 'token'})?
     client.on(.message_create, on_message_create)
-    client.run()?
+    client.open()?
 }
 
-fn on_message_create(mut c &nt.Client, e &vd.MessageCreate){
-    if e.content == '!ping' {
-        c.send(e.channel, 'pong!')?
+fn on_message_create(mut client &vd.Client, evt &d.MessageCreate){
+    if evt.content == '!ping' {
+        client.send(evt.channel, 'pong!') or {}
     }
 }
 ```
@@ -30,7 +30,7 @@ fn on_message_create(mut c &nt.Client, e &vd.MessageCreate){
 - [x] Do basic connection through websocket
 - [x] Handle heartbeat (partly)
 - [x] Think about more usable event system
-- [ ] Do message related REST things
+- [x] Do message related REST things
 - [ ] Observe rate limits
 - [ ] Build cache ontop map's (memcache, redis in future)
 - [ ] Gain feedback

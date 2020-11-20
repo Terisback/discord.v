@@ -6,7 +6,8 @@ import x.json2 as json
 pub struct Message {
 pub mut:
 	id string
-	channel Channel
+	channel_id string
+	//channel Channel
 	author User
 	member Member
 	content string
@@ -123,6 +124,7 @@ pub fn (mut m Message) from_json(f json.Any){
 	for k, v in obj{
 		match k {
 			'id' {m.id = v.str()}
+			'channel_id' {m.channel_id = v.str()}
 			'content' {m.content = v.str()}
 			'nonce' {m.nonce = v.str()}
 			'activity' {
@@ -133,4 +135,16 @@ pub fn (mut m Message) from_json(f json.Any){
 			else {}
 		}
 	}
+}
+
+pub fn (m Message) outbound_json() string{
+	mut obj := map[string]json.Any
+	obj['content'] = m.content
+	obj['nonce'] = m.nonce
+	obj['tts'] = m.tts
+	// if m.embeds.len >= 1 {
+	// 	obj['embed'] = m.embeds[0]
+	// }
+	//obj['message_refence'] = m.message_reference
+	return obj.str()
 }
