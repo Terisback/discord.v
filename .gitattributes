@@ -1,0 +1,2 @@
+*.v linguist-language=V text=auto eol=lf
+Dockerfile.* linguist-language=Dockerfile
