@@ -20,7 +20,7 @@ fn main(){
 
 fn on_message_create(mut client &vd.Client, evt &d.MessageCreate){
     if evt.content == '!ping' {
-        client.send(evt.channel, 'pong!') or {}
+        client.send(evt.channel_id, 'pong!') or {}
     }
 }
 ```
