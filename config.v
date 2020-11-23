@@ -1,7 +1,9 @@
 module discordv
 
+import discordv.types
+
 pub struct Config {
 pub mut:
 	token string
-	intents Intent = intents.guilds | intents.guild_messages
+	intents types.Intent = intents.guilds | intents.guild_messages
 }

@@ -3,10 +3,11 @@ module client
 import discordv
 import discordv.eventbus
 import discordv.gateway
+import discordv.types
 
 pub struct Client {
 	token string
-	intents discordv.Intent
+	intents types.Intent
 pub:
 	shard_id int
 	shard_count int

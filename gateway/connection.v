@@ -3,6 +3,7 @@ module gateway
 import term
 import x.websocket
 import discordv
+import discordv.types
 import discordv.util
 
 const (
@@ -11,7 +12,7 @@ const (
 
 pub struct Connection {
 	token string
-	intents discordv.Intent
+	intents types.Intent
 pub:
 	shard_id int
 	shard_count int
