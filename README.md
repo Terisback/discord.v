@@ -6,7 +6,7 @@
 Yet another feature-rich Discord Bot Framework written in V.<br><i>(Big <b>WIP</b>)</i>
 </p>
 
-## How it will look like
+## Example
 
 ```v
 import discordv as d
@@ -27,11 +27,35 @@ fn on_message_create(mut client &vd.Client, evt &d.MessageCreate){
 
 ## TODO()
 
-- [x] Do basic connection through websocket
-- [x] Handle heartbeat (partly)
-- [x] Think about more usable event system
-- [x] Do message related REST things
-- [ ] Observe rate limits
+### First milestone
+- [x] Connect to gateway
+- [x] Handle heartbeat
+- [x] Event system (pub/sub)
+- [x] REST for sending messages
+- [ ] Implement almost all structs
+- [ ] Create more examples
+
+### Second milestone
+- [ ] Handle REST
+  - [ ] Audit Log
+  - [ ] Channel
+  - [ ] Emoji
+  - [ ] Guild
+  - [ ] Invite
+  - [ ] User
+  - [ ] Voice
+  - [ ] Webhook
+  - [ ] Observe rate limits
+- [ ] Fancy log
+- [ ] Command router
+- [ ] Think about tests
+
+### Third milestone (till V v0.3)
+- [ ] Translate dispatch to generics
 - [ ] Build cache ontop map's (memcache, redis in future)
-- [ ] Gain feedback
+
+### The main one
 - [ ] Make a cool library
+
+Feel free to contribute ;)  
+You can contact me at discord: TERISBACK#9125
