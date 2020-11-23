@@ -1,11 +1,13 @@
 module discordv
 
 import discordv.structs
+import discordv.gateway.packets
 
 pub enum Event {
+	dispatch
 	hello
 	ready
-	resumed
+	// resumed
 	reconnect
 	invalid_session
 	channel_create
@@ -44,9 +46,10 @@ pub enum Event {
 	webhooks_update
 }
 
+pub type Dispatch = packets.Packet
 pub type Hello = structs.Hello
 pub type Ready = structs.Ready
-// pub type Resumed = structs.Resumed
+// pub type Resumed = packets.Resume
 pub type Reconnect = structs.Reconnect
 // pub type InvalidSession = structs.InvalidSession
 pub type MessageCreate = structs.Message
