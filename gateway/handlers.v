@@ -3,6 +3,7 @@ module gateway
 import term
 import x.json2 as json
 import x.websocket
+import discordv.gateway.packets
 import discordv.util
 
 fn on_open(mut ws websocket.Client, mut conn Connection) ? {
@@ -16,9 +17,11 @@ fn on_error(mut ws websocket.Client, error string, mut conn Connection) ? {
 fn on_message(mut ws websocket.Client, msg &websocket.Message, mut conn Connection) ? {
 	match msg.opcode {
 		.text_frame {
-			packet := json.decode<Packet>(msg.payload.bytestr())	
+			mut obj := json.raw_decode(msg.payload.bytestr())?
+			mut packet := packets.Packet{}
+			packet.from_json(obj)
 			conn.sequence = packet.sequence	
-			match Op(packet.op){
+			match packets.Op(packet.op){
 				.dispatch { conn.dispatch(packet) }
 				.hello { conn.on_hello(packet) }
 				.heartbeat_ack { conn.on_heartbeat_ack(packet) }
@@ -28,7 +31,7 @@ fn on_message(mut ws websocket.Client, msg &websocket.Message, mut conn Connecti
 					conn.ws.close(CloseCode.normal_closure, "Reconnect") 
 				}
 				else {
-					thing := Op(packet.op)
+					thing := packets.Op(packet.op)
 					util.log('[#$conn.shard_id] Unhandled opcode: $packet.op ($thing)')
 				}
 			}

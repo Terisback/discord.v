@@ -2,35 +2,21 @@ module gateway
 
 import time
 import discordv
+import discordv.gateway.packets
 import discordv.util
 
-enum Op {
-	dispatch
-	heartbeat
-	identify
-	presence_update
-	voice_state_update
-	five_undocumented
-	resume
-	reconnect
-	request_guild_members
-	invalid_session
-	hello
-	heartbeat_ack
-}
-
-fn (mut conn Connection) dispatch(packet Packet) {
+fn (mut conn Connection) dispatch(packet packets.Packet) {
 	conn.dispatch_handler(conn.dispatch_receiver, packet)
 }
 
-fn (mut conn Connection) on_hello(packet Packet) {
+fn (mut conn Connection) on_hello(packet packets.Packet) {
 	mut hello := discordv.Hello{}
 	hello.from_json(packet.data)
 	conn.heartbeat_interval = hello.heartbeat_interval
 	if conn.resuming {
-		message := Packet{
+		message := packets.Packet{
 			op: .resume
-			data: Resume{
+			data: packets.Resume{
 				token: conn.token
 				session_id: conn.session_id
 				sequence: conn.sequence
@@ -39,9 +25,9 @@ fn (mut conn Connection) on_hello(packet Packet) {
 		conn.ws.write_str(message)
 		conn.resuming = false
 	} else {
-		message := Packet{
+		message := packets.Packet{
 			op: .identify
-			data: Identify{
+			data: packets.Identify{
 				token: conn.token
 				intents: conn.intents
 				shard: [conn.shard_id, conn.shard_count]
@@ -52,11 +38,11 @@ fn (mut conn Connection) on_hello(packet Packet) {
 	conn.last_heartbeat = time.now().unix_time_milli()
 }
 
-fn (mut conn Connection) on_heartbeat_ack(packet Packet) {
+fn (mut conn Connection) on_heartbeat_ack(packet packets.Packet) {
 	conn.heartbeat_acked = true
 }
 
-fn (mut conn Connection) on_invalid_session(packet Packet) {
+fn (mut conn Connection) on_invalid_session(packet packets.Packet) {
 	conn.resuming = packet.data.bool()
 }
 
@@ -75,7 +61,7 @@ fn (mut conn Connection) run_heartbeat() ? {
 				}
 				continue
 			}
-			heartbeat := Packet{
+			heartbeat := packets.Packet{
 				op: .heartbeat
 				data: conn.sequence
 			}

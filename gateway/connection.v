@@ -3,6 +3,7 @@ module gateway
 import term
 import x.websocket
 import discordv
+import discordv.gateway.packets
 import discordv.types
 import discordv.util
 
@@ -67,7 +68,7 @@ pub fn (mut conn Connection) open() ?{
 	}
 }
 
-type DispatchFn = fn(receiver voidptr, packet Packet)
+type DispatchFn = fn(receiver voidptr, packet packets.Packet)
 
 pub fn (mut conn Connection) on_dispatch(handler DispatchFn, receiver voidptr){
 	conn.dispatch_handler = handler
