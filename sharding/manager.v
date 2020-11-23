@@ -8,23 +8,22 @@ import discordv.eventbus
 import discordv.util
 
 pub struct ShardingManager {
-	token string
 mut:
 	events &eventbus.EventBus
-	//cache &cache.Cache
+	// cache &cache.Cache
 	clients []&client.Client
+	// rl &client.Ratelimit
 	shard_count int
 }
 
 pub fn new_manager(config discordv.Config, shard_count int) ?&ShardingManager{
 	mut sham := &ShardingManager{
-		token: config.token
 		events: eventbus.new()
 		shard_count: shard_count
 	}
 
 	for i in 0..shard_count{
-		// add cache into clients
+		// add cache, ratelimit into clients
 		mut client := client.new_shard(config, sham.events, i, shard_count)?
 		sham.clients << client
 	}
