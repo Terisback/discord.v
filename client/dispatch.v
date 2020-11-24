@@ -9,7 +9,7 @@ fn on_dispatch(mut client &Client, packet packets.Packet){
 	client.events.publish('dispatch', client, packet)
 	match event_name {
 		'hello' { 
-			mut obj := discordv.Hello{}
+			mut obj := packets.Hello{}
 			obj.from_json(packet.data)
 			client.events.publish(event_name, client, obj)
 		}

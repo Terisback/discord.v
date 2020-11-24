@@ -47,7 +47,7 @@ pub enum Event {
 }
 
 pub type Dispatch = packets.Packet
-pub type Hello = structs.Hello
+pub type Hello = packets.Hello
 pub type Ready = structs.Ready
 // pub type Resumed = packets.Resume
 pub type Reconnect = structs.Reconnect

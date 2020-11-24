@@ -1,7 +1,6 @@
 module gateway
 
 import time
-import discordv
 import discordv.gateway.packets
 import discordv.util
 
@@ -10,7 +9,7 @@ fn (mut conn Connection) dispatch(packet packets.Packet) {
 }
 
 fn (mut conn Connection) on_hello(packet packets.Packet) {
-	mut hello := discordv.Hello{}
+	mut hello := packets.Hello{}
 	hello.from_json(packet.data)
 	conn.heartbeat_interval = hello.heartbeat_interval
 	if conn.resuming {

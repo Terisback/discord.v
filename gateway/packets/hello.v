@@ -1,4 +1,4 @@
-module structs 
+module packets
 
 import x.json2 as json
 
