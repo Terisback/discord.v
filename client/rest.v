@@ -1,25 +1,13 @@
 module client
 
-import net.http
 import x.json2 as json
+import discordv.client.rest
+import discordv.client.rest.formdata
 import discordv.structs as st
 
-const (
-	api = 'https://discord.com/api/v8'
-	bot_user_agent = 'DiscordBot (https://github.com/Terisback/discord.v, v0.0.1)'
-)
-
-fn (mut client Client) new_request(method http.Method, path string) ?http.Request {
-	mut req := http.new_request(method, api + path, '')?
-	req.add_header('Authorization', 'Bot $client.token') 
-	req.add_header('User-Agent', bot_user_agent)
-	req.add_header('Content-Type', 'application/json')
-	return req
-}
-
 pub fn (mut client Client) get_shard_count() ?int {
-	mut req := client.new_request(.get, '/gateway/bot')?
-	resp := req.do()?
+	mut req := rest.new_request(client.token, .get, '/gateway/bot')?
+	resp := client.rest.do(req)?
 	if resp.status_code != 200 {
 		return error('Status code is $resp.status_code')
 	}
@@ -29,43 +17,31 @@ pub fn (mut client Client) get_shard_count() ?int {
 }
 
 // add embed
-type Message = int | string | st.Message
+type Message = string | st.Message | st.File
 
 // aka creaate message
 pub fn (mut client Client) send(channel_id string, message Message) ? {
-	mut req := client.new_request(.post, '/channels/$channel_id/messages')?
+	mut req := rest.new_request(client.token, .post, '/channels/$channel_id/messages')?
+	mut form := formdata.new()?
+	req.add_header('Content-Type', form.content_type())
 	match message {
-		int {
-			outbound := st.Message{
-				content: message.str()
-			}.outbound_json()
-			req.data = outbound
-			resp := req.do()?
-			if resp.status_code != 200 {
-				return error('Status code is $resp.status_code')
-			}
-			return
-		}
 		string {
-			outbound := st.Message{
-				content: message
-			}.outbound_json()
-			req.data = outbound
-			resp := req.do()?
-			if resp.status_code != 200 {
-				return error('Status code is $resp.status_code')
-			}
-			return
+			payload := st.Message{ content: message }.outbound_json()
+			form.add('payload_json', payload) 
 		}
-		st.Message {
-			outbound := message.outbound_json()
-			req.data = outbound
-			resp := req.do()?
-			if resp.status_code != 200 {
-				return error('Status code is $resp.status_code')
-			}
-			return
+		st.Message { form.add('payload_json', message.outbound_json()) }
+		st.File {
+			form.add_file('file', message.filename, message.data)
+			payload := st.Message{ content: 'hi' }.outbound_json()
+			form.add('payload_json', payload)
 		}
 	}
-	panic('not reachable, maybe you passing empty Message{}')
+	
+	req.data = form.encode()
+	resp := client.rest.do(req)?
+	if resp.status_code != 200 {
+		println(resp.text)
+		response_error := RestResponseCode(resp.status_code)
+		return error('Status code is $resp.status_code ($response_error)')
+	}
 }

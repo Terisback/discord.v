@@ -1,6 +1,7 @@
 module client
 
 import discordv
+import discordv.client.rest
 import discordv.eventbus
 import discordv.gateway
 import discordv.types
@@ -14,6 +15,7 @@ pub:
 mut:
 	events &eventbus.EventBus
 	conn &gateway.Connection
+	rest &rest.REST
 }
 
 pub fn new(config discordv.Config) ?&Client{
@@ -31,6 +33,7 @@ pub fn new_shard(config discordv.Config, events &eventbus.EventBus, shard_id int
 		shard_count: shard_count
 		events: events
 		conn: conn
+		rest: rest.new(config.token)
 	}
 
 	client.conn.on_dispatch(on_dispatch, client)
