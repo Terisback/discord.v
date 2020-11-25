@@ -1,9 +1,8 @@
-module rest
+module formdata
 
 import os
-import crypto.rand
-import math
 import strings
+import encoding.base64
 
 const (
 	mime_types = {
@@ -29,7 +28,7 @@ type FormField = string | FormFile
 struct FormFile {
 pub mut:
 	filename string
-	content_type string = mime_types['.txt']
+	content_type string = 'application/octet-stream'
 	data []byte
 }
 
@@ -40,9 +39,8 @@ pub mut:
 }
 
 pub fn new() ?FormData {
-	b := rand.int_u64(math.max_u64)?
 	return FormData{
-		boundary: b.hex_full()
+		boundary: 'X-DISCORD.V-BOUNDARY'
 		fields: map[string]FormField{}
 	}
 }
@@ -67,28 +65,32 @@ pub fn (mut f FormData) add_file(name string, filename string, data []byte) {
 	}	
 }
 
-pub fn (f FormData) header() string {
+pub fn (f FormData) content_type() string {
 	return 'multipart/form-data; charset=utf-8; boundary=$f.boundary'
 }
 
 pub fn (f FormData) encode() string {
 	mut builder := strings.new_builder(200)
+	builder.write_b(`\n`)
 	for k, v in f.fields {
-		builder.write_b(`\n`)
+		builder.write('--$f.boundary\n')
 		match v {
 			string {
-				builder.write('Content-Disposition: form-data; name=\"$k\"')
+				builder.write('Content-Disposition: form-data; name=\"$k\"\n')
 				builder.write_b(`\n`)
 				builder.write(v)
+				builder.write_b(`\n`)
 			}
 			FormFile {
-				builder.write('Content-Disposition: form-data; name=\"$k\"; filename=\"$v.filename\"')
-				builder.write('Content-Type: $v.content_type')
+				builder.write('Content-Disposition: form-data; name=\"$k\"; filename=\"$v.filename\"\n')
+				builder.write('Content-Type: $v.content_type\n')
+				builder.write('Content-Transfer-Encoding: base64\n')
 				builder.write_b(`\n`)
-				builder.write(v.data.bytestr())
+				builder.write(base64.encode(v.data.bytestr()))
+				builder.write_b(`\n`)
 			}
 		}
 	}
-	builder.write('--')
+	builder.write('--$f.boundary--')
 	return builder.str()
 }
