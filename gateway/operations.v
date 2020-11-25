@@ -56,7 +56,7 @@ fn (mut conn Connection) run_heartbeat() ? {
 		if now - conn.last_heartbeat > conn.heartbeat_interval {
 			if conn.heartbeat_acked != true {
 				if conn.ws.state == .open {
-					conn.ws.close(1000, "Heartbeat ack didn't come")
+					conn.ws.close(1000, "heartbeat ack didn't come")
 				}
 				continue
 			}

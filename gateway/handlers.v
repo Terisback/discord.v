@@ -7,11 +7,11 @@ import discordv.gateway.packets
 import discordv.util
 
 fn on_open(mut ws websocket.Client, mut conn Connection) ? {
-	util.log(term.bright_green('[#$conn.shard_id] Successfully connected to gateway '))
+	util.log(term.bright_green('#$conn.shard_id Successfully connected to gateway'))
 }
 
 fn on_error(mut ws websocket.Client, error string, mut conn Connection) ? {
-	util.log(term.bright_red('[#$conn.shard_id] Gateway error: $error'))
+	util.log(term.bright_red('#$conn.shard_id Gateway error: $error'))
 }
 
 fn on_message(mut ws websocket.Client, msg &websocket.Message, mut conn Connection) ? {
@@ -32,19 +32,19 @@ fn on_message(mut ws websocket.Client, msg &websocket.Message, mut conn Connecti
 				}
 				else {
 					thing := packets.Op(packet.op)
-					util.log('[#$conn.shard_id] Unhandled opcode: $packet.op ($thing)')
+					util.log('#$conn.shard_id Unhandled opcode: $packet.op ($thing)')
 				}
 			}
 		}
 		else {
-			util.log('[#$conn.shard_id] Unhandled websocket opcode: $msg.opcode')
+			util.log('#$conn.shard_id Unhandled websocket opcode: $msg.opcode')
 		}
 	}
 }
 
 fn on_close(mut ws websocket.Client, code int, reason string, mut conn Connection) ? {
 	error := CloseCode(code)
-	util.log(term.bright_yellow('[#$conn.shard_id] Gateway closed [code: $error, reason: $reason]'))
+	util.log(term.bright_yellow('#$conn.shard_id Gateway closed [code: $code ($error), reason: $reason]'))
 }
 
 enum CloseCode {

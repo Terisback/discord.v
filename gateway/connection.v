@@ -52,7 +52,7 @@ pub fn (mut conn Connection) open() ?{
 	go conn.run_heartbeat()?
 	conn.ws.connect()?
 	conn.ws.listen() or {
-		util.log(term.bright_blue('[#$conn.shard_id] Websocket listen: $err'))
+		util.log(term.bright_blue('#$conn.shard_id Websocket listen: $err'))
 	}
 	for {
 		mut ws := websocket.new_client(default_gateway)?
@@ -63,7 +63,7 @@ pub fn (mut conn Connection) open() ?{
 		conn.ws.on_close_ref(on_close, conn)
 		conn.ws.connect()?
 		conn.ws.listen() or {
-			util.log(term.bright_blue('[#$conn.shard_id] Websocket listen: $err'))
+			util.log(term.bright_blue('#$conn.shard_id Websocket listen: $err'))
 		}
 	}
 }
