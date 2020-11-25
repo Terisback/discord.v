@@ -32,6 +32,7 @@ fn on_message_create(mut client &vd.Client, evt &d.MessageCreate){
 - [x] Handle heartbeat
 - [x] Event system (pub/sub)
 - [x] REST for sending messages
+- [x] Implement `multipart/form-data` for file sending
 - [ ] Implement almost all structs
 - [ ] Create more examples
 
