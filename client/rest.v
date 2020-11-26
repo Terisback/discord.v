@@ -1,8 +1,8 @@
 module client
 
 import x.json2 as json
-import discordv.client.rest
-import discordv.client.rest.formdata
+import discordv.rest
+import discordv.rest.formdata
 import discordv.structs as st
 
 pub fn (mut client Client) get_shard_count() ?int {

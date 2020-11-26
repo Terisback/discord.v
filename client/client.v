@@ -1,9 +1,9 @@
 module client
 
 import discordv
-import discordv.client.rest
 import discordv.eventbus
 import discordv.gateway
+import discordv.rest
 import discordv.types
 
 pub struct Client {
