@@ -46,7 +46,7 @@ fn on_message_create(mut client &vd.Client, evt &d.MessageCreate){
   - [ ] User
   - [ ] Voice
   - [ ] Webhook
-  - [ ] Observe rate limits
+  - [x] Observe rate limits (thanks to @div72)
 - [ ] Fancy log
 - [ ] Command router
 - [ ] Think about tests
