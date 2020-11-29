@@ -7,7 +7,7 @@ pub struct Message {
 pub mut:
 	id string
 	channel_id string
-	//channel Channel
+	guild_id string
 	author User
 	member Member
 	content string
@@ -28,7 +28,7 @@ pub mut:
 	activity MessageActivity
 	application MessageApplication
 	message_reference MessageReference
-	flags MessageFlags
+	flags MessageFlag
 }
 
 pub enum MessageType {
@@ -47,6 +47,7 @@ pub enum MessageType {
 	channel_follow_add
 	guild_discovery_disqualified
 	guild_discovery_requalified
+	reply = 19
 }
 
 pub enum MessageActivityType {
@@ -100,9 +101,21 @@ fn (mut m MessageApplication) from_json(f json.Any) {
 pub struct MessageReference {
 pub mut:
 	message_id string
-	channel Channel
+	channel_id string
+	guild_id string
 }
 
+fn (mut m MessageReference) from_json(f json.Any) {
+	mut obj := f.as_map()
+	for k, v in obj{
+		match k {
+			'message_id' {m.message_id = v.str()}
+			'channel_id' {m.channel_id = v.str()}
+			'guild_id' {m.guild_id = v.str()}
+			else {}
+		}
+	}
+}
 
 pub type MessageFlag = byte
 
@@ -125,13 +138,76 @@ pub fn (mut m Message) from_json(f json.Any){
 		match k {
 			'id' {m.id = v.str()}
 			'channel_id' {m.channel_id = v.str()}
+			'guild_id' {m.guild_id = v.str()}
+			'author' {
+				mut user := User{}
+				user.from_json(v)
+				m.author = user
+			}
+			//'member' {}
 			'content' {m.content = v.str()}
+			'timestamp' {
+				m.timestamp = time.parse_iso8601(v.str()) or {
+					time.unix(0)
+				} 
+			}
+			'edited_timestamp' {
+				m.edited_timestamp = time.parse_iso8601(v.str()) or {
+					time.unix(0)
+				} 
+			}
+			'tts' {m.tts = v.bool()}
+			'mention_everyone' {m.mention_everyone = v.bool()}
+			'mentions' {
+				mut obja := v.arr()
+				for va in obja{
+					mut user := User{}
+					user.from_json(va)
+					m.mentions << user
+				}
+			}
+			'mention_roles' {
+				mut obja := v.arr()
+				for va in obja{
+					m.mention_roles << va.str()
+				}
+			}
+			'mention_channels' {
+				mut obja := v.arr()
+				for va in obja{
+					m.mention_channels << va.str()
+				}
+			}
+			//'attachments' {}
+			//'embeds' {}
+			'reaction' {
+				mut obja := v.arr()
+				for _, va in obja {
+					mut reaction := Reaction{}
+					reaction.from_json(va)
+					m.reactions << reaction
+				}
+			}
 			'nonce' {m.nonce = v.str()}
+			'pinned' {m.pinned = v.bool()}
+			'webhook_id' {m.webhook_id = v.str()}
+			'type' {m.@type = MessageType(v.int())}
 			'activity' {
 				mut activity := MessageActivity{}
 				activity.from_json(v)
 				m.activity = activity
 			}
+			'application' {
+				mut application := MessageApplication{}
+				application.from_json(v)
+				m.application = application
+			}
+			'message_reference' {
+				mut reference := MessageReference{}
+				reference.from_json(v)
+				m.message_reference = reference
+			}
+			'flags' {m.flags = MessageFlag(byte(v.int()))}
 			else {}
 		}
 	}

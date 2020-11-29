@@ -2,6 +2,7 @@ module structs
 
 import time
 
+// Do we really need that level of abstraction?
 pub type Channel = TextChannel | DMChannel | VoiceChannel | DMGroupChannel | Category | NewsChannel | StoreChannel
 
 enum PermissionOverwriteType{
