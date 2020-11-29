@@ -11,9 +11,10 @@ pub mut:
 }
 
 fn (mut rl RateLimit) m_lock(bucket string) &sync.Mutex {
-	if !rl.global_lock.try_lock() {
+	// TODO: uncomment when pr merged vlang/v#7003
+	//if !rl.global_lock.try_lock() {
 		rl.global_lock.m_lock()
-	}
+	//}
 	rl.global_lock.unlock()
 	rl.rw.r_lock()
 	if bucket !in rl.buckets {
