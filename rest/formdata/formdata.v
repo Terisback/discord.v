@@ -76,13 +76,13 @@ pub fn (f FormData) encode() string {
 		builder.write('--$f.boundary\n')
 		match v {
 			string {
-				builder.write('Content-Disposition: form-data; name=\"$k\"\n')
+				builder.write('Content-Disposition: form-data; name=\"${k}\"\n')
 				builder.write_b(`\n`)
 				builder.write(v)
 				builder.write_b(`\n`)
 			}
 			FormFile {
-				builder.write('Content-Disposition: form-data; name=\"$k\"; filename=\"$v.filename\"\n')
+				builder.write('Content-Disposition: form-data; name=\"${k}\"; filename=\"${v.filename}\"\n')
 				builder.write('Content-Type: $v.content_type\n')
 				builder.write('Content-Transfer-Encoding: base64\n')
 				builder.write_b(`\n`)
