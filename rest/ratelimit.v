@@ -92,7 +92,7 @@ pub fn (mut bucket Bucket) release(headers map[string]string) {
 			return 
 		}
 		discord_time := modum.from_v(date)
-		unix := modum.Modum(headers['x-ratelimit-reset'].i64() * 1000)
+		unix := modum.Modum(i64(headers['x-ratelimit-reset'].f64() * 1000))
 		delta := unix.sub(discord_time) + 250 // 250 is a magic number
 		bucket.reset = modum.now().add(delta)
 	}

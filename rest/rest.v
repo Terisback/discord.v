@@ -24,7 +24,7 @@ pub fn (mut rest REST) do(req http.Request) ?http.Response {
 	key := req.url
 	mut bucket := rest.rl.lock_bucket(key)
 	resp := req.do() or {
-		bucket.release(map[string]&Bucket{})
+		bucket.release(map[string]string{})
 		return error(err)
 	}
 	bucket.release(resp.lheaders)
