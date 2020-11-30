@@ -3,7 +3,6 @@ module rest
 import sync
 import time
 import x.json2 as json
-import discordv.util.modum
 
 struct RateLimiter {
 pub mut:
@@ -33,7 +32,7 @@ pub fn (mut rl RateLimiter) get_bucket(key string) &Bucket {
 	return bucket
 }
 
-pub fn (mut rl RateLimiter) get_wait_time(bucket &Bucket, min_remaining int) modum.Modum {
+pub fn (mut rl RateLimiter) get_wait_time(bucket &Bucket, min_remaining int) i64 {
 	now := time.utc().unix_time_milli()  // TODO: check if abs(system time - discord time) > 2
 	if now < rl.global {
 		return rl.global - now
