@@ -8,7 +8,7 @@ import time
 pub type Modum = i64
 
 pub fn now() Modum{
-	return Modum(i64(time.now().unix_time_milli()))
+	return Modum(i64(time.utc().unix_time_milli()))
 }
 
 // Get Modum from time.Time
