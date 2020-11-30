@@ -8,7 +8,7 @@ import discordv.util.modum
 struct RateLimiter {
 pub mut:
 	mutex &sync.Mutex = sync.new_mutex()
-	global modum.Modum
+	global u64
 	buckets map[string]&Bucket = map[string]&Bucket{}
 }
 
@@ -34,13 +34,13 @@ pub fn (mut rl RateLimiter) get_bucket(key string) &Bucket {
 }
 
 pub fn (mut rl RateLimiter) get_wait_time(bucket &Bucket, min_remaining int) modum.Modum {
-	now := modum.now()
-	if bucket.remaining < min_remaining && bucket.reset.after(now){
-		return bucket.reset.sub(now)
+	now := time.utc().unix_time_milli()  // TODO: check if abs(system time - discord time) > 2
+	if now < rl.global {
+		return rl.global - now
 	}
 
-	if now.before(rl.global) {
-		return rl.global.sub(now)
+	if bucket.remaining < min_remaining && bucket.reset > now {
+		return bucket.reset - now
 	}
 
 	return 0
@@ -69,7 +69,7 @@ pub mut:
 	mutex &sync.Mutex = sync.new_mutex()
 	remaining int
 	limit int
-	reset modum.Modum
+	reset u64
 }
 
 pub fn (mut bucket Bucket) release(headers map[string]string) {
@@ -79,22 +79,8 @@ pub fn (mut bucket Bucket) release(headers map[string]string) {
 		return 
 	}
 
-	if 'retry-after' in headers {
-		retry_after := headers['retry-after'].i64()
-		reset_at := modum.now().add(retry_after)
-		if 'x-ratelimit-global' in headers {
-			bucket.rl.global = headers['x-ratelimit-global'].i64()
-		} else {
-			bucket.reset = reset_at
-		}
-	} else if 'x-ratelimit-reset' in headers && 'date' in headers {
-		date := time.parse_iso8601(headers['date']) or {
-			return 
-		}
-		discord_time := modum.from_v(date)
-		unix := modum.Modum(i64(headers['x-ratelimit-reset'].f64() * 1000))
-		delta := unix.sub(discord_time) + 250 // 250 is a magic number
-		bucket.reset = modum.now().add(delta)
+	if 'x-ratelimit-reset' in headers {
+		bucket.reset = u64(headers['x-ratelimit-reset'].f64() * 1000)
 	}
 
 	if 'x-ratelimit-remaining' in headers {
