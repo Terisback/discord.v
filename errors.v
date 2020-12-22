@@ -1,4 +1,4 @@
-module client
+module discordv
 
 import x.json2 as json
 

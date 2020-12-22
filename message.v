@@ -1,7 +1,7 @@
-module structs
+module discordv
 
-import time
 import x.json2 as json
+import time
 
 pub struct Message {
 pub mut:
@@ -48,6 +48,7 @@ pub enum MessageType {
 	guild_discovery_disqualified
 	guild_discovery_requalified
 	reply = 19
+	application_command
 }
 
 pub enum MessageActivityType {

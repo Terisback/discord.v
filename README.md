@@ -9,16 +9,15 @@ Yet another feature-rich Discord Bot Framework written in V.<br><i>(Big <b>WIP</
 ## Example
 
 ```v
-import discordv as d
-import discordv.client as vd
+import discordv as vd
 
 fn main(){
     mut client := vd.new(d.Config{token: 'token'})?
-    client.on(.message_create, on_message_create)
+    client.on_message_create(on_ping)
     client.open()?
 }
 
-fn on_message_create(mut client &vd.Client, evt &d.MessageCreate){
+fn on_ping(mut client &vd.Client, evt &vd.MessageCreate){
     if evt.content == '!ping' {
         client.send(evt.channel_id, 'pong!') or {}
     }
@@ -33,7 +32,16 @@ fn on_message_create(mut client &vd.Client, evt &d.MessageCreate){
 - [x] Event system (pub/sub)
 - [x] REST for sending messages
 - [x] Implement `multipart/form-data` for file sending
-- [ ] Implement almost all structs
+- [ ] Implement all structs
+  - [ ] Audit Log
+  - [ ] Channel
+  - [ ] Emoji
+  - [ ] Guild
+  - [ ] Invite
+  - [ ] User
+  - [ ] Voice
+  - [ ] Webhook
+  - [ ] Slash Command
 - [ ] Create more examples
 
 ### Second milestone
@@ -46,7 +54,9 @@ fn on_message_create(mut client &vd.Client, evt &d.MessageCreate){
   - [ ] User
   - [ ] Voice
   - [ ] Webhook
+  - [ ] Slash Command
   - [x] Observe rate limits (thanks to @div72)
+- [ ] Slash Commands
 - [ ] Fancy log
 - [ ] Command router
 - [ ] Think about tests
@@ -55,7 +65,7 @@ fn on_message_create(mut client &vd.Client, evt &d.MessageCreate){
 - [ ] Translate dispatch to generics
 - [ ] Build cache ontop map's (memcache, redis in future)
 
-### The main one
+### The Main one
 - [ ] Make a cool library
 
 Feel free to contribute ;)  

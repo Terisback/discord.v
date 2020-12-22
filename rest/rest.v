@@ -1,8 +1,6 @@
 module rest
 
-import discordv.util
 import net.http
-import sync
 import time
 import x.json2 as json
 

@@ -22,10 +22,10 @@ fn on_message(mut ws websocket.Client, msg &websocket.Message, mut conn Connecti
 			packet.from_json(obj)
 			conn.sequence = packet.sequence	
 			match packets.Op(packet.op){
-				.dispatch { conn.dispatch(packet) }
-				.hello { conn.on_hello(packet) }
-				.heartbeat_ack { conn.on_heartbeat_ack(packet) }
-				.invalid_session { conn.on_invalid_session(packet) }
+				.dispatch { conn.publish('dispatch', &packet) }
+				.hello { conn.hello(packet) }
+				.heartbeat_ack { conn.heartbeat_ack(packet) }
+				.invalid_session { conn.invalid_session(packet) }
 				.reconnect { 
 					conn.resuming = true
 					conn.ws.close(CloseCode.normal_closure, "Reconnect") 

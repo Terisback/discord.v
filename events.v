@@ -1,57 +1,68 @@
 module discordv
 
-import discordv.structs
 import discordv.gateway.packets
-
-pub enum Event {
-	dispatch
-	hello
-	ready
-	// resumed
-	reconnect
-	invalid_session
-	channel_create
-	channel_update
-	channel_delete
-	channel_pins_update
-	guild_create
-	guild_update
-	guild_delete
-	guild_ban_add
-	guild_ban_remove
-	guild_emojis_update
-	guild_integrations_update
-	guild_member_add
-	guild_member_remove
-	guild_member_update
-	guild_members_chunk
-	guild_role_create
-	guild_role_update
-	guild_role_delete
-	invite_create
-	invite_delete
-	message_create
-	message_update
-	message_delete
-	message_delete_bulk
-	message_reaction_add
-	message_reaction_remove
-	message_reaction_remove_all
-	message_reaction_remove_emoji
-	presence_update
-	typing_start
-	user_update
-	voice_state_update
-	voice_server_update
-	webhooks_update
-}
+import discordv.util
 
 pub type Dispatch = packets.Packet
 pub type Hello = packets.Hello
-pub type Ready = structs.Ready
-// pub type Resumed = packets.Resume
-pub type Reconnect = structs.Reconnect
-// pub type InvalidSession = structs.InvalidSession
-pub type MessageCreate = structs.Message
-pub type MessageUpdate = structs.Message
-pub type MessageDelete = structs.Message
+pub type MessageCreate = Message
+pub type MessageUpdate = Message
+pub type MessageDelete = Message
+
+fn on_hello(mut client &Client, hello &packets.Hello){
+	client.events.publish('hello', client, hello)
+}
+
+fn on_dispatch(mut client &Client, packet &packets.Packet){
+	event_name := packet.event.to_lower()
+	client.events.publish('dispatch', client, packet)
+	match event_name {
+		'ready' { 
+			mut obj := Ready{}
+			obj.from_json(packet.data)
+			client.events.publish(event_name, client, obj)
+		}
+		'message_create' { 
+			mut obj := MessageCreate{}
+			obj.from_json(packet.data)
+			client.events.publish(event_name, client, obj)
+		}
+		'message_update' { 
+			mut obj := MessageUpdate{}
+			obj.from_json(packet.data)
+			client.events.publish(event_name, client, obj)
+		}
+		'message_delete' { 
+			mut obj := MessageDelete{}
+			obj.from_json(packet.data)
+			client.events.publish(event_name, client, obj)
+		}
+		else {
+			util.log('Unhandled event: $event_name')
+		}
+	}
+}
+
+pub fn (mut client Client) on_dispatch(handler fn(mut client &Client, event &Dispatch)){
+	client.events.subscribe('dispatch', handler)
+}
+
+pub fn (mut client Client) on_hello(handler fn(mut client &Client, event &Hello)){
+	client.events.subscribe('hello', handler)
+}
+
+pub fn (mut client Client) on_ready(handler fn(mut client &Client, event &Ready)){
+	client.events.subscribe('ready', handler)
+}
+
+pub fn (mut client Client) on_message_create(handler fn(mut client &Client, event &MessageCreate)){
+	client.events.subscribe('message_create', handler)
+}
+
+pub fn (mut client Client) on_message_update(handler fn(mut client &Client, event &MessageUpdate)){
+	client.events.subscribe('message_update', handler)
+}
+
+pub fn (mut client Client) on_message_delete(handler fn(mut client &Client, event &MessageDelete)){
+	client.events.subscribe('message_delete', handler)
+}

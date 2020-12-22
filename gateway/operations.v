@@ -4,22 +4,19 @@ import time
 import discordv.gateway.packets
 import discordv.util
 
-fn (mut conn Connection) dispatch(packet packets.Packet) {
-	conn.dispatch_handler(conn.dispatch_receiver, packet)
-}
-
-fn (mut conn Connection) on_hello(packet packets.Packet) {
+fn (mut conn Connection) hello(packet packets.Packet) {
 	mut hello := packets.Hello{}
 	hello.from_json(packet.data)
 	conn.heartbeat_interval = hello.heartbeat_interval
 	if conn.resuming {
+		mut resume := packets.Resume{
+			token: conn.token
+			session_id: conn.session_id
+			sequence: conn.sequence
+		}
 		message := packets.Packet{
 			op: .resume
-			data: packets.Resume{
-				token: conn.token
-				session_id: conn.session_id
-				sequence: conn.sequence
-			}.to_json_any()
+			data: resume.to_json_any()
 		}.to_json()
 		conn.ws.write_str(message)
 		conn.resuming = false
@@ -33,21 +30,28 @@ fn (mut conn Connection) on_hello(packet packets.Packet) {
 			}.to_json_any()
 		}.to_json()
 		conn.ws.write_str(message)
+		conn.publish('hello', &hello)
 	}
 	conn.last_heartbeat = time.now().unix_time_milli()
 }
 
-fn (mut conn Connection) on_heartbeat_ack(packet packets.Packet) {
+fn (mut conn Connection) heartbeat_ack(packet packets.Packet) {
 	conn.heartbeat_acked = true
 }
 
-fn (mut conn Connection) on_invalid_session(packet packets.Packet) {
+fn (mut conn Connection) invalid_session(packet packets.Packet) {
 	conn.resuming = packet.data.bool()
 }
 
 fn (mut conn Connection) run_heartbeat() ? {
 	for {
-		// Think about stop with select if it needed
+		mut stop := false
+		status := conn.stop.try_pop(stop)
+		if status == .success {
+			conn.ws.close(1000, "close() was called")
+			return
+		}
+
 		time.sleep_ms(50)
 		if conn.ws.state in [.connecting, .closing, .closed] {
 			continue

@@ -19,7 +19,7 @@ pub mut:
 
 pub fn new() &EventBus {
 	registry := &Registry{
-		events: []
+		events: []EventHandler{}
 	}
 	return &EventBus{
 		registry,
