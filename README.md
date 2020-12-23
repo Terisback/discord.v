@@ -3,7 +3,10 @@
 #  
 
 <p align="center">
-Yet another feature-rich Discord Bot Framework written in V.<br><i>(Big <b>WIP</b>)</i>
+Yet another feature-rich Discord Bot Framework written in V <i>(Big <b>WIP</b>)</i><br>
+<a href="discordv.terisback.ru">
+  <img src="https://img.shields.io/badge/docs-2F3136?style=flat&logo=v">
+</a>
 </p>
 
 ## Example
