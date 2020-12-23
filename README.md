@@ -15,7 +15,7 @@ Yet another feature-rich Discord Bot Framework written in V <i>(Big <b>WIP</b>)<
 import discordv as vd
 
 fn main(){
-    mut client := vd.new(d.Config{token: 'token'})?
+    mut client := vd.new(vd.Config{token: 'token'})?
     client.on_message_create(on_ping)
     client.open()?
 }
