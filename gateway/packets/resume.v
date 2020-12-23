@@ -2,6 +2,7 @@ module packets
 
 import x.json2 as json
 
+// Websocket Resume packet data
 pub struct Resume {
 pub:
 	token string

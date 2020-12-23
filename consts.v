@@ -2,6 +2,7 @@ module discordv
 
 import discordv.types
 
+// Constants for the different bit offsets of intents
 pub const (
 	guilds                   = types.Intent(1 << 0)
 	guild_members            = types.Intent(1 << 1)
@@ -22,6 +23,7 @@ pub const (
 	all                      = types.Intent(32767)
 )
 
+// Constants for general managment
 pub const (
 	create_instant_invite = types.Permission(0x00000001)
 	kick_members          = types.Permission(0x00000002)

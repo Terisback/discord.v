@@ -1,23 +1,23 @@
 module discordv
 
-import x.json2 as json
 import discordv.rest
 import discordv.rest.formdata
 import discordv.util
 
-pub fn (mut client Client) get_shard_count() ?int {
-	mut req := rest.new_request(client.token, .get, '/gateway/bot')?
-	resp := client.rest.do(req)?
-	if resp.status_code != 200 {
-		return error('Status code is $resp.status_code')
-	}
+// // Get recommended shard count
+// pub fn (mut client Client) get_shard_count() ?int {
+// 	mut req := rest.new_request(client.token, .get, '/gateway/bot')?
+// 	resp := client.rest.do(req)?
+// 	if resp.status_code != 200 {
+// 		return error('Status code is $resp.status_code')
+// 	}
 
-	mut res := json.raw_decode(resp.text)?
-	return res.as_map()['shards'].int()
-}
+// 	mut res := json.raw_decode(resp.text)?
+// 	return res.as_map()['shards'].int()
+// }
 
 // add embed
-type Payload = string | Message | File
+type Payload = string | Message | File //| Embed
 
 // aka create message
 pub fn (mut client Client) send(channel_id string, message Payload) ? {
@@ -40,7 +40,7 @@ pub fn (mut client Client) send(channel_id string, message Payload) ? {
 	req.data = form.encode()
 	resp := client.rest.do(req)?
 	if resp.status_code != 200 {
-		response_error := RestResponseCode(resp.status_code)
+		response_error := rest.ResponseCode(resp.status_code)
 		err_text := 'Status code is $resp.status_code ($response_error)'
 		util.log(err_text)
 		return error(err_text)

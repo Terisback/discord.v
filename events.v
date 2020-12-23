@@ -9,10 +9,12 @@ pub type MessageCreate = Message
 pub type MessageUpdate = Message
 pub type MessageDelete = Message
 
+// Publishing hello event to client eventbus
 fn on_hello(mut client &Client, hello &packets.Hello){
 	client.events.publish('hello', client, hello)
 }
 
+// Deals with packets from gateway. Publishing to client eventbus
 fn on_dispatch(mut client &Client, packet &packets.Packet){
 	event_name := packet.event.to_lower()
 	client.events.publish('dispatch', client, packet)
@@ -43,26 +45,32 @@ fn on_dispatch(mut client &Client, packet &packets.Packet){
 	}
 }
 
+// Add event handler to Dispatch event
 pub fn (mut client Client) on_dispatch(handler fn(mut client &Client, event &Dispatch)){
 	client.events.subscribe('dispatch', handler)
 }
 
+// Add event handler to Hello event
 pub fn (mut client Client) on_hello(handler fn(mut client &Client, event &Hello)){
 	client.events.subscribe('hello', handler)
 }
 
+// Add event handler to Ready event
 pub fn (mut client Client) on_ready(handler fn(mut client &Client, event &Ready)){
 	client.events.subscribe('ready', handler)
 }
 
+// Add event handler to MessageCreate event
 pub fn (mut client Client) on_message_create(handler fn(mut client &Client, event &MessageCreate)){
 	client.events.subscribe('message_create', handler)
 }
 
+// Add event handler to MessageUpdate event
 pub fn (mut client Client) on_message_update(handler fn(mut client &Client, event &MessageUpdate)){
 	client.events.subscribe('message_update', handler)
 }
 
+// Add event handler to MessageDelete event
 pub fn (mut client Client) on_message_delete(handler fn(mut client &Client, event &MessageDelete)){
 	client.events.subscribe('message_delete', handler)
 }

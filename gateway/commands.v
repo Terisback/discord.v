@@ -3,6 +3,7 @@ module gateway
 import x.json2 as json
 import discordv.gateway.packets
 
+// request_guild_members arguments
 pub struct RequestGuildMembersArgs {
 	guild_id string
 	query string
@@ -30,6 +31,7 @@ pub fn (req RequestGuildMembersArgs) to_json() json.Any{
 	return obj
 }
 
+// Request guild members (It will wait answer from websocket)
 pub fn (mut conn Connection) request_guild_members(args RequestGuildMembersArgs) {
 	mut command := packets.Packet{
 		op: .request_guild_members

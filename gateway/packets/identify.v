@@ -4,6 +4,7 @@ import os
 import x.json2 as json
 import discordv.types
 
+// Websocket Identify packet data
 pub struct Identify {
 pub:
 	token string
@@ -12,6 +13,7 @@ pub:
 	shard []int
 }
 
+// Identify packet properies 
 pub struct IdentifyProperties {
 pub:
 	os string = os.user_os()

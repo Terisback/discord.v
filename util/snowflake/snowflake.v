@@ -2,7 +2,7 @@ module snowflake
 
 import time
 
-// discord_epoch is Discord's epoch in milliseconds
+// Discord's epoch in milliseconds
 pub const (
 	discord_epoch = u64(1420070400000)
 )
@@ -41,6 +41,7 @@ pub fn (s Snowflake) time() time.Time {
 	return time.unix(int(((s.id >> 22) + discord_epoch) / 1000))
 }
 
+// Checks zero value snowflake 
 pub fn (s Snowflake) is_nil() bool{
 	return s.id == 0
 }

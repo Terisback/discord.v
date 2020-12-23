@@ -1,5 +1,6 @@
 module packets
 
+// Websocket Op Codes
 pub enum Op {
 	dispatch
 	heartbeat

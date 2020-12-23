@@ -10,6 +10,7 @@ const (
 	default_gateway = 'wss://gateway.discord.gg/?v=8&encoding=json'
 )
 
+// Represents Shard Connection to Discord Gateway
 pub struct Connection {
 	token string
 	intents types.Intent
@@ -30,6 +31,7 @@ mut:
 	stop chan bool = chan bool{}
 }
 
+// Create new Connection
 pub fn new_connection(token string, intents types.Intent, shard_id int, shard_count int) ?&Connection{
 	mut ws := websocket.new_client(default_gateway)?
 	mut conn := &Connection{
@@ -43,6 +45,7 @@ pub fn new_connection(token string, intents types.Intent, shard_id int, shard_co
 	return conn
 }
 
+// Opens Websocket to Discord Gateway (It will wait till close signal)
 pub fn (mut conn Connection) open() ?{
 	go conn.run_heartbeat()?
 	for {
@@ -59,6 +62,7 @@ pub fn (mut conn Connection) open() ?{
 	}
 }
 
+// Send close signal (It doesn't close immediately)
 pub fn (mut conn Connection) close() {
 	conn.stop <- true
 }

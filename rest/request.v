@@ -7,6 +7,7 @@ const (
 	bot_user_agent = 'DiscordBot (https://github.com/Terisback/discord.v, v0.0.1)'
 )
 
+// Create new discord api request
 pub fn new_request(token string, method http.Method, path string) ?http.Request {
 	mut req := http.new_request(method, api + path, '')?
 	req.add_header('Authorization', 'Bot $token') 

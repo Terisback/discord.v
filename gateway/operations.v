@@ -35,14 +35,17 @@ fn (mut conn Connection) hello(packet packets.Packet) {
 	conn.last_heartbeat = time.now().unix_time_milli()
 }
 
+// Handles heartbeat_ack from Websocket
 fn (mut conn Connection) heartbeat_ack(packet packets.Packet) {
 	conn.heartbeat_acked = true
 }
 
+// Handles invalid_session from Websocket
 fn (mut conn Connection) invalid_session(packet packets.Packet) {
 	conn.resuming = packet.data.bool()
 }
 
+// Run heartbeat loop. Will execute till stop signal recieved
 fn (mut conn Connection) run_heartbeat() ? {
 	for {
 		mut stop := false

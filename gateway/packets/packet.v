@@ -2,6 +2,7 @@ module packets
 
 import x.json2 as json
 
+// Websocket Packet
 pub struct Packet {
 pub mut:
 	op Op

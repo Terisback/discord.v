@@ -2,6 +2,7 @@ module packets
 
 import x.json2 as json
 
+// Websocket Hello packet data
 pub struct Hello {
 pub mut:
 	heartbeat_interval u64

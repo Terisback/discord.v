@@ -7,12 +7,14 @@ import discordv.gateway
 import discordv.rest
 import discordv.types
 
+// Config struct
 pub struct Config {
 pub mut:
 	token string
 	intents types.Intent = guilds | guild_messages
 }
 
+// Client represents a connection to the Discord API
 pub struct Client {
 	token string
 	intents types.Intent
@@ -24,6 +26,7 @@ mut:
 	rest &rest.REST
 }
 
+// Creates a new Discord client and create shards if it provided as second argument
 pub fn new(config Config, shard_count ...int) ?&Client {
 	mut count := 1
 	if shard_count.len >= 1 {
@@ -33,6 +36,7 @@ pub fn new(config Config, shard_count ...int) ?&Client {
 	return client
 }
 
+// Creates a new Discord client with specified number of shards
 fn new_with_shards(config Config, shard_count int) ?&Client{
 	mut client := &Client{
 		token: config.token
@@ -53,6 +57,7 @@ fn new_with_shards(config Config, shard_count int) ?&Client{
 	return client
 }
 
+// Creates a websocket connection to Discord
 pub fn (mut client Client) open() ? {
 	for i in 0..client.shards.len {
 		go client.shards[i].open()?

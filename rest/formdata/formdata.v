@@ -4,6 +4,7 @@ import os
 import strings
 import encoding.base64
 
+// Copied mime types from net.http module
 const (
 	mime_types = {
 		'.css': 'text/css; charset=utf-8'
@@ -23,8 +24,10 @@ const (
 	}
 )
 
+// FormField can be text or file
 type FormField = string | FormFile
 
+// Contains the name and content of the file
 struct FormFile {
 pub mut:
 	filename string
@@ -32,12 +35,14 @@ pub mut:
 	data []byte
 }
 
+// FormData represents multipart/form-data 
 struct FormData {
 pub mut:
 	boundary string
 	fields map[string]FormField
 }
 
+// Create new FormData with default boundary
 pub fn new() ?FormData {
 	return FormData{
 		boundary: 'X-DISCORD.V-BOUNDARY'
@@ -45,10 +50,12 @@ pub fn new() ?FormData {
 	}
 }
 
+// Add text field
 pub fn (mut f FormData) add(name string, text string) {
 	f.fields[name] = text
 }
 
+// Add file field
 pub fn (mut f FormData) add_file(name string, filename string, data []byte) {
 	ext := os.file_ext(filename)
 	if ext in mime_types {
@@ -65,10 +72,12 @@ pub fn (mut f FormData) add_file(name string, filename string, data []byte) {
 	}	
 }
 
+// Returns http header to include it into request
 pub fn (f FormData) content_type() string {
 	return 'multipart/form-data; charset=utf-8; boundary=$f.boundary'
 }
 
+// Encode FormData, returns body of http request
 pub fn (f FormData) encode() string {
 	mut builder := strings.new_builder(200)
 	builder.write_b(`\n`)

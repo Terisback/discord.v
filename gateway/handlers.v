@@ -6,14 +6,17 @@ import x.websocket
 import discordv.gateway.packets
 import discordv.util
 
+// Handles open event for Websocket
 fn on_open(mut ws websocket.Client, mut conn Connection) ? {
 	util.log(term.bright_green('#$conn.shard_id Successfully connected to gateway'))
 }
 
+// Handles error event for Websocket
 fn on_error(mut ws websocket.Client, error string, mut conn Connection) ? {
 	util.log(term.bright_red('#$conn.shard_id Gateway error: $error'))
 }
 
+// Handles message event for Websocket
 fn on_message(mut ws websocket.Client, msg &websocket.Message, mut conn Connection) ? {
 	match msg.opcode {
 		.text_frame {
@@ -42,11 +45,13 @@ fn on_message(mut ws websocket.Client, msg &websocket.Message, mut conn Connecti
 	}
 }
 
+// Handles close event for Websocket
 fn on_close(mut ws websocket.Client, code int, reason string, mut conn Connection) ? {
 	error := CloseCode(code)
 	util.log(term.bright_yellow('#$conn.shard_id Gateway closed [code: $code ($error), reason: $reason]'))
 }
 
+// Websocket close codes
 enum CloseCode {
 	normal_closure = 1000
 	unknown = 4000

@@ -4,6 +4,7 @@ import net.http
 import time
 import x.json2 as json
 
+// REST struct allows making requests to api with rate limiting
 pub struct REST {
 pub:
 	token string
@@ -11,6 +12,7 @@ mut:
 	rl &RateLimiter
 }
 
+// Create new REST manager
 pub fn new(token string) &REST{
 	return &REST{
 		token: token
@@ -18,6 +20,7 @@ pub fn new(token string) &REST{
 	}
 }
 
+// Make a request taking into account the rate limits
 pub fn (mut rest REST) do(req http.Request) ?http.Response {
 	key := req.url
 	mut bucket := rest.rl.lock_bucket(key)

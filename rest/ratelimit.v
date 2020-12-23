@@ -11,10 +11,12 @@ pub mut:
 	buckets map[string]&Bucket = map[string]&Bucket{}
 }
 
+// Creates new RateLimiter
 pub fn new_ratelimiter() &RateLimiter {
 	return &RateLimiter{}
 }
 
+// Get bucket by key
 pub fn (mut rl RateLimiter) get_bucket(key string) &Bucket {
 	rl.mutex.m_lock()
 	defer {rl.mutex.unlock()}
@@ -32,6 +34,7 @@ pub fn (mut rl RateLimiter) get_bucket(key string) &Bucket {
 	return bucket
 }
 
+// Get bucket wait time
 pub fn (mut rl RateLimiter) get_wait_time(bucket &Bucket, min_remaining int) u64 {
 	now := time.utc().unix_time_milli()  // TODO: check if abs(system time - discord time) > 2
 	if now < rl.global {
@@ -45,11 +48,13 @@ pub fn (mut rl RateLimiter) get_wait_time(bucket &Bucket, min_remaining int) u64
 	return 0
 }
 
+// Lock bucket by key before do a request
 pub fn (mut rl RateLimiter) lock_bucket(key string) &Bucket {
 	mut bucket := rl.get_bucket(key)
 	return rl.lock_bucket_obj(mut bucket)
 }
 
+// Lock bucket before do a request
 pub fn (mut rl RateLimiter) lock_bucket_obj(mut bucket &Bucket) &Bucket{
 	bucket.mutex.m_lock()
 
@@ -62,6 +67,7 @@ pub fn (mut rl RateLimiter) lock_bucket_obj(mut bucket &Bucket) &Bucket{
 	return bucket
 }
 
+// Bucket is needed to control the number of requests up to a certain endpoint
 struct Bucket {
 pub mut:
 	rl &RateLimiter
@@ -71,6 +77,7 @@ pub mut:
 	reset u64
 }
 
+// Update bucket limits from responce headers
 pub fn (mut bucket Bucket) release(headers map[string]string) {
 	defer {bucket.mutex.unlock()}
 
@@ -87,6 +94,7 @@ pub fn (mut bucket Bucket) release(headers map[string]string) {
 	}
 }
 
+// REST API error (TODO: Move to errors.v)
 struct TooManyRequests {
 pub mut:
 	message string

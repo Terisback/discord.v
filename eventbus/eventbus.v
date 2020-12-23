@@ -1,7 +1,9 @@
 module eventbus
 
+// discord.v event handler function
 pub type EventHandlerFn = fn (client voidptr, event voidptr)
 
+// Registry of event handlers
 struct Registry {
 mut:
 	events []EventHandler
@@ -12,11 +14,13 @@ struct EventHandler {
 	handler EventHandlerFn
 }
 
+// EventBus allows to subscribe and publish events
 pub struct EventBus {
 pub mut:
 	registry   &Registry
 }
 
+// Create new EventBus
 pub fn new() &EventBus {
 	registry := &Registry{
 		events: []EventHandler{}
@@ -26,6 +30,7 @@ pub fn new() &EventBus {
 	}
 }
 
+// Subscribe handler to event
 pub fn (mut eb EventBus) subscribe(name string, handler EventHandlerFn) {
 	eb.registry.events << EventHandler {
 		name: name
@@ -33,6 +38,7 @@ pub fn (mut eb EventBus) subscribe(name string, handler EventHandlerFn) {
 	}
 }
 
+// Unsubscribe handler from event
 pub fn (mut eb EventBus) unsubscribe(name string, handler EventHandlerFn) {
 	// v := voidptr(handler)
 	for i, event in eb.registry.events {
@@ -44,6 +50,7 @@ pub fn (mut eb EventBus) unsubscribe(name string, handler EventHandlerFn) {
 	}
 }
 
+// Publish event 
 pub fn (mut eb EventBus) publish(name string, client voidptr, event voidptr) {
 	for e in eb.registry.events {
 		if e.name == name {
@@ -52,6 +59,7 @@ pub fn (mut eb EventBus) publish(name string, client voidptr, event voidptr) {
 	}
 }
 
+// Clear all event handlers from registry
 pub fn (mut eb EventBus) clear_all() {
 	if eb.registry.events.len == 0 {
 		return
@@ -61,11 +69,12 @@ pub fn (mut eb EventBus) clear_all() {
 	}
 }
 
+// Checks if any handler is subscribed to the event
 pub fn (mut eb EventBus) has_subscriber(name string) bool {
 	return eb.registry.check_subscriber(name)
 }
 
-// Registry Methods
+// Checks if any handler is subscribed to the event in registry
 fn (r &Registry) check_subscriber(name string) bool {
 	for event in r.events {
 		if event.name == name {
