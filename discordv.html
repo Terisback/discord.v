@@ -1,0 +1,713 @@
+
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="x-ua-compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>discordv | vdoc</title>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+		<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+		<link rel="manifest" href="site.webmanifest">
+		<link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+		
+    <link rel="stylesheet" href="doc.css" />
+	<link rel="stylesheet" href="normalize.css" />
+</style>
+    <script src="dark-mode.js"></script>
+	</head>
+	<body>
+		<div id="page">
+			<header class="doc-nav hidden">
+				<div class="heading-container">
+					<div class="heading">
+						<input type="text" id="search" placeholder="Search...">
+						<div class="module">discordv</div>
+						<div class="toggle-version-container">
+							<span>0.0.1</span>
+							<div id="dark-mode-toggle" role="switch" aria-checked="false" aria-label="Toggle dark mode"><svg xmlns="http://www.w3.org/2000/svg" class="light-icon" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="dark-icon" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/></g><g><g><g><path d="M11.1,12.08C8.77,7.57,10.6,3.6,11.63,2.01C6.27,2.2,1.98,6.59,1.98,12c0,0.14,0.02,0.28,0.02,0.42 C2.62,12.15,3.29,12,4,12c1.66,0,3.18,0.83,4.1,2.15C9.77,14.63,11,16.17,11,18c0,1.52-0.87,2.83-2.12,3.51 c0.98,0.32,2.03,0.5,3.11,0.5c3.5,0,6.58-1.8,8.37-4.52C18,17.72,13.38,16.52,11.1,12.08z"/></g><path d="M7,16l-0.18,0C6.4,14.84,5.3,14,4,14c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.62,0,2.49,0,3,0c1.1,0,2-0.9,2-2 C9,16.9,8.1,16,7,16z"/></g></g></svg></div>
+						</div>
+						<svg xmlns="http://www.w3.org/2000/svg" id="toggle-menu" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+					</div>
+				</div>
+				<nav class="content hidden">
+					<ul>
+						<li class="open"><div class="menu-row"><a href="./index.html">README</a></div></li><li class="open active"><div class="menu-row"><a href="./discordv.html">discordv</a></div></li><li class="open"><div class="menu-row"><a href="./eventbus.html">eventbus</a></div></li><li class="open"><div class="menu-row"><svg xmlns="http://www.w3.org/2000/svg" class="dropdown-arrow" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M7 10l5 5 5-5z"/></svg><a href="./gateway.html">gateway</a></div><ul><li><a href="./gateway.packets.html">packets</a></li></ul></li><li class="open"><div class="menu-row"><svg xmlns="http://www.w3.org/2000/svg" class="dropdown-arrow" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M7 10l5 5 5-5z"/></svg><a href="./rest.html">rest</a></div><ul><li><a href="./rest.formdata.html">formdata</a></li></ul></li><li class="open"><div class="menu-row"><a href="./types.html">types</a></div></li><li class="open"><div class="menu-row"><svg xmlns="http://www.w3.org/2000/svg" class="dropdown-arrow" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M7 10l5 5 5-5z"/></svg><a href="./util.html">util</a></div><ul><li><a href="./util.snowflake.html">snowflake</a></li></ul></li>
+					</ul>
+				</nav>
+			</header>
+			<div class="doc-container">
+				<div class="doc-content">
+					<section id="discordv" class="doc-node">
+<div class="title"><h1>discordv</h1></div><p><img src="https://user-images.githubusercontent.com/26527529/98575853-c348d300-22ca-11eb-86f6-d22cc9b1e0cf.png" alt="discord.v"></p>
+<h1></h1>
+<p align="center">
+Yet another feature-rich Discord Bot Framework written in V <i>(Big <b>WIP</b>)</i><br>
+<a href="discordv.terisback.ru">
+  <img src="https://img.shields.io/badge/docs-2F3136?style=flat&logo=v">
+</a>
+</p>
+<h2>Example</h2>
+<pre><code class="language-v">import discordv as vd
+
+fn main(){
+    mut client := vd.new(d.Config{token: 'token'})?
+    client.on_message_create(on_ping)
+    client.open()?
+}
+
+fn on_ping(mut client &amp;vd.Client, evt &amp;vd.MessageCreate){
+    if evt.content == '!ping' {
+        client.send(evt.channel_id, 'pong!') or {}
+    }
+}
+</code></pre>
+<h2>How to install</h2>
+<pre><code class="language-bash">git clone https://github.com/Terisback/discord.v.git ~/.vmodule/discordv
+</code></pre>
+<p>And then import <code>discordv</code> wherever you like</p>
+<h2>TODO()</h2>
+<h3>First milestone</h3>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled checked>Connect to gateway</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled checked>Handle heartbeat</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled checked>Event system (pub/sub)</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled checked>REST for sending messages</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled checked>Implement <code>multipart/form-data</code> for file sending</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Do usual <code>application/json</code> for sending without binary data</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Implement all structs<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Audit Log</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Channel</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Emoji</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Guild</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Invite</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled checked>User</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Voice</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Webhook</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Slash Command</li>
+</ul>
+</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Create more examples</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Documentation</li>
+</ul>
+<h3>Second milestone</h3>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Handle REST<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Audit Log</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Channel</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Emoji</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Guild</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Invite</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>User</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Voice</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Webhook</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Slash Command</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled checked>Observe rate limits (thanks to @div72)</li>
+</ul>
+</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Slash Commands</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Fancy log</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Command router</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Think about tests</li>
+</ul>
+<h3>Third milestone (till V v0.3)</h3>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Translate dispatch to generics</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Build cache ontop map's (memcache, redis in future)</li>
+</ul>
+<h3>The Main one</h3>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Make a cool library</li>
+</ul>
+<p>Feel free to contribute ;)<br>
+You can contact me at discord: TERISBACK#9125</p>
+</section>
+
+<section id="Constants" class="doc-node const">
+<div class="title"><h2>Constants <a href="#Constants">#</a></h2></div>
+</section>
+<section id="" class="doc-node const">
+<pre class="signature"><code><span class="token keyword">const</span> <span class="token punctuation">(</span>
+	guilds                   <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">0</span><span class="token punctuation">)</span>
+	guild_members            <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">1</span><span class="token punctuation">)</span>
+	guild_bans               <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">2</span><span class="token punctuation">)</span>
+	guild_emojis             <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">3</span><span class="token punctuation">)</span>
+	guild_integrations       <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">4</span><span class="token punctuation">)</span>
+	guild_webhooks           <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">5</span><span class="token punctuation">)</span>
+	guild_invites            <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">6</span><span class="token punctuation">)</span>
+	guild_voice_states       <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">7</span><span class="token punctuation">)</span>
+	guild_precenses          <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">8</span><span class="token punctuation">)</span>
+	guild_messages           <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">9</span><span class="token punctuation">)</span>
+	guild_message_reactions  <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">10</span><span class="token punctuation">)</span>
+	guild_message_typing     <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">11</span><span class="token punctuation">)</span>
+	direct_messages          <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">12</span><span class="token punctuation">)</span>
+	direct_message_reactions <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">13</span><span class="token punctuation">)</span>
+	direct_message_typing    <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">14</span><span class="token punctuation">)</span>
+	all_allowed              <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">32509</span><span class="token punctuation">)</span>
+	all                      <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Intent</span><span class="token punctuation">(</span><span class="token number">32767</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span></code></pre>
+<p>`` Constants for the different bit offsets of intents</p>
+</section>
+<section id="" class="doc-node const">
+<pre class="signature"><code><span class="token keyword">const</span> <span class="token punctuation">(</span>
+	create_instant_invite <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000001</span><span class="token punctuation">)</span>
+	kick_members          <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000002</span><span class="token punctuation">)</span>
+	ban_members           <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000004</span><span class="token punctuation">)</span>
+	administrator         <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000008</span><span class="token punctuation">)</span>
+	manage_channels       <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000010</span><span class="token punctuation">)</span>
+	manage_guild          <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000020</span><span class="token punctuation">)</span>
+	add_reactions         <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000040</span><span class="token punctuation">)</span>
+	view_audit_log        <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000080</span><span class="token punctuation">)</span>
+	priority_speaker      <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000100</span><span class="token punctuation">)</span>
+	stream                <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000200</span><span class="token punctuation">)</span>
+	view_channel          <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000400</span><span class="token punctuation">)</span>
+	send_messages         <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00000800</span><span class="token punctuation">)</span>
+	send_tts_messages     <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00001000</span><span class="token punctuation">)</span>
+	manage_messages       <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00002000</span><span class="token punctuation">)</span>
+	embed_links           <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00004000</span><span class="token punctuation">)</span>
+	attach_files          <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00008000</span><span class="token punctuation">)</span>
+	read_message_history  <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00010000</span><span class="token punctuation">)</span>
+	mention_everyone      <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00020000</span><span class="token punctuation">)</span>
+	use_external_emojis   <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00040000</span><span class="token punctuation">)</span>
+	view_guild_insights   <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00080000</span><span class="token punctuation">)</span>
+	connect               <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00100000</span><span class="token punctuation">)</span>
+	speak                 <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00200000</span><span class="token punctuation">)</span>
+	mute_members          <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00400000</span><span class="token punctuation">)</span>
+	deafen_members        <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x00800000</span><span class="token punctuation">)</span>
+	move_members          <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x01000000</span><span class="token punctuation">)</span>
+	use_vad               <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x02000000</span><span class="token punctuation">)</span>
+	change_nickname       <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x04000000</span><span class="token punctuation">)</span>
+	manage_nicknames      <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x08000000</span><span class="token punctuation">)</span>
+	manage_roles          <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x10000000</span><span class="token punctuation">)</span>
+	manage_webhooks       <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x20000000</span><span class="token punctuation">)</span>
+	manage_emojis         <span class="token operator">=</span> types<span class="token punctuation">.</span><span class="token function">Permission</span><span class="token punctuation">(</span><span class="token number">0x40000000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span></code></pre>
+<p>`` Constants for general managment</p>
+</section>
+<section id="" class="doc-node const">
+<pre class="signature"><code><span class="token keyword">const</span> <span class="token punctuation">(</span>
+	message_flags <span class="token operator">=</span> <span class="token symbol">MessageFlags</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">)</span></code></pre>
+
+</section>
+<section id="" class="doc-node const">
+<pre class="signature"><code><span class="token keyword">const</span> <span class="token punctuation">(</span>
+	user_flags <span class="token operator">=</span> <span class="token symbol">UserFlags</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">)</span></code></pre>
+
+</section>
+<section id="new" class="doc-node">
+<div class="title"><h2>new <a href="#new">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/client.v#L30"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">new</span><span class="token punctuation">(</span>config Config<span class="token punctuation">,</span> shard_count ...<span class="token builtin">int</span><span class="token punctuation">)</span> ?<span class="token operator">&</span>Client</code></pre>
+<p>Creates a new Discord client and create shards if it provided as second argument</p>
+</section>
+<section id="Dispatch" class="doc-node">
+<div class="title"><h2>Dispatch <a href="#Dispatch">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/events.v#L6"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> Dispatch <span class="token operator">=</span> packets<span class="token punctuation">.</span>Packet</code></pre>
+
+</section>
+<section id="Hello" class="doc-node">
+<div class="title"><h2>Hello <a href="#Hello">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/events.v#L7"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> Hello <span class="token operator">=</span> packets<span class="token punctuation">.</span>Hello</code></pre>
+
+</section>
+<section id="MessageCreate" class="doc-node">
+<div class="title"><h2>MessageCreate <a href="#MessageCreate">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/events.v#L8"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> MessageCreate <span class="token operator">=</span> Message</code></pre>
+
+</section>
+<section id="MessageDelete" class="doc-node">
+<div class="title"><h2>MessageDelete <a href="#MessageDelete">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/events.v#L10"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> MessageDelete <span class="token operator">=</span> Message</code></pre>
+
+</section>
+<section id="MessageFlag" class="doc-node">
+<div class="title"><h2>MessageFlag <a href="#MessageFlag">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/message.v#L121"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> MessageFlag <span class="token operator">=</span> <span class="token builtin">byte</span></code></pre>
+
+</section>
+<section id="MessageUpdate" class="doc-node">
+<div class="title"><h2>MessageUpdate <a href="#MessageUpdate">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/events.v#L9"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> MessageUpdate <span class="token operator">=</span> Message</code></pre>
+
+</section>
+<section id="PermissionOverwrite.from_json" class="doc-node">
+<div class="title"><h2>PermissionOverwrite.from_json <a href="#PermissionOverwrite.from_json">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L24"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> po PermissionOverwrite<span class="token punctuation">)</span> <span class="token function">from_json</span><span class="token punctuation">(</span>f json2<span class="token punctuation">.</span>Any<span class="token punctuation">)</span></code></pre>
+
+</section>
+<section id="UserFlag" class="doc-node">
+<div class="title"><h2>UserFlag <a href="#UserFlag">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L301"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> UserFlag <span class="token operator">=</span> <span class="token builtin">int</span></code></pre>
+
+</section>
+<section id="MessageActivityType" class="doc-node">
+<div class="title"><h2>MessageActivityType <a href="#MessageActivityType">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/message.v#L54"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">enum</span> <span class="token symbol">MessageActivityType</span> <span class="token punctuation">{</span>
+	join <span class="token operator">=</span> <span class="token number">1</span>
+	spectate <span class="token operator">=</span> <span class="token number">2</span>
+	listen <span class="token operator">=</span> <span class="token number">3</span>
+	join_request <span class="token operator">=</span> <span class="token number">5</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="MessageType" class="doc-node">
+<div class="title"><h2>MessageType <a href="#MessageType">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/message.v#L34"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">enum</span> <span class="token symbol">MessageType</span> <span class="token punctuation">{</span>
+	default
+	recipient_add
+	recipient_remove
+	call
+	channel_name_change
+	channel_icon_change
+	channel_pinned_message
+	guild_member_join
+	user_premium_guild_subscription
+	user_premium_guild_subscription_tier_1
+	user_premium_guild_subscription_tier_2
+	user_premium_guild_subscription_tier_3
+	channel_follow_add
+	guild_discovery_disqualified
+	guild_discovery_requalified
+	reply <span class="token operator">=</span> <span class="token number">19</span>
+	application_command
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="PremiumType" class="doc-node">
+<div class="title"><h2>PremiumType <a href="#PremiumType">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L325"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">enum</span> <span class="token symbol">PremiumType</span> <span class="token punctuation">{</span>
+	<span class="token keyword">none</span>
+	nitro_classic
+	nitro
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Attachment" class="doc-node">
+<div class="title"><h2>Attachment <a href="#Attachment">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L7"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Attachment</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Avatar" class="doc-node">
+<div class="title"><h2>Avatar <a href="#Avatar">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L287"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Avatar</span> <span class="token punctuation">{</span>
+	user_id <span class="token builtin">string</span>
+<span class="token keyword">pub</span><span class="token punctuation">:</span>
+	hash    <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Avatar.url" class="doc-node">
+<div class="title"><h2>Avatar.url <a href="#Avatar.url">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L293"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>avatar Avatar<span class="token punctuation">)</span> <span class="token function">url</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
+
+</section>
+<section id="Avatar.str" class="doc-node">
+<div class="title"><h2>Avatar.str <a href="#Avatar.str">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L297"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>avatar Avatar<span class="token punctuation">)</span> <span class="token function">str</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
+
+</section>
+<section id="Channel" class="doc-node">
+<div class="title"><h2>Channel <a href="#Channel">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L47"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Channel</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	id                    <span class="token builtin">string</span>
+	<span class="token keyword">type</span>                  ChannelType
+	guild_id              <span class="token builtin">string</span>
+	position              <span class="token builtin">int</span>
+	permission_overwrites PermissionOverwrite
+	name                  <span class="token builtin">string</span>
+	topic                 <span class="token builtin">string</span>
+	nsfw                  <span class="token builtin">bool</span>
+	last_message_id       <span class="token builtin">string</span>
+	bitrate               <span class="token builtin">int</span>
+	user_limit            <span class="token builtin">int</span>
+	rate_limit_per_user   <span class="token builtin">int</span>
+	recipients            <span class="token punctuation">[</span><span class="token punctuation">]</span>User
+	icon                  <span class="token builtin">string</span>
+	owner_id              <span class="token builtin">string</span>
+	application_id        <span class="token builtin">string</span>
+	parent_id             <span class="token builtin">string</span>
+	last_pin_timestamp    time<span class="token punctuation">.</span>Time
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Channel.from_json" class="doc-node">
+<div class="title"><h2>Channel.from_json <a href="#Channel.from_json">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L69"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> channel Channel<span class="token punctuation">)</span> <span class="token function">from_json</span><span class="token punctuation">(</span>f json2<span class="token punctuation">.</span>Any<span class="token punctuation">)</span></code></pre>
+
+</section>
+<section id="Client" class="doc-node">
+<div class="title"><h2>Client <a href="#Client">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/client.v#L18"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Client</span> <span class="token punctuation">{</span>
+	token       <span class="token builtin">string</span>
+	intents     types<span class="token punctuation">.</span>Intent
+<span class="token keyword">pub</span><span class="token punctuation">:</span>
+	shard_count <span class="token builtin">int</span>
+<span class="token keyword">mut</span><span class="token punctuation">:</span>
+	events      <span class="token operator">&</span>eventbus<span class="token punctuation">.</span>EventBus
+	shards      <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">&</span>gateway<span class="token punctuation">.</span>Connection
+	rest        <span class="token operator">&</span>rest<span class="token punctuation">.</span>REST
+<span class="token punctuation">}</span></code></pre>
+<p>Client represents a connection to the Discord API</p>
+</section>
+<section id="Client.on_dispatch" class="doc-node">
+<div class="title"><h2>Client.on_dispatch <a href="#Client.on_dispatch">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/events.v#L49"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> client Client<span class="token punctuation">)</span> <span class="token function">on_dispatch</span><span class="token punctuation">(</span>handler Client<span class="token punctuation">,</span> discordv<span class="token punctuation">.</span>Dispatch<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Add event handler to Dispatch event</p>
+</section>
+<section id="Client.on_hello" class="doc-node">
+<div class="title"><h2>Client.on_hello <a href="#Client.on_hello">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/events.v#L54"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> client Client<span class="token punctuation">)</span> <span class="token function">on_hello</span><span class="token punctuation">(</span>handler Client<span class="token punctuation">,</span> discordv<span class="token punctuation">.</span>Hello<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Add event handler to Hello event</p>
+</section>
+<section id="Client.on_message_create" class="doc-node">
+<div class="title"><h2>Client.on_message_create <a href="#Client.on_message_create">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/events.v#L64"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> client Client<span class="token punctuation">)</span> <span class="token function">on_message_create</span><span class="token punctuation">(</span>handler Client<span class="token punctuation">,</span> discordv<span class="token punctuation">.</span>MessageCreate<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Add event handler to MessageCreate event</p>
+</section>
+<section id="Client.on_message_delete" class="doc-node">
+<div class="title"><h2>Client.on_message_delete <a href="#Client.on_message_delete">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/events.v#L74"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> client Client<span class="token punctuation">)</span> <span class="token function">on_message_delete</span><span class="token punctuation">(</span>handler Client<span class="token punctuation">,</span> discordv<span class="token punctuation">.</span>MessageDelete<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Add event handler to MessageDelete event</p>
+</section>
+<section id="Client.on_message_update" class="doc-node">
+<div class="title"><h2>Client.on_message_update <a href="#Client.on_message_update">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/events.v#L69"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> client Client<span class="token punctuation">)</span> <span class="token function">on_message_update</span><span class="token punctuation">(</span>handler Client<span class="token punctuation">,</span> discordv<span class="token punctuation">.</span>MessageUpdate<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Add event handler to MessageUpdate event</p>
+</section>
+<section id="Client.on_ready" class="doc-node">
+<div class="title"><h2>Client.on_ready <a href="#Client.on_ready">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/events.v#L59"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> client Client<span class="token punctuation">)</span> <span class="token function">on_ready</span><span class="token punctuation">(</span>handler Client<span class="token punctuation">,</span> discordv<span class="token punctuation">.</span>Ready<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Add event handler to Ready event</p>
+</section>
+<section id="Client.open" class="doc-node">
+<div class="title"><h2>Client.open <a href="#Client.open">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/client.v#L61"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> client Client<span class="token punctuation">)</span> <span class="token function">open</span><span class="token punctuation">(</span><span class="token punctuation">)</span> ?</code></pre>
+<p>Creates a websocket connection to Discord</p>
+</section>
+<section id="Client.send" class="doc-node">
+<div class="title"><h2>Client.send <a href="#Client.send">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/rest.v#L23"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> client Client<span class="token punctuation">)</span> <span class="token function">send</span><span class="token punctuation">(</span>channel_id <span class="token builtin">string</span><span class="token punctuation">,</span> message Payload<span class="token punctuation">)</span> ?</code></pre>
+<p>aka create message</p>
+</section>
+<section id="Config" class="doc-node">
+<div class="title"><h2>Config <a href="#Config">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/client.v#L11"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Config</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	token   <span class="token builtin">string</span>
+	intents types<span class="token punctuation">.</span>Intent <span class="token operator">=</span> guilds <span class="token operator">|</span> guild_messages
+<span class="token punctuation">}</span></code></pre>
+<p>Config struct</p>
+</section>
+<section id="Embed" class="doc-node">
+<div class="title"><h2>Embed <a href="#Embed">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L109"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Embed</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Emoji" class="doc-node">
+<div class="title"><h2>Emoji <a href="#Emoji">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L113"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Emoji</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	id    <span class="token builtin">string</span>
+	name  <span class="token builtin">string</span>
+	roles <span class="token punctuation">[</span><span class="token punctuation">]</span>Role
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Emoji.from_json" class="doc-node">
+<div class="title"><h2>Emoji.from_json <a href="#Emoji.from_json">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L120"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> emoji Emoji<span class="token punctuation">)</span> <span class="token function">from_json</span><span class="token punctuation">(</span>f json2<span class="token punctuation">.</span>Any<span class="token punctuation">)</span></code></pre>
+
+</section>
+<section id="File" class="doc-node">
+<div class="title"><h2>File <a href="#File">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L140"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">File</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	filename <span class="token builtin">string</span>
+	data     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Member" class="doc-node">
+<div class="title"><h2>Member <a href="#Member">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L163"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Member</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Message" class="doc-node">
+<div class="title"><h2>Message <a href="#Message">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/message.v#L6"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Message</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	id                <span class="token builtin">string</span>
+	channel_id        <span class="token builtin">string</span>
+	guild_id          <span class="token builtin">string</span>
+	author            User
+	member            Member
+	content           <span class="token builtin">string</span>
+	timestamp         time<span class="token punctuation">.</span>Time
+	edited_timestamp  time<span class="token punctuation">.</span>Time
+	tts               <span class="token builtin">bool</span>
+	mention_everyone  <span class="token builtin">bool</span>
+	mentions          <span class="token punctuation">[</span><span class="token punctuation">]</span>User
+	mention_roles     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	mention_channels  <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	attachments       <span class="token punctuation">[</span><span class="token punctuation">]</span>Attachment
+	embeds            <span class="token punctuation">[</span><span class="token punctuation">]</span>Embed
+	reactions         <span class="token punctuation">[</span><span class="token punctuation">]</span>Reaction
+	nonce             <span class="token builtin">string</span>
+	pinned            <span class="token builtin">bool</span>
+	webhook_id        <span class="token builtin">string</span>
+	<span class="token keyword">type</span>              MessageType
+	activity          MessageActivity
+	application       MessageApplication
+	message_reference MessageReference
+	flags             MessageFlag
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Message.from_json" class="doc-node">
+<div class="title"><h2>Message.from_json <a href="#Message.from_json">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/message.v#L136"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> m Message<span class="token punctuation">)</span> <span class="token function">from_json</span><span class="token punctuation">(</span>f json2<span class="token punctuation">.</span>Any<span class="token punctuation">)</span></code></pre>
+
+</section>
+<section id="Message.outbound_json" class="doc-node">
+<div class="title"><h2>Message.outbound_json <a href="#Message.outbound_json">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/message.v#L217"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>m Message<span class="token punctuation">)</span> <span class="token function">outbound_json</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
+
+</section>
+<section id="MessageActivity" class="doc-node">
+<div class="title"><h2>MessageActivity <a href="#MessageActivity">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/message.v#L61"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">MessageActivity</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	<span class="token keyword">type</span>     MessageActivityType
+	party_id <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="MessageApplication" class="doc-node">
+<div class="title"><h2>MessageApplication <a href="#MessageApplication">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/message.v#L78"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">MessageApplication</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	id          <span class="token builtin">string</span>
+	cover_image <span class="token builtin">string</span>
+	description <span class="token builtin">string</span>
+	icon        <span class="token builtin">string</span>
+	name        <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="MessageFlags" class="doc-node">
+<div class="title"><h2>MessageFlags <a href="#MessageFlags">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/message.v#L123"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">MessageFlags</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span><span class="token punctuation">:</span>
+	crossposted            MessageFlag <span class="token operator">=</span> <span class="token function">MessageFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">0</span><span class="token punctuation">)</span>
+	is_crosspost           MessageFlag <span class="token operator">=</span> <span class="token function">MessageFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">1</span><span class="token punctuation">)</span>
+	suppress_embeds        MessageFlag <span class="token operator">=</span> <span class="token function">MessageFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">2</span><span class="token punctuation">)</span>
+	source_message_deleted MessageFlag <span class="token operator">=</span> <span class="token function">MessageFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">3</span><span class="token punctuation">)</span>
+	urgent                 MessageFlag <span class="token operator">=</span> <span class="token function">MessageFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">4</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="MessageReference" class="doc-node">
+<div class="title"><h2>MessageReference <a href="#MessageReference">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/message.v#L102"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">MessageReference</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	message_id <span class="token builtin">string</span>
+	channel_id <span class="token builtin">string</span>
+	guild_id   <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Contains reference data with crossposted messages</p>
+</section>
+<section id="Reaction" class="doc-node">
+<div class="title"><h2>Reaction <a href="#Reaction">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L167"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Reaction</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	count <span class="token builtin">int</span>
+	me    <span class="token builtin">bool</span>
+	emoji Emoji
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Reaction.from_json" class="doc-node">
+<div class="title"><h2>Reaction.from_json <a href="#Reaction.from_json">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L174"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> r Reaction<span class="token punctuation">)</span> <span class="token function">from_json</span><span class="token punctuation">(</span>f json2<span class="token punctuation">.</span>Any<span class="token punctuation">)</span></code></pre>
+
+</section>
+<section id="Ready" class="doc-node">
+<div class="title"><h2>Ready <a href="#Ready">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L190"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Ready</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	v                <span class="token builtin">int</span>
+	user             User
+	private_channels <span class="token punctuation">[</span><span class="token punctuation">]</span>Channel
+	guilds           <span class="token punctuation">[</span><span class="token punctuation">]</span>UnavailableGuild
+	session_id       <span class="token builtin">string</span>
+	shard            <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Ready.from_json" class="doc-node">
+<div class="title"><h2>Ready.from_json <a href="#Ready.from_json">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L200"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> r Ready<span class="token punctuation">)</span> <span class="token function">from_json</span><span class="token punctuation">(</span>f json2<span class="token punctuation">.</span>Any<span class="token punctuation">)</span></code></pre>
+
+</section>
+<section id="Role" class="doc-node">
+<div class="title"><h2>Role <a href="#Role">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L241"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Role</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	id          <span class="token builtin">string</span>
+	name        <span class="token builtin">string</span>
+	color       <span class="token builtin">int</span>
+	hoist       <span class="token builtin">bool</span>
+	position    <span class="token builtin">int</span>
+	permission  <span class="token builtin">string</span>
+	managed     <span class="token builtin">bool</span>
+	mentionable <span class="token builtin">bool</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="Role.from_json" class="doc-node">
+<div class="title"><h2>Role.from_json <a href="#Role.from_json">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L253"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> role Role<span class="token punctuation">)</span> <span class="token function">from_json</span><span class="token punctuation">(</span>f json2<span class="token punctuation">.</span>Any<span class="token punctuation">)</span></code></pre>
+
+</section>
+<section id="UnavailableGuild" class="doc-node">
+<div class="title"><h2>UnavailableGuild <a href="#UnavailableGuild">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L146"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">UnavailableGuild</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	id          <span class="token builtin">string</span>
+	unavailable <span class="token builtin">bool</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="User" class="doc-node">
+<div class="title"><h2>User <a href="#User">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L270"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">User</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	id            <span class="token builtin">string</span>
+	username      <span class="token builtin">string</span>
+	discriminator <span class="token builtin">string</span>
+	avatar        Avatar
+	bot           <span class="token builtin">bool</span>
+	system        <span class="token builtin">bool</span>
+	mfa_enabled   <span class="token builtin">bool</span>
+	locale        <span class="token builtin">string</span>
+	verified      <span class="token builtin">bool</span>
+	email         <span class="token builtin">string</span>
+	flags         UserFlag
+	premium_type  PremiumType
+	public_flags  UserFlag
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+<section id="User.from_json" class="doc-node">
+<div class="title"><h2>User.from_json <a href="#User.from_json">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L331"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> user User<span class="token punctuation">)</span> <span class="token function">from_json</span><span class="token punctuation">(</span>f json2<span class="token punctuation">.</span>Any<span class="token punctuation">)</span></code></pre>
+
+</section>
+<section id="UserFlags" class="doc-node">
+<div class="title"><h2>UserFlags <a href="#UserFlags">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/discordv/structs.v#L303"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">UserFlags</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span><span class="token punctuation">:</span>
+	zero                         UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+	discord_employee             UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">0</span><span class="token punctuation">)</span>
+	partnered_server_owner       UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">1</span><span class="token punctuation">)</span>
+	hypersquad_events            UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">2</span><span class="token punctuation">)</span>
+	bughunter_level1             UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">3</span><span class="token punctuation">)</span>
+	house_bravery                UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">6</span><span class="token punctuation">)</span>
+	house_brilliance             UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">7</span><span class="token punctuation">)</span>
+	house_balance                UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">8</span><span class="token punctuation">)</span>
+	early_supporter              UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">9</span><span class="token punctuation">)</span>
+	team_user                    UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">10</span><span class="token punctuation">)</span>
+	system                       UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">12</span><span class="token punctuation">)</span>
+	bughunter_level2             UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">14</span><span class="token punctuation">)</span>
+	verified_bot                 UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">16</span><span class="token punctuation">)</span>
+	early_verified_bot_developer UserFlag <span class="token operator">=</span> <span class="token function">UserFlag</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator"><<</span> <span class="token number">17</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+
+</section>
+
+					<div class="footer">
+						Powered by vdoc. Generated on: 23 Dec 2020 02:20:43
+					</div>
+				</div>
+				<div class="doc-toc"><ul><li class="open"><a href="#">Constants</a></li>
+<li class="open"><a href="#new">new</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Dispatch">Dispatch</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Hello">Hello</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#MessageCreate">MessageCreate</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#MessageDelete">MessageDelete</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#MessageFlag">MessageFlag</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#MessageUpdate">MessageUpdate</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#">PermissionOverwrite</a>        <ul>
+<li><a href="#PermissionOverwrite.from_json">from_json</a></li>
+</ul>
+</li>
+<li class="open"><a href="#UserFlag">UserFlag</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#MessageActivityType">MessageActivityType</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#MessageType">MessageType</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#PremiumType">PremiumType</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Attachment">Attachment</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Avatar">Avatar</a>        <ul>
+<li><a href="#Avatar.url">url</a></li>
+<li><a href="#Avatar.str">str</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Channel">Channel</a>        <ul>
+<li><a href="#Channel.from_json">from_json</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Client">Client</a>        <ul>
+<li><a href="#Client.on_dispatch">on_dispatch</a></li>
+<li><a href="#Client.on_hello">on_hello</a></li>
+<li><a href="#Client.on_message_create">on_message_create</a></li>
+<li><a href="#Client.on_message_delete">on_message_delete</a></li>
+<li><a href="#Client.on_message_update">on_message_update</a></li>
+<li><a href="#Client.on_ready">on_ready</a></li>
+<li><a href="#Client.open">open</a></li>
+<li><a href="#Client.send">send</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Config">Config</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Embed">Embed</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Emoji">Emoji</a>        <ul>
+<li><a href="#Emoji.from_json">from_json</a></li>
+</ul>
+</li>
+<li class="open"><a href="#File">File</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Member">Member</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Message">Message</a>        <ul>
+<li><a href="#Message.from_json">from_json</a></li>
+<li><a href="#Message.outbound_json">outbound_json</a></li>
+</ul>
+</li>
+<li class="open"><a href="#MessageActivity">MessageActivity</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#MessageApplication">MessageApplication</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#MessageFlags">MessageFlags</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#MessageReference">MessageReference</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Reaction">Reaction</a>        <ul>
+<li><a href="#Reaction.from_json">from_json</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Ready">Ready</a>        <ul>
+<li><a href="#Ready.from_json">from_json</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Role">Role</a>        <ul>
+<li><a href="#Role.from_json">from_json</a></li>
+</ul>
+</li>
+<li class="open"><a href="#UnavailableGuild">UnavailableGuild</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#User">User</a>        <ul>
+<li><a href="#User.from_json">from_json</a></li>
+</ul>
+</li>
+<li class="open"><a href="#UserFlags">UserFlags</a>        <ul>
+</ul>
+</li>
+</ul></div>
+			</div>
+		</div>
+		<script src="doc.js"></script>
+	</body>
+	</html>
+	
