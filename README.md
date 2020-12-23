@@ -32,17 +32,19 @@ fn on_ping(mut client &vd.Client, evt &vd.MessageCreate){
 - [x] Event system (pub/sub)
 - [x] REST for sending messages
 - [x] Implement `multipart/form-data` for file sending
+- [ ] Do usual `application/json` for sending without binary data
 - [ ] Implement all structs
   - [ ] Audit Log
   - [ ] Channel
   - [ ] Emoji
   - [ ] Guild
   - [ ] Invite
-  - [ ] User
+  - [x] User
   - [ ] Voice
   - [ ] Webhook
   - [ ] Slash Command
 - [ ] Create more examples
+- [ ] Documentation
 
 ### Second milestone
 - [ ] Handle REST
