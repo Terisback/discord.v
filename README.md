@@ -24,6 +24,14 @@ fn on_ping(mut client &vd.Client, evt &vd.MessageCreate){
 }
 ```
 
+## How to install
+
+```bash
+git clone https://github.com/Terisback/discord.v.git ~/.vmodule/discordv
+```
+
+And then import `discordv` wherever you like
+
 ## TODO()
 
 ### First milestone
