@@ -33,7 +33,7 @@ fn on_ping(mut client vd.Client, evt &vd.MessageCreate) {
 > Only way to run it on Windows is to use WSL (or install openssl-dev somehow)  
 
 ```bash
-git clone https://github.com/Terisback/discord.v.git ~/.vmodule/discordv
+git clone https://github.com/Terisback/discord.v.git ~/.vmodules/discordv
 ```
 
 And then import `discordv` wherever you like
