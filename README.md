@@ -14,20 +14,23 @@ Yet another feature-rich Discord Bot Framework written in V <i>(Big <b>WIP</b>)<
 ```v
 import discordv as vd
 
-fn main(){
-    mut client := vd.new(vd.Config{token: 'token'})?
-    client.on_message_create(on_ping)
-    client.open()?
+fn main() {
+	mut client := vd.new(token: 'token') ?
+	client.on_message_create(on_ping)
+	client.open() ?
 }
 
-fn on_ping(mut client &vd.Client, evt &vd.MessageCreate){
-    if evt.content == '!ping' {
-        client.send(evt.channel_id, 'pong!') or {}
-    }
+fn on_ping(mut client vd.Client, evt &vd.MessageCreate) {
+	if evt.content == '!ping' {
+		client.send(evt.channel_id, 'pong!') or { }
+	}
 }
 ```
 
 ## How to install
+
+*discord.v* uses openssl-dev, be sure it is installed `apt install openssl-dev`  
+> Only way to run it on Windows is to use WSL (or install openssl-dev somehow)  
 
 ```bash
 git clone https://github.com/Terisback/discord.v.git ~/.vmodule/discordv

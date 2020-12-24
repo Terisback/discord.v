@@ -7,39 +7,39 @@ import encoding.base64
 // Copied mime types from net.http module
 const (
 	mime_types = {
-		'.css': 'text/css; charset=utf-8'
-		'.gif': 'image/gif'
-		'.htm': 'text/html; charset=utf-8'
+		'.css':  'text/css; charset=utf-8'
+		'.gif':  'image/gif'
+		'.htm':  'text/html; charset=utf-8'
 		'.html': 'text/html; charset=utf-8'
-		'.jpg': 'image/jpeg'
-		'.js': 'application/javascript'
+		'.jpg':  'image/jpeg'
+		'.js':   'application/javascript'
 		'.json': 'application/json'
-		'.md': 'text/markdown; charset=utf-8'
-		'.pdf': 'application/pdf'
-		'.png': 'image/png'
-		'.svg': 'image/svg+xml'
-		'.txt': 'text/plain; charset=utf-8'
+		'.md':   'text/markdown; charset=utf-8'
+		'.pdf':  'application/pdf'
+		'.png':  'image/png'
+		'.svg':  'image/svg+xml'
+		'.txt':  'text/plain; charset=utf-8'
 		'.wasm': 'application/wasm'
-		'.xml': 'text/xml; charset=utf-8'
+		'.xml':  'text/xml; charset=utf-8'
 	}
 )
 
 // FormField can be text or file
-type FormField = string | FormFile
+type FormField = FormFile | string
 
 // Contains the name and content of the file
 struct FormFile {
 pub mut:
-	filename string
+	filename     string
 	content_type string = 'application/octet-stream'
-	data []byte
+	data         []byte
 }
 
 // FormData represents multipart/form-data 
 struct FormData {
 pub mut:
 	boundary string
-	fields map[string]FormField
+	fields   map[string]FormField
 }
 
 // Create new FormData with default boundary
@@ -69,12 +69,12 @@ pub fn (mut f FormData) add_file(name string, filename string, data []byte) {
 			filename: filename
 			data: data
 		}
-	}	
+	}
 }
 
 // Returns http header to include it into request
 pub fn (f FormData) content_type() string {
-	return 'multipart/form-data; charset=utf-8; boundary=$f.boundary'
+	return 'multipart/form-data; charset=utf-8; boundary=${f.boundary}'
 }
 
 // Encode FormData, returns body of http request
@@ -82,7 +82,7 @@ pub fn (f FormData) encode() string {
 	mut builder := strings.new_builder(200)
 	builder.write_b(`\n`)
 	for k, v in f.fields {
-		builder.write('--$f.boundary\n')
+		builder.write('--${f.boundary}\n')
 		match v {
 			string {
 				builder.write('Content-Disposition: form-data; name=\"${k}\"\n')
@@ -92,7 +92,7 @@ pub fn (f FormData) encode() string {
 			}
 			FormFile {
 				builder.write('Content-Disposition: form-data; name=\"${k}\"; filename=\"${v.filename}\"\n')
-				builder.write('Content-Type: $v.content_type\n')
+				builder.write('Content-Type: ${v.content_type}\n')
 				builder.write('Content-Transfer-Encoding: base64\n')
 				builder.write_b(`\n`)
 				builder.write(base64.encode(v.data.bytestr()))
@@ -100,6 +100,6 @@ pub fn (f FormData) encode() string {
 			}
 		}
 	}
-	builder.write('--$f.boundary--')
+	builder.write('--${f.boundary}--')
 	return builder.str()
 }

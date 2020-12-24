@@ -5,6 +5,7 @@ import x.websocket
 import discordv.eventbus
 import discordv.types
 import discordv.util
+import sync
 
 const (
 	default_gateway = 'wss://gateway.discord.gg/?v=8&encoding=json'
@@ -12,28 +13,27 @@ const (
 
 // Represents Shard Connection to Discord Gateway
 pub struct Connection {
-	token string
-	intents types.Intent
+	token              string
+	intents            types.Intent
 pub:
-	shard_id int
-	shard_count int
+	shard_id           int
+	shard_count        int
 mut:
-	events &eventbus.EventBus
-	reciever voidptr
-	ws &websocket.Client
-	session_id string
-	sequence int
-	heartbeat_acked bool = true
+	events             &eventbus.EventBus
+	reciever           voidptr
+	ws                 &websocket.Client
+	session_id         string
+	sequence           int
+	heartbeat_acked    bool = true
 	heartbeat_interval u64 = 1000
-	last_heartbeat u64
-	resuming bool
-
-	stop chan bool = chan bool{}
+	last_heartbeat     u64
+	resuming           bool
+	stop               chan bool = chan bool{}
 }
 
 // Create new Connection
-pub fn new_connection(token string, intents types.Intent, shard_id int, shard_count int) ?&Connection{
-	mut ws := websocket.new_client(default_gateway)?
+pub fn new_connection(token string, intents types.Intent, shard_id int, shard_count int) ?&Connection {
+	mut ws := websocket.new_client(default_gateway) ?
 	mut conn := &Connection{
 		token: token
 		intents: intents
@@ -46,19 +46,17 @@ pub fn new_connection(token string, intents types.Intent, shard_id int, shard_co
 }
 
 // Opens Websocket to Discord Gateway (It will wait till close signal)
-pub fn (mut conn Connection) open() ?{
-	go conn.run_heartbeat()?
+pub fn (mut conn Connection) open() ? {
+	go conn.run_heartbeat() ?
 	for {
-		mut ws := websocket.new_client(default_gateway)?
+		mut ws := websocket.new_client(default_gateway) ?
 		conn.ws = ws
 		conn.ws.on_open_ref(on_open, conn)
 		conn.ws.on_error_ref(on_error, conn)
 		conn.ws.on_message_ref(on_message, conn)
 		conn.ws.on_close_ref(on_close, conn)
-		conn.ws.connect()?
-		conn.ws.listen() or {
-			util.log(term.bright_blue('#$conn.shard_id Websocket listen: $err'))
-		}
+		conn.ws.connect() ?
+		conn.ws.listen() or { util.log(term.bright_blue('#$conn.shard_id Websocket listen: $err')) }
 	}
 }
 

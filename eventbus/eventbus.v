@@ -10,14 +10,14 @@ mut:
 }
 
 struct EventHandler {
-	name string
+	name    string
 	handler EventHandlerFn
 }
 
 // EventBus allows to subscribe and publish events
 pub struct EventBus {
 pub mut:
-	registry   &Registry
+	registry &Registry
 }
 
 // Create new EventBus
@@ -25,14 +25,12 @@ pub fn new() &EventBus {
 	registry := &Registry{
 		events: []EventHandler{}
 	}
-	return &EventBus{
-		registry,
-	}
+	return &EventBus{registry}
 }
 
 // Subscribe handler to event
 pub fn (mut eb EventBus) subscribe(name string, handler EventHandlerFn) {
-	eb.registry.events << EventHandler {
+	eb.registry.events << EventHandler{
 		name: name
 		handler: handler
 	}

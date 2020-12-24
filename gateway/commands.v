@@ -5,15 +5,15 @@ import discordv.gateway.packets
 
 // request_guild_members arguments
 pub struct RequestGuildMembersArgs {
-	guild_id string
-	query string
-	limit int
+	guild_id  string
+	query     string
+	limit     int
 	presences bool
-	user_ids []string
-	nonce string
+	user_ids  []string
+	nonce     string
 }
 
-pub fn (req RequestGuildMembersArgs) to_json() json.Any{
+pub fn (req RequestGuildMembersArgs) to_json() json.Any {
 	mut obj := map[string]json.Any{}
 	obj['guild_id'] = req.guild_id
 	if req.user_ids.len != 0 {
@@ -22,7 +22,7 @@ pub fn (req RequestGuildMembersArgs) to_json() json.Any{
 			usr_ids << usr
 		}
 		obj['user_ids'] = usr_ids
-	}else{
+	} else {
 		obj['query'] = req.query
 	}
 	obj['limit'] = req.limit

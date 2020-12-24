@@ -51,10 +51,9 @@ fn (mut conn Connection) run_heartbeat() ? {
 		mut stop := false
 		status := conn.stop.try_pop(stop)
 		if status == .success {
-			conn.ws.close(1000, "close() was called")
+			conn.ws.close(1000, 'close() was called')
 			return
 		}
-
 		time.sleep_ms(50)
 		if conn.ws.state in [.connecting, .closing, .closed] {
 			continue
@@ -72,9 +71,7 @@ fn (mut conn Connection) run_heartbeat() ? {
 				data: conn.sequence
 			}
 			message := heartbeat.to_json()
-			conn.ws.write_str(message) or {
-				util.log('Something went wrong: $err')
-			}
+			conn.ws.write_str(message) or { util.log('Something went wrong: $err') }
 			conn.last_heartbeat = now
 			conn.heartbeat_acked = false
 		}

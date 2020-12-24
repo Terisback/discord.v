@@ -9,11 +9,11 @@ pub struct REST {
 pub:
 	token string
 mut:
-	rl &RateLimiter
+	rl    &RateLimiter
 }
 
 // Create new REST manager
-pub fn new(token string) &REST{
+pub fn new(token string) &REST {
 	return &REST{
 		token: token
 		rl: &RateLimiter{}
@@ -31,7 +31,7 @@ pub fn (mut rest REST) do(req http.Request) ?http.Response {
 	bucket.release(resp.lheaders)
 	if resp.status_code == 429 {
 		eprintln('warn: ratelimited')
-		mut obj := json.raw_decode(resp.text)?
+		mut obj := json.raw_decode(resp.text) ?
 		mut tmr := TooManyRequests{}
 		tmr.from_json(obj)
 		rest.rl.global = time.utc().unix_time_milli() + u64(tmr.retry_after * 1000)
@@ -43,8 +43,8 @@ pub fn (mut rest REST) do(req http.Request) ?http.Response {
 
 // REST API Error Message
 struct ApiErrorMessage {
-	code int
-	errors json.Any
+	code    int
+	errors  json.Any
 	message string
 }
 

@@ -42,6 +42,6 @@ pub fn (s Snowflake) time() time.Time {
 }
 
 // Checks zero value snowflake 
-pub fn (s Snowflake) is_nil() bool{
+pub fn (s Snowflake) is_nil() bool {
 	return s.id == 0
 }

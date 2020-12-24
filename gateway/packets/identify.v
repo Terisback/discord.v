@@ -7,26 +7,25 @@ import discordv.types
 // Websocket Identify packet data
 pub struct Identify {
 pub:
-	token string
+	token      string
 	properties IdentifyProperties = IdentifyProperties{}
-	intents types.Intent
-	shard []int
+	intents    types.Intent
+	shard      []int
 }
 
 // Identify packet properies 
 pub struct IdentifyProperties {
 pub:
-	os string = os.user_os()
+	os      string = os.user_os()
 	browser string = 'discord.v'
-	device string = 'discord.v'
+	device  string = 'discord.v'
 }
 
-pub fn (d Identify) to_json_any() json.Any{
-	mut obj := map[string]json.Any
+pub fn (d Identify) to_json_any() json.Any {
+	mut obj := map[string]json.Any{}
 	obj['token'] = d.token
 	obj['intents'] = int(d.intents)
-
-	if d.shard.len != 2{
+	if d.shard.len != 2 {
 		mut shards := []json.Any{}
 		shards << 0
 		shards << 1
@@ -37,12 +36,10 @@ pub fn (d Identify) to_json_any() json.Any{
 		shards << d.shard[1]
 		obj['shard'] = shards
 	}
-
-	mut prop := map[string]json.Any
+	mut prop := map[string]json.Any{}
 	prop[r'$os'] = d.properties.os
 	prop[r'$browser'] = d.properties.browser
 	prop[r'$device'] = d.properties.device
-
 	obj['properties'] = prop
 	return obj
 }
