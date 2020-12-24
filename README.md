@@ -15,15 +15,15 @@ Yet another feature-rich Discord Bot Framework written in V <i>(Big <b>WIP</b>)<
 import discordv as vd
 
 fn main() {
-	mut client := vd.new(token: 'token') ?
-	client.on_message_create(on_ping)
-	client.open() ?
+    mut client := vd.new(token: 'token') ?
+    client.on_message_create(on_ping)
+    client.open() ?
 }
 
 fn on_ping(mut client vd.Client, evt &vd.MessageCreate) {
-	if evt.content == '!ping' {
-		client.send(evt.channel_id, 'pong!') or { }
-	}
+    if evt.content == '!ping' {
+        client.send(evt.channel_id, 'pong!') or { }
+    }
 }
 ```
 
