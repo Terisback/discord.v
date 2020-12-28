@@ -46,10 +46,10 @@ And then import `discordv` wherever you like
 - [x] Event system (pub/sub)
 - [x] REST for sending messages
 - [x] Implement `multipart/form-data` for file sending
-- [ ] Do usual `application/json` for sending without binary data
+- [x] Do usual `application/json` for sending without binary data
 - [ ] Implement all structs
   - [ ] Audit Log
-  - [ ] Channel
+  - [x] Channel
   - [ ] Emoji
   - [ ] Guild
   - [ ] Invite
@@ -57,7 +57,7 @@ And then import `discordv` wherever you like
   - [ ] Voice
   - [ ] Webhook
   - [ ] Slash Command
-- [ ] Create more examples
+- [ ] Create examples (2/4)
 - [ ] Documentation
 
 ### Second milestone
@@ -78,7 +78,7 @@ And then import `discordv` wherever you like
 - [ ] Think about tests
 
 ### Third milestone (till V v0.3)
-- [ ] Translate dispatch to generics
+- [ ] Translate dispatch to generics (not sure about that)
 - [ ] Build cache ontop map's (memcache, redis in future)
 
 ### The Main one

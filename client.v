@@ -24,6 +24,7 @@ pub:
 mut:
 	events      &eventbus.EventBus
 	shards      []&gateway.Connection
+pub mut:
 	rest        &rest.REST
 }
 

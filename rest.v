@@ -4,37 +4,42 @@ import discordv.rest
 import discordv.rest.formdata
 import discordv.util
 
-type Payload = File | Message | string //| Embed
+type Payload = File | Message | string | Embed
 
 // Send message to channel
 pub fn (mut client Client) send(channel_id string, message Payload) ? {
 	mut req := rest.new_request(client.token, .post, '/channels/$channel_id/messages') ?
-	mut form := formdata.new() ?
-	req.add_header('Content-Type', form.content_type())
 	match message {
 		string {
+			req.add_header('Content-Type', 'application/json')
 			payload := Message{
 				content: message
-			}.outbound_json()
-			form.add('payload_json', payload)
+			}.to_json().str()
+			req.data = payload
 		}
 		Message {
-			form.add('payload_json', message.outbound_json())
+			req.add_header('Content-Type', 'application/json')
+			req.data = message.to_json().str()
 		}
 		File {
+			mut form := formdata.new() ?
+			req.add_header('Content-Type', form.content_type())
 			form.add_file('file', message.filename, message.data)
-			payload := Message{
-				content: 'hi'
-			}.outbound_json()
-			form.add('payload_json', payload)
+			req.data = form.encode()
+		}
+		Embed {
+			req.add_header('Content-Type', 'application/json')
+			data := message.to_json()
+			payload := '{"embed":$data}'
+			req.data = payload
 		}
 	}
-	req.data = form.encode()
+	
 	resp := client.rest.do(req) ?
 	if resp.status_code != 200 {
 		response_error := rest.ResponseCode(resp.status_code)
-		err_text := 'Status code is $resp.status_code ($response_error)'
-		util.log(err_text)
+		err_text := 'Status code is $resp.status_code ($response_error).\n'
+		util.log(err_text + 'Request: $req.data')
 		return error(err_text)
 	}
 }

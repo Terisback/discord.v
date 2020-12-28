@@ -5,6 +5,30 @@ import x.json2 as json
 import discordv.util.snowflake
 
 pub struct Attachment {
+pub mut:
+	id string
+	filename string
+	size int
+	url string
+	proxy_url string
+	height int
+	width int
+}
+
+pub fn (mut at Attachment) from_json(f json.Any) {
+	mut obj := f.as_map()
+	for k, v in obj{
+		match k {
+			'id' {at.id = v.str()}
+			'filename' {at.filename = v.str()}
+			'size' {at.size = v.int()}
+			'url' {at.url = v.str()}
+			'proxy_url' {at.proxy_url = v.str()}
+			'height' {at.height = v.int()}
+			'width' {at.width = v.int()}
+			else {}
+		}
+	}
 }
 
 enum PermissionOverwriteType {
@@ -41,6 +65,27 @@ enum ChannelType {
 	guild_category
 	guild_news
 	guild_store
+}
+
+pub struct ChannelMention {
+pub mut:
+	id string
+	guild_id string
+	@type ChannelType
+	name string
+}
+
+pub fn (mut cm ChannelMention) from_json(f json.Any){
+	mut obj := f.as_map()
+	for k, v in obj{
+		match k{
+			'id' {cm.id = v.str()}
+			'guild_id' {cm.guild_id = v.str()}
+			'type' {cm.@type = ChannelType(v.int())}
+			'name' {cm.name = v.str()}
+			else {}
+		}
+	}
 }
 
 pub struct Channel {
@@ -137,9 +182,6 @@ pub fn (mut channel Channel) from_json(f json.Any) {
 	}
 }
 
-pub struct Embed {
-}
-
 pub struct Emoji {
 pub mut:
 	id    string
@@ -195,6 +237,49 @@ fn (mut g UnavailableGuild) from_json(f json.Any) {
 }
 
 pub struct Member {
+pub mut:
+	user User
+	nick string
+	roles []string
+	joined_at time.Time
+	premium_since time.Time
+	deaf bool
+	mute bool
+	pending bool
+}
+
+pub fn (mut member Member) from_json(f json.Any){
+	mut obj := f.as_map()
+	for k, v in obj{
+		match k {
+			'user' {
+				mut user := User{}
+				user.from_json(v)
+				member.user = user
+			}
+			'nick' {member.nick = v.str()}
+			'roles' {
+				mut roles := v.arr()
+				for role in roles {
+					member.roles << role.str()
+				}
+			}
+			'joined_at' {
+				member.joined_at = time.parse_iso8601(v.str()) or {
+					time.unix(int(snowflake.discord_epoch / 1000))
+				}
+			}
+			'premium_since' {
+				member.premium_since = time.parse_iso8601(v.str()) or {
+					time.unix(int(snowflake.discord_epoch / 1000))
+				}
+			}
+			'deaf' {member.deaf = v.bool()}
+			'mute' {member.mute = v.bool()}
+			'pending' {member.pending = v.bool()}
+			else{}
+		}
+	}
 }
 
 pub struct Reaction {
@@ -393,6 +478,124 @@ pub fn (mut user User) from_json(f json.Any) {
 		user.avatar = Avatar{
 			user_id: user.id
 			hash: hash
+		}
+	}
+}
+
+pub enum IntegrationExpireBehavior {
+	remove_role
+	kick
+}
+
+pub type IntegrationType = string
+
+pub const(
+	twitch = IntegrationType('twitch')
+	youtube = IntegrationType('youtube')
+	discord = IntegrationType('discord')
+)
+
+pub struct IntegrationAccount {
+pub mut:
+	id string
+	name string
+}
+
+pub fn (mut iacc IntegrationAccount) from_json(f json.Any) {
+	mut obj := f.as_map()
+	for k, v in obj{
+		match k {
+			'id' {iacc.id = v.str()}
+			'name' {iacc.name = v.str()}
+			else {}
+		}
+	}
+}
+
+pub struct IntegrationApplication {
+pub mut:
+	id string
+	name string
+	icon string
+	description string
+	summary string
+	bot User
+}
+
+pub fn (mut iapp IntegrationApplication) from_json(f json.Any){
+	mut obj := f.as_map()
+	for k, v in obj{
+		match k {
+			'id' {iapp.id = v.str()}
+			'name' {iapp.name = v.str()}
+			'icon' {iapp.icon = v.str()}
+			'description' {iapp.description = v.str()}
+			'summary' {iapp.summary = v.str()}
+			'bot' {
+				mut user := User{}
+				user.from_json(v)
+				iapp.bot = user
+			}
+			else {}
+		}
+	}
+}
+
+pub struct Integration {
+pub mut:
+	id string
+	name string
+	@type IntegrationType
+	enabled bool
+	syncing bool
+	role_id string
+	enable_emoticons bool
+	expire_behavior IntegrationExpireBehavior
+	expire_grace_period int
+	user User
+	account IntegrationAccount
+	synced_at time.Time
+	subscriber_count int
+	revoked bool
+	application IntegrationApplication
+}
+
+pub fn (mut integration Integration) from_json(f json.Any){
+	mut obj := f.as_map()
+	for k, v in obj{
+		match k {
+			'id' {integration.id = v.str()}
+			'name' {integration.name = v.str()}
+			'type' {integration.@type = IntegrationType(v.str())}
+			'enabled' {integration.enabled = v.bool()}
+			'syncing' {integration.syncing = v.bool()}
+			'role_id' {integration.role_id = v.str()}
+			'enable_emoticons' {integration.enable_emoticons = v.bool()}
+			'expire_behavior' {integration.expire_behavior = IntegrationExpireBehavior(v.int())}
+			'expire_grace_period' {integration.expire_grace_period = v.int()}
+			'user' {
+				mut user := User{}
+				user.from_json(v)
+				integration.user = user
+			}
+			'account' {
+				mut account := IntegrationAccount{}
+				account.from_json(v)
+				integration.account = account
+			}
+			'synced_at' {
+				integration.synced_at = time.parse_iso8601(v.str()) or {
+					time.unix(int(snowflake.discord_epoch / 1000))
+				}
+			}
+			'subscriber_count' {integration.subscriber_count = v.int()}
+			'revoked' {integration.revoked = v.bool()}
+			'application' {
+				mut application := IntegrationApplication{}
+				application.from_json(v)
+				integration.application = application
+			}
+			else{}
 		}
 	}
 }

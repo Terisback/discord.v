@@ -17,7 +17,7 @@ pub mut:
 	mention_everyone  bool
 	mentions          []User
 	mention_roles     []string
-	mention_channels  []string
+	mention_channels  []ChannelMention
 	attachments       []Attachment
 	embeds            []Embed
 	reactions         []Reaction
@@ -28,6 +28,8 @@ pub mut:
 	activity          MessageActivity
 	application       MessageApplication
 	message_reference MessageReference
+	referenced_message &Message = voidptr(0)
+	stickers []Sticker
 	flags             MessageFlag
 }
 
@@ -106,7 +108,7 @@ pub mut:
 	guild_id   string
 }
 
-fn (mut m MessageReference) from_json(f json.Any) {
+pub fn (mut m MessageReference) from_json(f json.Any) {
 	mut obj := f.as_map()
 	for k, v in obj {
 		match k {
@@ -118,19 +120,57 @@ fn (mut m MessageReference) from_json(f json.Any) {
 	}
 }
 
-pub type MessageFlag = byte
-
-pub struct MessageFlags {
-pub:
-	crossposted            MessageFlag = MessageFlag(1 << 0)
-	is_crosspost           MessageFlag = MessageFlag(1 << 1)
-	suppress_embeds        MessageFlag = MessageFlag(1 << 2)
-	source_message_deleted MessageFlag = MessageFlag(1 << 3)
-	urgent                 MessageFlag = MessageFlag(1 << 4)
+pub fn (m MessageReference) to_json() json.Any{
+	mut obj := map[string]json.Any{}
+	obj['message_id'] = m.message_id
+	obj['channel_id'] = m.channel_id
+	obj['guild_id'] = m.guild_id
+	return obj
 }
 
+pub enum StickerType {
+	png = 1
+	apng
+	lottie
+}
+
+pub struct Sticker {
+pub mut:
+	id string
+	pack_id string
+	name string
+	description string
+	tags string
+	asset string
+	preview_asset string
+	format_type StickerType
+}
+
+pub fn (mut st Sticker) from_json(f json.Any) {
+	mut obj := f.as_map()
+	for k, v in obj{
+		match k {
+			'id' {st.id = v.str()}
+			'pack_id' {st.pack_id = v.str()}
+			'name' {st.name = v.str()}
+			'description' {st.description = v.str()}
+			'tags' {st.tags = v.str()}
+			'asset' {st.asset = v.str()}
+			'preview_asset' {st.preview_asset = v.str()}
+			'format_type' {st.format_type = StickerType(v.int())}
+			else {}
+		}
+	}
+}
+
+pub type MessageFlag = byte
+
 pub const (
-	message_flags = MessageFlags{}
+	crossposted            = MessageFlag(1 << 0)
+	is_crosspost           = MessageFlag(1 << 1)
+	suppress_embeds        = MessageFlag(1 << 2)
+	source_message_deleted = MessageFlag(1 << 3)
+	urgent                 = MessageFlag(1 << 4)
 )
 
 pub fn (mut m Message) from_json(f json.Any) {
@@ -151,7 +191,11 @@ pub fn (mut m Message) from_json(f json.Any) {
 				user.from_json(v)
 				m.author = user
 			}
-			//'member' {}
+			'member' {
+				mut member := Member{}
+				member.from_json(v)
+				m.member = member
+			}
 			'content' {
 				m.content = v.str()
 			}
@@ -183,12 +227,25 @@ pub fn (mut m Message) from_json(f json.Any) {
 			}
 			'mention_channels' {
 				mut obja := v.arr()
-				for va in obja {
-					m.mention_channels << va.str()
+				for _, va in obja {
+					mut mention := ChannelMention{}
+					mention.from_json(va)
+					m.mention_channels << mention
 				}
 			}
-			//'attachments' {}
-			//'embeds' {}
+			'attachments' {
+				mut obja := v.arr()
+				for _, va in obja {
+					mut attachment := Attachment{}
+					attachment.from_json(va)
+					m.attachments << attachment
+				}
+			}
+			'embeds' {
+				mut obja := []Embed{}
+				obja.from_json(v)
+				m.embeds = obja
+			}
 			'reaction' {
 				mut obja := v.arr()
 				for _, va in obja {
@@ -224,6 +281,19 @@ pub fn (mut m Message) from_json(f json.Any) {
 				reference.from_json(v)
 				m.message_reference = reference
 			}
+			'referenced_message' {
+				mut ref := Message{}
+				ref.from_json(v)
+				m.referenced_message = &ref
+			}
+			'stickers' {
+				mut obja := v.arr()
+				for _, va in obja {
+					mut sticker := Sticker{}
+					sticker.from_json(va)
+					m.stickers << sticker
+				}
+			}
 			'flags' {
 				m.flags = MessageFlag(byte(v.int()))
 			}
@@ -232,14 +302,16 @@ pub fn (mut m Message) from_json(f json.Any) {
 	}
 }
 
-pub fn (m Message) outbound_json() string {
+pub fn (m Message) to_json() json.Any {
 	mut obj := map[string]json.Any{}
 	obj['content'] = m.content
 	obj['nonce'] = m.nonce
 	obj['tts'] = m.tts
-	// if m.embeds.len >= 1 {
-	// 	obj['embed'] = m.embeds[0]
-	// }
-	// obj['message_refence'] = m.message_reference
-	return obj.str()
+	if m.embeds.len >= 1 {
+		obj['embed'] = m.embeds[0].to_json()
+	}
+	if m.message_reference.message_id != '' {
+		obj['message_reference'] = m.message_reference.to_json()
+	}
+	return obj
 }
