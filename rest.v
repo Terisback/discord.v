@@ -7,7 +7,7 @@ import discordv.util
 type Payload = File | Message | string | Embed
 
 // Send message to channel
-pub fn (mut client Client) send(channel_id string, message Payload) ? {
+pub fn (mut client Client) channel_message_send(channel_id string, message Payload) ? {
 	mut req := rest.new_request(client.token, .post, '/channels/$channel_id/messages') ?
 	match message {
 		string {
@@ -45,7 +45,7 @@ pub fn (mut client Client) send(channel_id string, message Payload) ? {
 }
 
 // Delete message from a channel
-pub fn (mut client Client) delete_message(channel_id string, message_id string) ? {
+pub fn (mut client Client) channel_message_delete(channel_id string, message_id string) ? {
 	mut req := rest.new_request(client.token, .delete, '/channels/$channel_id/messages/$message_id') ?
 
 	resp := client.rest.do(req) ?
