@@ -7,7 +7,7 @@ import discordv.util
 type Payload = File | Message | string | Embed
 
 // Send message to channel
-pub fn (mut client Client) send(channel_id string, message Payload) ? {
+pub fn (mut client Client) channel_message_send(channel_id string, message Payload) ? {
 	mut req := rest.new_request(client.token, .post, '/channels/$channel_id/messages') ?
 	match message {
 		string {
@@ -40,6 +40,18 @@ pub fn (mut client Client) send(channel_id string, message Payload) ? {
 		response_error := rest.ResponseCode(resp.status_code)
 		err_text := 'Status code is $resp.status_code ($response_error).\n'
 		util.log(err_text + 'Request: $req.data')
+		return error(err_text)
+	}
+}
+
+// Delete message from a channel
+pub fn (mut client Client) channel_message_delete(channel_id string, message_id string) ? {
+	mut req := rest.new_request(client.token, .delete, '/channels/$channel_id/messages/$message_id') ?
+
+	resp := client.rest.do(req) ?
+	if resp.status_code != 204 {
+		response_error := rest.ResponseCode(resp.status_code)
+		err_text := 'Status code is $resp.status_code ($response_error).\n'
 		return error(err_text)
 	}
 }
