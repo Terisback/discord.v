@@ -43,3 +43,15 @@ pub fn (mut client Client) send(channel_id string, message Payload) ? {
 		return error(err_text)
 	}
 }
+
+// Delete message from a channel
+pub fn (mut client Client) delete_message(channel_id string, message_id string) ? {
+	mut req := rest.new_request(client.token, .delete, '/channels/$channel_id/messages/$message_id') ?
+
+	resp := client.rest.do(req) ?
+	if resp.status_code != 204 {
+		response_error := rest.ResponseCode(resp.status_code)
+		err_text := 'Status code is $resp.status_code ($response_error).\n'
+		return error(err_text)
+	}
+}
