@@ -25,7 +25,7 @@ fn img(mut client vd.Client, evt &vd.MessageCreate) {
 	// If content of message is '!image' reply with image
 	if evt.content == '!image' {
 		// Send image to channel
-		client.send(evt.channel_id, vd.File{
+		client.channel_message_send(evt.channel_id, vd.File{
 			filename: 'v-logo.png'
 			// You can embed image as i did, but you can do it at runtime `os.read_file()` etc.
 			data: binary.v_logo_png[0..binary.v_logo_png_len]
