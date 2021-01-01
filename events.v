@@ -8,6 +8,7 @@ pub type Hello = packets.Hello
 pub type MessageCreate = Message
 pub type MessageUpdate = Message
 pub type MessageDelete = Message
+pub type GuildMemberAdd = Member
 
 // Publishing hello event to client eventbus
 fn on_hello(mut client &Client, hello &packets.Hello){
@@ -36,6 +37,11 @@ fn on_dispatch(mut client &Client, packet &packets.Packet){
 		}
 		'message_delete' { 
 			mut obj := MessageDelete{}
+			obj.from_json(packet.data)
+			client.events.publish(event_name, client, obj)
+		}
+		'guild_member_add' {
+			mut obj := Member{}
 			obj.from_json(packet.data)
 			client.events.publish(event_name, client, obj)
 		}
@@ -73,4 +79,9 @@ pub fn (mut client Client) on_message_update(handler fn(mut client &Client, even
 // Add event handler to MessageDelete event
 pub fn (mut client Client) on_message_delete(handler fn(mut client &Client, event &MessageDelete)){
 	client.events.subscribe('message_delete', handler)
+}
+
+// Add event handler to GuildMemberAdd event
+pub fn (mut client Client) on_guild_member_add(handler fn(mut client &Client, event &GuildMemberAdd)){
+	client.events.subscribe('guild_member_add', handler)
 }
