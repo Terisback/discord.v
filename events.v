@@ -9,7 +9,7 @@ pub type MessageCreate = Message
 pub type MessageUpdate = Message
 pub type MessageDelete = Message
 struct GuildMemberAdd {
-	mut:
+	pub mut:
 		member Member
 		guild_id string
 }
