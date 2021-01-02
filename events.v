@@ -22,32 +22,33 @@ fn on_hello(mut client &Client, hello &packets.Hello){
 // Deals with packets from gateway. Publishing to client eventbus
 fn on_dispatch(mut client &Client, packet &packets.Packet){
 	event_name := packet.event.to_lower()
+	data := packet.data.as_map()
 	client.events.publish('dispatch', client, packet)
 	match event_name {
 		'ready' { 
 			mut obj := Ready{}
-			obj.from_json(packet.data)
+			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
 		'message_create' { 
 			mut obj := MessageCreate{}
-			obj.from_json(packet.data)
+			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
 		'message_update' { 
 			mut obj := MessageUpdate{}
-			obj.from_json(packet.data)
+			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
 		'message_delete' { 
 			mut obj := MessageDelete{}
-			obj.from_json(packet.data)
+			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_member_add' {
 			mut obj := GuildMemberAdd{}
-			obj.member.from_json(packet.data)
-			obj.guild_id = packet.data.guild_id
+			obj.member.from_json(data)
+			obj.guild_id = data['guild_id'].str()
 			client.events.publish(event_name, client, obj)
 		}
 		else {
