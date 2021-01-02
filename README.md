@@ -29,8 +29,8 @@ fn on_ping(mut client vd.Client, evt &vd.MessageCreate) {
 
 ## How to install
 
-*discord.v* uses openssl-dev, be sure it is installed `apt install openssl-dev`  
-> Only way to run it on Windows is to use WSL (or install openssl-dev somehow)  
+*discord.v* uses openssl, be sure it is installed `apt install libssl-dev`  
+> Only way to run it on Windows is to use WSL (or install `openssl` headers somehow)  
 
 ```bash
 git clone https://github.com/Terisback/discord.v.git ~/.vmodules/discordv
