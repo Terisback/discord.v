@@ -27,8 +27,8 @@ pub fn (d Identify) to_json_any() json.Any {
 	obj['intents'] = int(d.intents)
 	if d.shard.len != 2 {
 		mut shards := []json.Any{}
-		shards << 0
-		shards << 1
+		shards << int(0)
+		shards << int(1)
 		obj['shard'] = shards
 	} else {
 		mut shards := []json.Any{}
