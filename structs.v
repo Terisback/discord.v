@@ -4,6 +4,192 @@ import time
 import x.json2 as json
 import discordv.util.snowflake
 
+pub struct Activity {
+pub mut:
+	name string
+	@type ActivityType
+	url string
+	created_at int
+	timestamps []ActivityTimestamp
+	application_id string
+	details string
+	state string
+	emoji Emoji
+	party ActivityParty
+	assets ActivityAssets
+	secrets ActivitySecrets
+	instance bool
+	flags ActivityFlags
+}
+
+pub fn (mut activity Activity) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'name' {
+				activity.name = v.str()
+			}
+			'type' {
+				activity.@type = ActivityType(v.int())
+			}
+			'url' {
+				activity.url = v.str()
+			}
+			'created_at' {
+				activity.created_at = v.int()
+			}
+			'timestamps' {
+				activity.timestamps = from_json_arr<ActivityTimestamp>(v.arr())
+			}
+			'application_id' {
+				activity.application_id = v.str()
+			}
+			'details' {
+				activity.details = v.str()
+			}
+			'state' {
+				activity.state = v.str()
+			}
+			'emoji' {
+				activity.emoji = from_json<Emoji>(v.as_map())
+			}
+			'party' {
+				activity.party = from_json<ActivityParty>(v.as_map())
+			}
+			'assets' {
+				activity.assets = from_json<ActivityAssets>(v.as_map())
+			}
+			'secrets' {
+				activity.secrets = from_json<ActivitySecrets>(v.as_map())
+			}
+			'instance' {
+				activity.instance = v.bool()
+			}
+			'flags' {
+				activity.flags = ActivityFlags(v.int())
+			}
+			else {}
+		}
+	}
+}
+
+pub enum ActivityType {
+	game
+	streaming
+	listening
+	custom
+	competing
+}
+
+pub struct ActivityTimestamp {
+pub mut:
+	start int
+	end int
+}
+
+pub fn (mut at ActivityTimestamp) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'start' {
+				at.start = v.int()
+			}
+			'end' {
+				at.end = v.int()
+			}
+			else {}
+		}
+	}
+}
+
+pub struct ActivityParty {
+pub mut:
+	id string
+	size [2]int
+}
+
+pub fn (mut ap ActivityParty) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'id' {
+				ap.id = v.str()
+			}
+			'size' {
+				mut arr := v.arr()
+				ap.size[0] = arr[0].int()
+				ap.size[1] = arr[1].int()
+			}
+			else {}
+		}
+	}
+}
+
+pub struct ActivityAssets {
+pub mut:
+	large_image string
+	large_text string
+	small_image string
+	small_text string
+}
+
+pub fn (mut aa ActivityAssets) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'large_image' {
+				aa.large_image = v.str()
+			}
+			'large_text' {
+				aa.large_text = v.str()
+			}
+			'small_image' {
+				aa.small_image = v.str()
+			}
+			'small_text' {
+				aa.small_text = v.str()
+			}
+			else {}
+		}
+	}
+}
+
+pub struct ActivitySecrets {
+pub mut:
+	join string
+	spectate string
+	@match string
+}
+
+pub fn (mut ass ActivitySecrets) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'join' {
+				ass.join = v.str()
+			}
+			'spectate' {
+				ass.spectate = v.str()
+			}
+			'match' {
+				ass.@match = v.str()
+			}
+			else {}
+		}
+	}
+}
+
+pub type ActivityFlags = int
+
+pub const (
+	INSTANCE = ActivityFlags(1 << 0)
+	JOIN = ActivityFlags(1 << 1)
+	SPECTATE = ActivityFlags(1 << 2)
+	JOIN_REQUEST = ActivityFlags(1 << 3)
+	SYNC = ActivityFlags(1 << 4)
+	PLAY = ActivityFlags(1 << 5)
+)
+
 pub struct Attachment {
 pub mut:
 	id string
@@ -15,8 +201,8 @@ pub mut:
 	width int
 }
 
-pub fn (mut at Attachment) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut at Attachment) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'id' {at.id = v.str()}
@@ -44,8 +230,8 @@ pub mut:
 	deny  string
 }
 
-pub fn (mut po PermissionOverwrite) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut po PermissionOverwrite) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'id' { po.id = v.str() }
@@ -75,8 +261,8 @@ pub mut:
 	name string
 }
 
-pub fn (mut cm ChannelMention) from_json(f json.Any){
-	mut obj := f.as_map()
+pub fn (mut cm ChannelMention) from_json(f map[string]json.Any){
+	mut obj := f
 	for k, v in obj{
 		match k{
 			'id' {cm.id = v.str()}
@@ -110,8 +296,8 @@ pub mut:
 	last_pin_timestamp    time.Time
 }
 
-pub fn (mut channel Channel) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut channel Channel) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'id' {
@@ -127,9 +313,7 @@ pub fn (mut channel Channel) from_json(f json.Any) {
 				channel.position = v.int()
 			}
 			'permission_overwrites' {
-				mut po := PermissionOverwrite{}
-				po.from_json(v)
-				channel.permission_overwrites = po
+				channel.permission_overwrites = from_json<PermissionOverwrite>(v.as_map())
 			}
 			'name' {
 				channel.name = v.str()
@@ -153,12 +337,7 @@ pub fn (mut channel Channel) from_json(f json.Any) {
 				channel.rate_limit_per_user = v.int()
 			}
 			'recipients' {
-				mut obja := v.arr()
-				for va in obja {
-					mut user := User{}
-					user.from_json(va)
-					channel.recipients << user
-				}
+				channel.recipients = from_json_arr<User>(v.arr())
 			}
 			'icon' {
 				channel.icon = v.str()
@@ -189,8 +368,8 @@ pub mut:
 	roles []Role
 }
 
-pub fn (mut emoji Emoji) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut emoji Emoji) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'id' {
@@ -200,13 +379,7 @@ pub fn (mut emoji Emoji) from_json(f json.Any) {
 				emoji.name = v.str()
 			}
 			'roles' {
-				mut r_obj := v.arr()
-				mut roles := []Role{}
-				for r in r_obj {
-					mut role := Role{}
-					role.from_json(r)
-					roles << role
-				}
+				emoji.roles = from_json_arr<Role>(v.arr())
 			}
 			else {}
 		}
@@ -225,8 +398,8 @@ pub mut:
 	unavailable bool
 }
 
-fn (mut g UnavailableGuild) from_json(f json.Any) {
-	mut obj := f.as_map()
+fn (mut g UnavailableGuild) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'id' { g.id = v.str() }
@@ -248,14 +421,12 @@ pub mut:
 	pending bool
 }
 
-pub fn (mut member Member) from_json(f json.Any){
-	mut obj := f.as_map()
+pub fn (mut member Member) from_json(f map[string]json.Any){
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'user' {
-				mut user := User{}
-				user.from_json(v)
-				member.user = user
+				member.user = from_json<User>(v.as_map())
 			}
 			'nick' {member.nick = v.str()}
 			'roles' {
@@ -289,8 +460,8 @@ pub mut:
 	emoji Emoji
 }
 
-pub fn (mut r Reaction) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut r Reaction) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'count' {
@@ -300,9 +471,7 @@ pub fn (mut r Reaction) from_json(f json.Any) {
 				r.me = v.bool()
 			}
 			'emoji' {
-				mut emoji := Emoji{}
-				emoji.from_json(v)
-				r.emoji = emoji
+				r.emoji = from_json<Emoji>(v.as_map())
 			}
 			else {}
 		}
@@ -319,37 +488,21 @@ pub mut:
 	shard            [2]int
 }
 
-pub fn (mut r Ready) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut r Ready) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'v' {
 				r.v = v.int()
 			}
 			'user' {
-				mut user := User{}
-				user.from_json(v)
-				r.user = user
+				r.user = from_json<User>(v.as_map())
 			}
 			'private_channels' {
-				mut channels := []Channel{}
-				mut arr := v.arr()
-				for g in arr {
-					mut channel := Channel{}
-					channel.from_json(g)
-					channels << channel
-				}
-				r.private_channels = channels
+				r.private_channels = from_json_arr<Channel>(v.arr())
 			}
 			'guilds' {
-				mut guilds := []UnavailableGuild{}
-				mut arr := v.arr()
-				for g in arr {
-					mut guild := UnavailableGuild{}
-					guild.from_json(g)
-					guilds << guild
-				}
-				r.guilds = guilds
+				r.guilds = from_json_arr<UnavailableGuild>(v.arr())
 			}
 			'session_id' {
 				r.session_id = v.str()
@@ -358,6 +511,425 @@ pub fn (mut r Ready) from_json(f json.Any) {
 				mut shards := v.arr()
 				r.shard[0] = shards[0].int()
 				r.shard[1] = shards[1].int()
+			}
+			else {}
+		}
+	}
+}
+
+pub struct PresenceUpdate {
+pub mut:
+	user User
+	guild_id string
+	status PresenceStatus
+	activities []Activity
+	client_status PresenceClientStatus
+}
+
+pub fn (mut pu PresenceUpdate) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'user' {
+				pu.user = from_json<User>(v.as_map())
+			}
+			'guild_id' {
+				pu.guild_id = v.str()
+			}
+			'status' {
+				pu.status = PresenceStatus(v.str())
+			}
+			'activities' {
+				pu.activities = from_json_arr<Activity>(v.arr())
+			}
+			'client_status' {
+				pu.client_status = from_json<PresenceClientStatus>(v.as_map())
+			}
+			else {}
+		}
+	}
+}
+
+pub type PresenceStatus = string
+
+pub const (
+	idle = PresenceStatus('idle')
+	dnd = PresenceStatus('dnd')
+	online = PresenceStatus('online')
+	offline = PresenceStatus('offline')
+)
+
+pub struct PresenceClientStatus {
+pub mut:
+	desktop PresenceStatus = offline
+	mobile PresenceStatus = offline
+	web PresenceStatus = offline
+}
+
+pub fn (mut pcs PresenceClientStatus) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'desktop' {
+				pcs.desktop = PresenceStatus(v.str())
+			}
+			'mobile' {
+				pcs.mobile = PresenceStatus(v.str())
+			}
+			'web' {
+				pcs.web = PresenceStatus(v.str())
+			}
+			else {}
+		}
+	}
+}
+
+pub struct Guild {
+pub mut:
+	id string
+	name string
+	icon string
+	icon_hash string
+	splash string
+	discovery_splash string
+	owner bool
+	owner_id string
+	permissions string
+	region string
+	afk_channel_id string
+	afk_timeout int
+	widget_enabled bool
+	widget_channel_id string
+	verification_level GuildVerificationLevel
+	default_message_notifications GuildMessageNotificationsLevel
+	explicit_content_filter GuildExplicitContentFilterLevel
+	roles []Role
+	emojis []Emoji
+	features []GuildFeature
+	mfa_level MFALevel
+	application_id string
+	system_channel_id string
+	system_channel_flags string
+	rules_channel_id string
+	joined_at time.Time
+	large bool
+	unavailable bool
+	member_count int
+	voice_states []VoiceState
+	members []Member
+	channels []Channel
+	presences []PresenceUpdate
+	max_presences int = 25000
+	max_members int
+	vanity_url_code string
+	description string
+	banner string
+	premium_tier GuildPremiumTier
+	premium_subscription_count int
+	preferred_locale string = "en-US"
+	public_updates_channel_id string
+	max_video_channel_users int
+	approximate_member_count int
+	approximate_presence_count int
+}
+
+pub fn (mut guild Guild) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'id' {
+				guild.id = v.str()
+			}
+			'name' {
+				guild.name = v.str()
+			}
+			'icon' {
+				guild.icon = v.str()
+			}
+			'icon_hash'{
+				guild.icon_hash = v.str()
+			}
+			'splash' {
+				guild.splash = v.str()
+			}
+			'discovery_splash'{
+				guild.discovery_splash = v.str()
+			}
+			'owner' {
+				guild.owner = v.bool()
+			}
+			'owner_id' {
+				guild.owner_id = v.str()
+			}
+			'permissions' {
+				guild.permissions = v.str()
+			}
+			'region' {
+				guild.region = v.str()
+			}
+			'afk_channel_id' {
+				guild.afk_channel_id = v.str()
+			}
+			'afk_timeout' {
+				guild.afk_timeout = v.int()
+			}
+			'widget_enabled' {
+				guild.widget_enabled = v.bool()
+			}
+			'widget_channel_id' {
+				guild.widget_channel_id = v.str()
+			}
+			'verification_level' {
+				guild.verification_level = GuildVerificationLevel(v.int())
+			}
+			'default_message_notifications' {
+				guild.default_message_notifications = GuildMessageNotificationsLevel(v.int())
+			}
+			'explicit_content_filter' {
+				guild.explicit_content_filter = GuildExplicitContentFilterLevel(v.int())
+			}
+			'roles' {
+				guild.roles = from_json_arr<Role>(v.arr())
+			}
+			'emojis' {
+				guild.emojis = from_json_arr<Emoji>(v.arr())
+			}
+			'features' {
+				mut roles := v.arr()
+				for role in roles {
+					guild.features << GuildFeature(role.str())
+				}
+			}
+			'mfa_level' {
+				guild.mfa_level = MFALevel(v.int())
+			}
+			'application_id' {
+				guild.application_id = v.str()
+			}
+			'system_channel_id' {
+				guild.system_channel_id = v.str()
+			}
+			'system_channel_flags' {
+				guild.system_channel_flags = v.str()
+			}
+			'rules_channel_id' {
+				guild.rules_channel_id = v.str()
+			}
+			'joined_at' {
+				guild.joined_at = time.parse_iso8601(v.str()) or {
+					time.unix(int(snowflake.discord_epoch / 1000))
+				}
+			}
+			'large' {
+				guild.large = v.bool()
+			}
+			'unavailable' {
+				guild.unavailable = v.bool()
+			}
+			'member_count' {
+				guild.member_count = v.int()
+			}
+			'voice_states' {
+				guild.voice_states = from_json_arr<VoiceState>(v.arr())
+			}
+			'members' {
+				guild.members = from_json_arr<Member>(v.arr())
+			}
+			'channels' {
+				guild.channels = from_json_arr<Channel>(v.arr())
+			}
+			'presences' {
+				guild.presences = from_json_arr<PresenceUpdate>(v.arr())
+			}
+			'max_presences' {
+				guild.max_presences = v.int()
+			}
+			'max_members' {
+				guild.max_members = v.int()
+			}
+			'vanity_url_code' {
+				guild.vanity_url_code = v.str()
+			}
+			'description' {
+				guild.description = v.str()
+			}
+			'banner' {
+				guild.banner = v.str()
+			}
+			'premium_tier' {
+				guild.premium_tier = GuildPremiumTier(v.int())
+			}
+			'premium_subscription_count' {
+				guild.premium_subscription_count = v.int()
+			}
+			'preferred_locale' {
+				guild.preferred_locale = v.str()
+			}
+			'public_updates_channel_id' {
+				guild.public_updates_channel_id = v.str()
+			}
+			'max_video_channel_users' {
+				guild.max_video_channel_users = v.int()
+			}
+			'approximate_member_count' {
+				guild.approximate_member_count = v.int()
+			}
+			'approximate_presence_count' {
+				guild.approximate_presence_count = v.int()
+			}
+			else {}
+		}
+	}
+}
+
+pub enum GuildVerificationLevel {
+	@none
+	low
+	medium
+	high
+	very_high
+}
+
+pub enum GuildMessageNotificationsLevel {
+	all_messages
+	only_mentions
+}
+
+pub enum GuildExplicitContentFilterLevel {
+	disabled
+	members_without_roles
+	all_members
+}
+
+pub type GuildFeature = string
+
+pub const (
+	INVITE_SPLASH = GuildFeature("INVITE_SPLASH")
+	VIP_REGIONS = GuildFeature("VIP_REGIONS")
+	VANITY_URL = GuildFeature("VANITY_URL")
+	VERIFIED = GuildFeature("VERIFIED")
+	PARTNERED = GuildFeature("PARTNERED")
+	COMMUNITY = GuildFeature("COMMUNITY")
+	COMMERCE = GuildFeature("COMMERCE")
+	NEWS = GuildFeature("NEWS")
+	DISCOVERABLE = GuildFeature("DISCOVERABLE")
+	FEATURABLE = GuildFeature("FEATURABLE")
+	ANIMATED_ICON = GuildFeature("ANIMATED_ICON")
+	BANNER = GuildFeature("BANNER")
+	WELCOME_SCREEN_ENABLED = GuildFeature("WELCOME_SCREEN_ENABLED")
+)
+
+pub enum MFALevel {
+	@none
+	elevated
+}
+
+pub type GuildSystemChannelFlags = int
+
+pub const (
+	SUPPRESS_JOIN_NOTIFICATIONS = GuildSystemChannelFlags(1 << 0)
+	SUPPRESS_PREMIUM_SUBSCRIPTIONS = GuildSystemChannelFlags(1 << 1)
+)
+
+pub struct VoiceState {
+pub mut:
+	guild_id string
+	channel_id string
+	user_id string
+	member Member
+	session_id string
+	deaf bool
+	mute bool
+	self_deaf bool
+	self_mute bool
+	self_stream bool
+	self_video bool
+	suppress bool
+}
+
+pub fn (mut vs VoiceState) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'guild_id' {
+				vs.guild_id = v.str()
+			}
+			'channel_id' {
+				vs.channel_id = v.str()
+			}
+			'user_id' {
+				vs.user_id = v.str()
+			}
+			'member' {
+				vs.member = from_json<Member>(v.as_map())
+			}
+			'session_id' {
+				vs.session_id = v.str()
+			}
+			'deaf' {
+				vs.deaf = v.bool()
+			}
+			'mute' {
+				vs.mute = v.bool()
+			}
+			'self_deaf' {
+				vs.self_deaf = v.bool()
+			}
+			'self_mute' {
+				vs.self_mute = v.bool()
+			}
+			'self_stream' {
+				vs.self_stream = v.bool()
+			}
+			'self_video' {
+				vs.self_video = v.bool()
+			}
+			'suppress' {
+				vs.suppress = v.bool()
+			}
+			else {}
+		}
+	}
+}
+
+pub enum GuildPremiumTier {
+	@none
+	tier_1
+	tier_2
+	tier_3
+}
+
+pub struct VoiceRegion {
+pub mut:
+	id string
+	name string
+	vip bool
+	optimal bool
+	deprecated bool
+	custom bool
+}
+
+pub fn (mut vr VoiceRegion) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'id' {
+				vr.id = v.str()
+			}
+			'name' {
+				vr.name = v.str()
+			}
+			'vip' {
+				vr.vip = v.bool()
+			}
+			'optimal' {
+				vr.optimal = v.bool()
+			}
+			'deprecated' {
+				vr.deprecated = v.bool()
+			}
+			'custom' {
+				vr.custom = v.bool()
 			}
 			else {}
 		}
@@ -376,8 +948,8 @@ pub mut:
 	mentionable bool
 }
 
-pub fn (mut role Role) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut role Role) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'id' { role.id = v.str() }
@@ -454,8 +1026,8 @@ pub enum PremiumType {
 	nitro
 }
 
-pub fn (mut user User) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut user User) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'id' { user.id = v.str() }
@@ -501,8 +1073,8 @@ pub mut:
 	name string
 }
 
-pub fn (mut iacc IntegrationAccount) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut iacc IntegrationAccount) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'id' {iacc.id = v.str()}
@@ -522,8 +1094,8 @@ pub mut:
 	bot User
 }
 
-pub fn (mut iapp IntegrationApplication) from_json(f json.Any){
-	mut obj := f.as_map()
+pub fn (mut iapp IntegrationApplication) from_json(f map[string]json.Any){
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'id' {iapp.id = v.str()}
@@ -532,9 +1104,7 @@ pub fn (mut iapp IntegrationApplication) from_json(f json.Any){
 			'description' {iapp.description = v.str()}
 			'summary' {iapp.summary = v.str()}
 			'bot' {
-				mut user := User{}
-				user.from_json(v)
-				iapp.bot = user
+				iapp.bot = from_json<User>(v.as_map())
 			}
 			else {}
 		}
@@ -560,8 +1130,8 @@ pub mut:
 	application IntegrationApplication
 }
 
-pub fn (mut integration Integration) from_json(f json.Any){
-	mut obj := f.as_map()
+pub fn (mut integration Integration) from_json(f map[string]json.Any){
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'id' {integration.id = v.str()}
@@ -574,14 +1144,10 @@ pub fn (mut integration Integration) from_json(f json.Any){
 			'expire_behavior' {integration.expire_behavior = IntegrationExpireBehavior(v.int())}
 			'expire_grace_period' {integration.expire_grace_period = v.int()}
 			'user' {
-				mut user := User{}
-				user.from_json(v)
-				integration.user = user
+				integration.user = from_json<User>(v.as_map())
 			}
 			'account' {
-				mut account := IntegrationAccount{}
-				account.from_json(v)
-				integration.account = account
+				integration.account = from_json<IntegrationAccount>(v.as_map())
 			}
 			'synced_at' {
 				integration.synced_at = time.parse_iso8601(v.str()) or {
@@ -591,11 +1157,25 @@ pub fn (mut integration Integration) from_json(f json.Any){
 			'subscriber_count' {integration.subscriber_count = v.int()}
 			'revoked' {integration.revoked = v.bool()}
 			'application' {
-				mut application := IntegrationApplication{}
-				application.from_json(v)
-				integration.application = application
+				integration.application = from_json<IntegrationApplication>(v.as_map())
 			}
 			else{}
 		}
 	}
+}
+
+fn from_json<T> (f map[string]json.Any) T {
+	mut obj := T{}
+	obj.from_json(f)
+	return obj
+}
+
+fn from_json_arr<T>(f []json.Any) []T {
+	mut arr := []T{}
+	for fs in f {
+		mut item := T{}
+		item.from_json(fs.as_map())
+		arr << item
+	}
+	return arr
 }

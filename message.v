@@ -66,8 +66,8 @@ pub mut:
 	party_id string
 }
 
-fn (mut m MessageActivity) from_json(f json.Any) {
-	mut obj := f.as_map()
+fn (mut m MessageActivity) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'type' { m.@type = MessageActivityType(v.int()) }
@@ -86,8 +86,8 @@ pub mut:
 	name        string
 }
 
-fn (mut m MessageApplication) from_json(f json.Any) {
-	mut obj := f.as_map()
+fn (mut m MessageApplication) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'id' { m.id = v.str() }
@@ -108,8 +108,8 @@ pub mut:
 	guild_id   string
 }
 
-pub fn (mut m MessageReference) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut m MessageReference) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'message_id' { m.message_id = v.str() }
@@ -146,8 +146,8 @@ pub mut:
 	format_type StickerType
 }
 
-pub fn (mut st Sticker) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut st Sticker) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'id' {st.id = v.str()}
@@ -173,8 +173,8 @@ pub const (
 	urgent                 = MessageFlag(1 << 4)
 )
 
-pub fn (mut m Message) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut m Message) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj {
 		match k {
 			'id' {
@@ -187,14 +187,10 @@ pub fn (mut m Message) from_json(f json.Any) {
 				m.guild_id = v.str()
 			}
 			'author' {
-				mut user := User{}
-				user.from_json(v)
-				m.author = user
+				m.author = from_json<User>(v.as_map())
 			}
 			'member' {
-				mut member := Member{}
-				member.from_json(v)
-				m.member = member
+				m.member = from_json<Member>(v.as_map())
 			}
 			'content' {
 				m.content = v.str()
@@ -212,12 +208,7 @@ pub fn (mut m Message) from_json(f json.Any) {
 				m.mention_everyone = v.bool()
 			}
 			'mentions' {
-				mut obja := v.arr()
-				for va in obja {
-					mut user := User{}
-					user.from_json(va)
-					m.mentions << user
-				}
+				m.mentions = from_json_arr<User>(v.arr())
 			}
 			'mention_roles' {
 				mut obja := v.arr()
@@ -226,33 +217,16 @@ pub fn (mut m Message) from_json(f json.Any) {
 				}
 			}
 			'mention_channels' {
-				mut obja := v.arr()
-				for _, va in obja {
-					mut mention := ChannelMention{}
-					mention.from_json(va)
-					m.mention_channels << mention
-				}
+				m.mention_channels = from_json_arr<ChannelMention>(v.arr())
 			}
 			'attachments' {
-				mut obja := v.arr()
-				for _, va in obja {
-					mut attachment := Attachment{}
-					attachment.from_json(va)
-					m.attachments << attachment
-				}
+				m.attachments = from_json_arr<Attachment>(v.arr())
 			}
 			'embeds' {
-				mut obja := []Embed{}
-				obja.from_json(v)
-				m.embeds = obja
+				m.embeds = from_json_arr<Embed>(v.arr())
 			}
 			'reaction' {
-				mut obja := v.arr()
-				for _, va in obja {
-					mut reaction := Reaction{}
-					reaction.from_json(va)
-					m.reactions << reaction
-				}
+				m.reactions = from_json_arr<Reaction>(v.arr())
 			}
 			'nonce' {
 				m.nonce = v.str()
@@ -267,32 +241,20 @@ pub fn (mut m Message) from_json(f json.Any) {
 				m.@type = MessageType(v.int())
 			}
 			'activity' {
-				mut activity := MessageActivity{}
-				activity.from_json(v)
-				m.activity = activity
+				m.activity = from_json<MessageActivity>(v.as_map())
 			}
 			'application' {
-				mut application := MessageApplication{}
-				application.from_json(v)
-				m.application = application
+				m.application = from_json<MessageApplication>(v.as_map())
 			}
 			'message_reference' {
-				mut reference := MessageReference{}
-				reference.from_json(v)
-				m.message_reference = reference
+				m.message_reference = from_json<MessageReference>(v.as_map())
 			}
 			'referenced_message' {
-				mut ref := Message{}
-				ref.from_json(v)
+				mut ref := from_json<Message>(v.as_map())
 				m.referenced_message = &ref
 			}
 			'stickers' {
-				mut obja := v.arr()
-				for _, va in obja {
-					mut sticker := Sticker{}
-					sticker.from_json(va)
-					m.stickers << sticker
-				}
+				m.stickers = from_json_arr<Sticker>(v.arr())
 			}
 			'flags' {
 				m.flags = MessageFlag(byte(v.int()))

@@ -47,12 +47,12 @@ And then import `discordv` wherever you like
 - [x] REST for sending messages
 - [x] Implement `multipart/form-data` for file sending
 - [x] Do usual `application/json` for sending without binary data
-- [ ] Implement all structs
+- [ ] Handle Gateway events
   - [ ] Audit Log
   - [x] Channel
-  - [ ] Emoji
-  - [ ] Guild
-  - [ ] Invite
+  - [x] Emoji
+  - [x] Guild
+  - [x] Invite
   - [x] User
   - [ ] Voice
   - [ ] Webhook

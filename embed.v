@@ -20,8 +20,8 @@ pub mut:
 	fields []EmbedField
 }
 
-pub fn (mut embed Embed) from_json(f json.Any){
-	mut obja := f.as_map()
+pub fn (mut embed Embed) from_json(f map[string]json.Any){
+	mut obja := f
 	for k, v in obja {
 		match k {
 			'title' {embed.title = v.str()}
@@ -34,39 +34,25 @@ pub fn (mut embed Embed) from_json(f json.Any){
 			}
 			'color' {embed.color = v.int()}
 			'footer' {
-				mut obj := EmbedFooter{}
-				obj.from_json(v)
-				embed.footer = obj
+				embed.footer = from_json<EmbedFooter>(v.as_map())
 			}
 			'image' {
-				mut obj := EmbedImage{}
-				obj.from_json(v)
-				embed.image = obj
+				embed.image = from_json<EmbedImage>(v.as_map())
 			}
 			'thumbnail' {
-				mut obj := EmbedThumbnail{}
-				obj.from_json(v)
-				embed.thumbnail = obj
+				embed.thumbnail = from_json<EmbedThumbnail>(v.as_map())
 			}
 			'video' {
-				mut obj := EmbedVideo{}
-				obj.from_json(v)
-				embed.video = obj
+				embed.video = from_json<EmbedVideo>(v.as_map())
 			}
 			'provider' {
-				mut obj := EmbedProvider{}
-				obj.from_json(v)
-				embed.provider = obj
+				embed.provider = from_json<EmbedProvider>(v.as_map())
 			}
 			'author' {
-				mut obj := EmbedAuthor{}
-				obj.from_json(v)
-				embed.author = obj
+				embed.author = from_json<EmbedAuthor>(v.as_map())
 			}
 			'fields' {
-				mut obj := EmbedImage{}
-				obj.from_json(v)
-				embed.image = obj
+				embed.image = from_json<EmbedImage>(v.as_map())
 			}
 			else {}
 		}
@@ -77,7 +63,7 @@ pub fn (mut embeds []Embed) from_json(f json.Any){
 	mut obj := f.arr()
 	for embed in obj{
 		mut e := Embed{}
-		e.from_json(embed)
+		e.from_json(embed.as_map())
 		embeds << e
 	}
 }
@@ -113,8 +99,8 @@ pub mut:
 	proxy_icon_url string
 }
 
-pub fn (mut ef EmbedFooter) from_json(f json.Any){
-	mut obj:=f.as_map()
+pub fn (mut ef EmbedFooter) from_json(f map[string]json.Any){
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'text' {ef.text = v.str()}
@@ -145,8 +131,8 @@ pub mut:
 	width int
 }
 
-pub fn (mut ei EmbedImage) from_json(f json.Any){
-	mut obj := f.as_map()
+pub fn (mut ei EmbedImage) from_json(f map[string]json.Any){
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'url' {ei.url = v.str()}
@@ -179,8 +165,8 @@ pub mut:
 	width int
 }
 
-pub fn (mut et EmbedThumbnail) from_json(f json.Any){
-	mut obj := f.as_map()
+pub fn (mut et EmbedThumbnail) from_json(f map[string]json.Any){
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'url' {et.url = v.str()}
@@ -212,8 +198,8 @@ pub mut:
 	width int
 }
 
-pub fn (mut ev EmbedVideo) from_json(f json.Any) {
-	mut obj := f.as_map()
+pub fn (mut ev EmbedVideo) from_json(f map[string]json.Any) {
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'url' {ev.url = v.str()}
@@ -242,8 +228,8 @@ pub mut:
 	url string
 }
 
-pub fn (mut ep EmbedProvider) from_json (f json.Any){
-	mut obj := f.as_map()
+pub fn (mut ep EmbedProvider) from_json (f map[string]json.Any){
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'name' {ep.name = v.str()}
@@ -272,8 +258,8 @@ pub mut:
 	proxy_icon_url string
 }
 
-pub fn (mut ea EmbedAuthor) from_json (f json.Any){
-	mut obj := f.as_map()
+pub fn (mut ea EmbedAuthor) from_json (f map[string]json.Any){
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'name' {ea.name = v.str()}
@@ -305,8 +291,8 @@ pub mut:
 	inline bool
 }
 
-pub fn (mut ef EmbedField) from_json (f json.Any){
-	mut obj := f.as_map()
+pub fn (mut ef EmbedField) from_json (f map[string]json.Any){
+	mut obj := f
 	for k, v in obj{
 		match k {
 			'name' {ef.name = v.str()}
