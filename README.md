@@ -22,7 +22,7 @@ fn main() {
 
 fn on_ping(mut client vd.Client, evt &vd.MessageCreate) {
     if evt.content == '!ping' {
-        client.channel_message_send(evt.channel_id, 'pong!') or { }
+        client.channel_message_send(evt.channel_id, content: 'pong!') or { }
     }
 }
 ```
@@ -47,16 +47,16 @@ And then import `discordv` wherever you like
 - [x] REST for sending messages
 - [x] Implement `multipart/form-data` for file sending
 - [x] Do usual `application/json` for sending without binary data
-- [ ] Handle Gateway events
-  - [ ] Audit Log
+- [x] Handle Gateway events
+  - [x] Audit Log
   - [x] Channel
   - [x] Emoji
   - [x] Guild
   - [x] Invite
   - [x] User
-  - [ ] Voice
-  - [ ] Webhook
-  - [ ] Slash Command
+  - [x] Voice
+  - [x] Webhook
+  - [x] Slash Command
 - [ ] Create examples (2/4)
 - [ ] Documentation
 

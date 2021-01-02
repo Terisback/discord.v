@@ -23,6 +23,6 @@ fn on_ping(mut client vd.Client, evt &vd.MessageCreate) {
 	// If content of message is '!ping' reply with 'pong!'
 	if evt.content == '!ping' {
 		// Send message to channel
-		client.channel_message_send(evt.channel_id, 'pong!') or { }
+		client.channel_message_send(evt.channel_id, content: 'pong!') or { }
 	}
 }

@@ -72,7 +72,6 @@ pub fn (embed Embed) to_json() json.Any{
 	mut obj := map[string]json.Any{}
 	obj['title'] = embed.title
 	obj['description'] = embed.description
-	obj['url'] = embed.url
 	obj['color'] = embed.color
 	obj['footer'] = embed.footer.to_json()
 	obj['image'] = embed.image.to_json()
@@ -90,6 +89,10 @@ pub fn (embed []Embed) to_json() json.Any{
 		obj << e.to_json()
 	}
 	return obj
+}
+
+pub fn (embed Embed) iszero() bool {
+	return embed.to_json().str() == Embed{}.to_json().str()
 }
 
 pub struct EmbedFooter {

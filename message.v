@@ -29,7 +29,7 @@ pub mut:
 	application       MessageApplication
 	message_reference MessageReference
 	referenced_message &Message = voidptr(0)
-	stickers []Sticker
+	stickers 		  []Sticker
 	flags             MessageFlag
 }
 
@@ -126,6 +126,10 @@ pub fn (m MessageReference) to_json() json.Any{
 	obj['channel_id'] = m.channel_id
 	obj['guild_id'] = m.guild_id
 	return obj
+}
+
+fn (m MessageReference) iszero() bool {
+	return m.to_json().str() == MessageReference{}.to_json().str()
 }
 
 pub enum StickerType {
@@ -262,18 +266,4 @@ pub fn (mut m Message) from_json(f map[string]json.Any) {
 			else {}
 		}
 	}
-}
-
-pub fn (m Message) to_json() json.Any {
-	mut obj := map[string]json.Any{}
-	obj['content'] = m.content
-	obj['nonce'] = m.nonce
-	obj['tts'] = m.tts
-	if m.embeds.len >= 1 {
-		obj['embed'] = m.embeds[0].to_json()
-	}
-	if m.message_reference.message_id != '' {
-		obj['message_reference'] = m.message_reference.to_json()
-	}
-	return obj
 }

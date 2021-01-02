@@ -4,6 +4,184 @@ import time
 import x.json2 as json
 import discordv.util.snowflake
 
+pub struct AuditLog {
+pub mut:
+	webhooks []Webhook
+	users []User
+	audit_log_entries []AuditLogEntry
+	integrations []Integration
+}
+
+pub fn (mut al AuditLog) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'webhooks' {
+				al.webhooks = from_json_arr<Webhook>(v.arr())
+			}
+			'users' {
+				al.users = from_json_arr<User>(v.arr())
+			}
+			'audit_log_entries' {
+				al.audit_log_entries = from_json_arr<AuditLogEntry>(v.arr())
+			}
+			'integrations' {
+				al.integrations = from_json_arr<Integration>(v.arr())
+			}
+			else {}
+		}
+	}
+}
+
+pub struct AuditLogEntry {
+pub mut:
+	target_id string
+	changes []AuditLogChange
+	user_id string
+	id string
+	action_type AuditLogEvent
+	options AuditEntryInfo
+	reason string
+}
+
+pub fn (mut ale AuditLogEntry) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'target_id' {
+				ale.target_id = v.str()
+			}
+			'changes' {
+				ale.changes = from_json_arr<AuditLogChange>(v.arr())
+			}
+			'user_id' {
+				ale.user_id = v.str()
+			}
+			'id' {
+				ale.id = v.str()
+			}
+			'action_type' {
+				ale.action_type = AuditLogEvent(v.int())
+			}
+			'options' {
+				ale.options = from_json<AuditEntryInfo>(v.as_map())
+			}
+			'reason' {
+				ale.reason = v.str()
+			}
+			else {}
+		}
+	}
+}
+
+pub struct AuditLogChange {
+pub mut:
+	new_value json.Any
+	old_value json.Any
+	key string // TODO: write module for managing audit log changes
+}
+
+pub fn (mut alc AuditLogChange) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'new_value' {
+				alc.new_value = v
+			}
+			'old_value' {
+				alc.old_value = v
+			}
+			'key' {
+				alc.key = v.str()
+			}
+			else {}
+		}
+	}
+}
+
+pub enum AuditLogEvent {
+	guild_update = 1
+	channel_create = 10
+	channel_update
+	channel_delete
+	channel_overwrite_create
+	channel_overwrite_update
+	channel_overwrite_delete	
+	member_kick = 20
+	member_prune
+	member_ban_add
+	member_ban_remove
+	member_update
+	member_role_update
+	member_move
+	member_disconnect
+	bot_add
+	role_create = 30
+	role_update
+	role_delete
+	invite_create = 40
+	invite_update
+	invite_delete
+	webhook_create = 50
+	webhook_update	
+	webhook_delete
+	emoji_create = 60
+	emoji_update
+	emoji_delete
+	message_delete = 72
+	message_bulk_delete
+	message_pin
+	message_unpin
+	integration_create = 80
+	integration_update
+	integration_delete
+}
+
+pub struct AuditEntryInfo {
+pub mut:
+	delete_member_days string
+	members_removed string
+	channel_id string
+	message_id string
+	count string
+	id string
+	@type string
+	role_name string
+}
+
+pub fn (mut aei AuditEntryInfo) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'delete_member_days' {
+				aei.delete_member_days = v.str()
+			}
+			'members_removed' {
+				aei.members_removed = v.str()
+			}
+			'channel_id' {
+				aei.channel_id = v.str()
+			}
+			'message_id' {
+				aei.message_id = v.str()
+			}
+			'count' {
+				aei.count = v.str()
+			}
+			'id' {
+				aei.id = v.str()
+			}
+			'type' {
+				aei.@type = v.str()
+			}
+			'role_name' {
+				aei.role_name = v.str()
+			}
+			else {}
+		}
+	}
+}
+
 pub struct Activity {
 pub mut:
 	name string
@@ -1162,6 +1340,124 @@ pub fn (mut integration Integration) from_json(f map[string]json.Any){
 			else{}
 		}
 	}
+}
+
+pub struct Interaction {
+pub mut:
+	id string
+	@type InteractionType
+	data ApplicationCommandInteractionData
+	guild_id string
+	channel_id string
+	member Member
+	token string
+	version int
+}
+
+pub fn (mut inter Interaction) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'id' {inter.id = v.str()}
+			'type' {inter.@type = InteractionType(v.int())}
+			'data' {inter.data = from_json<ApplicationCommandInteractionData>(v.as_map())}
+			'guild_id' {inter.guild_id = v.str()}
+			'channel_id' {inter.channel_id = v.str()}
+			'member' {inter.member = from_json<Member>(v.as_map())}
+			'token' {inter.token = v.str()}
+			'version' {inter.version = v.int()}
+			else {}
+		}
+	}
+}
+
+pub enum InteractionType {
+	ping = 1
+	application_command = 2
+}
+
+pub struct ApplicationCommandInteractionData {
+pub mut:
+	id string
+	name string
+	options []&ApplicationCommandInteractionDataOption
+}
+
+pub fn (mut acid ApplicationCommandInteractionData) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'id' {acid.id = v.str()}
+			'name' {acid.name = v.str()}
+			'options' {
+				mut arr := from_json_arr<ApplicationCommandInteractionDataOption>(v.arr())
+				for item in arr {
+					acid.options << &item
+				}
+			}
+			else {}
+		}
+	}
+}
+
+pub struct ApplicationCommandInteractionDataOption {
+pub mut:
+	name string
+	value string
+	options []&ApplicationCommandInteractionDataOption
+}
+
+pub fn (mut acido ApplicationCommandInteractionDataOption) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'name' {acido.name = v.str()}
+			'value' {acido.value = v.str()}
+			'options' {
+				mut arr := from_json_arr<ApplicationCommandInteractionDataOption>(v.arr())
+				for item in arr {
+					acido.options << &item
+				}
+			}
+			else {}
+		}
+	}
+}
+
+pub struct Webhook {
+pub mut:
+	id string
+	@type WebhookType
+	guild_id string
+	channel_id string
+	user User
+	name string
+	avatar string
+	token string
+	application_id string
+}
+
+pub fn (mut webhook Webhook) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'id' {webhook.id = v.str()}
+			'type' {webhook.@type = WebhookType(v.int())}
+			'guild_id' {webhook.guild_id = v.str()}
+			'channel_id' {webhook.channel_id = v.str()}
+			'user' {webhook.user = from_json<User>(v.as_map())}
+			'name' {webhook.name = v.str()}
+			'avatar' {webhook.avatar = v.str()}
+			'token' {webhook.token = v.str()}
+			'application_id' {webhook.application_id = v.str()}
+			else {}
+		}
+	}
+}
+
+pub enum WebhookType {
+	incoming = 1
+	channel_follower
 }
 
 fn from_json<T> (f map[string]json.Any) T {

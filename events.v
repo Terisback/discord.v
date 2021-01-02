@@ -349,6 +349,242 @@ pub type MessageCreate = Message
 pub type MessageUpdate = Message
 pub type MessageDelete = Message
 
+pub struct MessageDeleteBulk {
+pub mut:
+	ids []string
+	channel_id string
+	guild_id string
+}
+
+pub fn (mut mdb MessageDeleteBulk) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'ids' {
+				mut ids := v.arr()
+				for id in ids {
+					mdb.ids << id.str()
+				}
+			}
+			'channel_id' {
+				mdb.channel_id = v.str()
+			}
+			'guild_id' {
+				mdb.guild_id = v.str()
+			}
+			else {}
+		}
+	}
+}
+
+pub struct MessageReactionAdd {
+pub mut:
+	user_id string
+	channel_id string
+	message_id string
+	guild_id string
+	member Member
+	emoji Emoji
+}
+
+pub fn (mut mra MessageReactionAdd) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'user_id' {
+				mra.user_id = v.str()
+			}
+			'channel_id' {
+				mra.channel_id = v.str()
+			}
+			'message_id' {
+				mra.message_id = v.str()
+			}
+			'guild_id' {
+				mra.guild_id = v.str()
+			}
+			'member' {
+				mra.member = from_json<Member>(v.as_map())
+			}
+			'emoji' {
+				mra.emoji = from_json<Emoji>(v.as_map())
+			}
+			else {}
+		}
+	}
+}
+
+pub struct MessageReactionRemove {
+pub mut:
+	user_id string
+	channel_id string
+	message_id string
+	guild_id string
+	emoji Emoji
+}
+
+pub fn (mut mra MessageReactionRemove) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'user_id' {
+				mra.user_id = v.str()
+			}
+			'channel_id' {
+				mra.channel_id = v.str()
+			}
+			'message_id' {
+				mra.message_id = v.str()
+			}
+			'guild_id' {
+				mra.guild_id = v.str()
+			}
+			'emoji' {
+				mra.emoji = from_json<Emoji>(v.as_map())
+			}
+			else {}
+		}
+	}
+}
+
+pub struct MessageReactionRemoveAll {
+pub mut:
+	channel_id string
+	message_id string
+	guild_id string
+}
+
+pub fn (mut mra MessageReactionRemoveAll) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'channel_id' {
+				mra.channel_id = v.str()
+			}
+			'message_id' {
+				mra.message_id = v.str()
+			}
+			'guild_id' {
+				mra.guild_id = v.str()
+			}
+			else {}
+		}
+	}
+}
+
+pub struct MessageReactionRemoveEmoji {
+pub mut:
+	channel_id string
+	message_id string
+	guild_id string
+	emoji Emoji
+}
+
+pub fn (mut mra MessageReactionRemoveEmoji) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'channel_id' {
+				mra.channel_id = v.str()
+			}
+			'message_id' {
+				mra.message_id = v.str()
+			}
+			'guild_id' {
+				mra.guild_id = v.str()
+			}
+			'emoji' {
+				mra.emoji = from_json<Emoji>(v.as_map())
+			}
+			else {}
+		}
+	}
+}
+
+pub struct TypingStart {
+pub mut:
+	channel_id string
+	guild_id string
+	user_id string
+	timestamp int
+	member Member
+}
+
+pub fn (mut ts TypingStart) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'channel_id' {
+				ts.channel_id = v.str()
+			}
+			'guild_id' {
+				ts.guild_id = v.str()
+			}
+			'user_id' {
+				ts.user_id = v.str()
+			}
+			'timestamp' {
+				ts.timestamp = v.int()
+			}
+			'member' {
+				ts.member = from_json<Member>(v.as_map())
+			}
+			else {}
+		}
+	}
+}
+
+pub type UserUpdate = User
+pub type VoiceStateUpdate = VoiceState
+
+pub struct VoiceServerUpdate {
+pub mut:
+	token string
+	guild_id string
+	endpoint string
+}
+
+pub fn (mut vsu VoiceServerUpdate) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'token' {
+				vsu.token = v.str()
+			}
+			'guild_id' {
+				vsu.guild_id = v.str()
+			}
+			'endpoint' {
+				vsu.endpoint = v.str()
+			}
+			else {}
+		}
+	}
+}
+
+pub struct WebhooksUpdate {
+pub mut:
+	guild_id string
+	channel_id string
+}
+
+pub fn (mut wu WebhooksUpdate) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'guild_id' {
+				wu.guild_id = v.str()
+			}
+			'channel_id' {
+				wu.channel_id = v.str()
+			}
+			else {}
+		}
+	}
+}
+
+pub type InteractionCreate = Interaction
+
 // Publishing hello event to client eventbus
 fn on_hello(mut client &Client, hello &packets.Hello){
 	client.events.publish('hello', client, hello)
@@ -478,8 +714,63 @@ fn on_dispatch(mut client &Client, packet &packets.Packet){
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
+		'message_delete_bulk' {
+			mut obj := MessageDeleteBulk{}
+			obj.from_json(data)
+			client.events.publish(event_name, client, obj)
+		}
+		'message_reaction_add' {
+			mut obj := MessageReactionAdd{}
+			obj.from_json(data)
+			client.events.publish(event_name, client, obj)
+		}
+		'message_reaction_remove' {
+			mut obj := MessageReactionRemove{}
+			obj.from_json(data)
+			client.events.publish(event_name, client, obj)
+		}
+		'message_reaction_remove_all' {
+			mut obj := MessageReactionRemoveAll{}
+			obj.from_json(data)
+			client.events.publish(event_name, client, obj)
+		}
+		'message_reaction_remove_emoji' {
+			mut obj := MessageReactionRemoveEmoji{}
+			obj.from_json(data)
+			client.events.publish(event_name, client, obj)
+		}
 		'presence_update' {
 			mut obj := PresenceUpdate{}
+			obj.from_json(data)
+			client.events.publish(event_name, client, obj)
+		}
+		'typing_start' {
+			mut obj := TypingStart{}
+			obj.from_json(data)
+			client.events.publish(event_name, client, obj)
+		}
+		'user_update' {
+			mut obj := UserUpdate{}
+			obj.from_json(data)
+			client.events.publish(event_name, client, obj)
+		}
+		'voice_state_update' {
+			mut obj := VoiceStateUpdate{}
+			obj.from_json(data)
+			client.events.publish(event_name, client, obj)
+		}
+		'voice_server_update' {
+			mut obj := VoiceServerUpdate{}
+			obj.from_json(data)
+			client.events.publish(event_name, client, obj)
+		}
+		'webhooks_update' {
+			mut obj := WebhooksUpdate{}
+			obj.from_json(data)
+			client.events.publish(event_name, client, obj)
+		}
+		'interaction_create' {
+			mut obj := InteractionCreate{}
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
@@ -614,7 +905,62 @@ pub fn (mut client Client) on_message_delete(handler fn(mut client &Client, even
 	client.events.subscribe('message_delete', handler)
 }
 
+// Add event handler to MessageDeleteBulk event
+pub fn (mut client Client) on_message_delete_bulk(handler fn(mut client &Client, event &MessageDeleteBulk)){
+	client.events.subscribe('message_delete_bulk', handler)
+}
+
+// Add event handler to MessageReactionAdd event
+pub fn (mut client Client) on_message_reaction_add(handler fn(mut client &Client, event &MessageReactionAdd)){
+	client.events.subscribe('message_reaction_add', handler)
+}
+
+// Add event handler to MessageReactionRemove event
+pub fn (mut client Client) on_message_reaction_remove(handler fn(mut client &Client, event &MessageReactionRemove)){
+	client.events.subscribe('message_reaction_remove', handler)
+}
+
+// Add event handler to MessageReactionRemoveAll event
+pub fn (mut client Client) on_message_reaction_remove_all(handler fn(mut client &Client, event &MessageReactionRemoveAll)){
+	client.events.subscribe('message_reaction_remove_all', handler)
+}
+
+// Add event handler to MessageReactionRemoveEmoji event
+pub fn (mut client Client) on_message_reaction_remove_emoji(handler fn(mut client &Client, event &MessageReactionRemoveEmoji)){
+	client.events.subscribe('message_reaction_remove_emoji', handler)
+}
+
 // Add event handler to PresenceUpdate event
 pub fn (mut client Client) on_presence_update(handler fn(mut client &Client, event &PresenceUpdate)){
 	client.events.subscribe('presence_update', handler)
+}
+
+// Add event handler to TypingStart event
+pub fn (mut client Client) on_typing_start(handler fn(mut client &Client, event &TypingStart)){
+	client.events.subscribe('typing_start', handler)
+}
+
+// Add event handler to UserUpdate event
+pub fn (mut client Client) on_user_update(handler fn(mut client &Client, event &UserUpdate)){
+	client.events.subscribe('user_update', handler)
+}
+
+// Add event handler to VoiceStateUpdate event
+pub fn (mut client Client) on_voice_state_update(handler fn(mut client &Client, event &VoiceStateUpdate)){
+	client.events.subscribe('voice_state_update', handler)
+}
+
+// Add event handler to VoiceServerUpdate event
+pub fn (mut client Client) on_voice_server_update(handler fn(mut client &Client, event &VoiceServerUpdate)){
+	client.events.subscribe('voice_server_update', handler)
+}
+
+// Add event handler to WebhooksUpdate event
+pub fn (mut client Client) on_webhooks_update(handler fn(mut client &Client, event &WebhooksUpdate)){
+	client.events.subscribe('webhooks_update', handler)
+}
+
+// Add event handler to InteractionCreate event
+pub fn (mut client Client) on_interaction_create(handler fn(mut client &Client, event &InteractionCreate)){
+	client.events.subscribe('interaction_create', handler)
 }
