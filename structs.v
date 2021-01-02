@@ -182,12 +182,12 @@ pub fn (mut ass ActivitySecrets) from_json(f map[string]json.Any){
 pub type ActivityFlags = int
 
 pub const (
-	INSTANCE = ActivityFlags(1 << 0)
-	JOIN = ActivityFlags(1 << 1)
-	SPECTATE = ActivityFlags(1 << 2)
-	JOIN_REQUEST = ActivityFlags(1 << 3)
-	SYNC = ActivityFlags(1 << 4)
-	PLAY = ActivityFlags(1 << 5)
+	instance = ActivityFlags(1 << 0)
+	join = ActivityFlags(1 << 1)
+	spectate = ActivityFlags(1 << 2)
+	join_request = ActivityFlags(1 << 3)
+	sync = ActivityFlags(1 << 4)
+	play = ActivityFlags(1 << 5)
 )
 
 pub struct Attachment {
@@ -804,19 +804,19 @@ pub enum GuildExplicitContentFilterLevel {
 pub type GuildFeature = string
 
 pub const (
-	INVITE_SPLASH = GuildFeature("INVITE_SPLASH")
-	VIP_REGIONS = GuildFeature("VIP_REGIONS")
-	VANITY_URL = GuildFeature("VANITY_URL")
-	VERIFIED = GuildFeature("VERIFIED")
-	PARTNERED = GuildFeature("PARTNERED")
-	COMMUNITY = GuildFeature("COMMUNITY")
-	COMMERCE = GuildFeature("COMMERCE")
-	NEWS = GuildFeature("NEWS")
-	DISCOVERABLE = GuildFeature("DISCOVERABLE")
-	FEATURABLE = GuildFeature("FEATURABLE")
-	ANIMATED_ICON = GuildFeature("ANIMATED_ICON")
-	BANNER = GuildFeature("BANNER")
-	WELCOME_SCREEN_ENABLED = GuildFeature("WELCOME_SCREEN_ENABLED")
+	invite_splash = GuildFeature("INVITE_SPLASH")
+	vip_regions = GuildFeature("VIP_REGIONS")
+	vanity_url = GuildFeature("VANITY_URL")
+	verified = GuildFeature("VERIFIED")
+	partnered = GuildFeature("PARTNERED")
+	community = GuildFeature("COMMUNITY")
+	commerce = GuildFeature("COMMERCE")
+	news = GuildFeature("NEWS")
+	discoverable = GuildFeature("DISCOVERABLE")
+	featurable = GuildFeature("FEATURABLE")
+	animated_icon = GuildFeature("ANIMATED_ICON")
+	banner = GuildFeature("BANNER")
+	welcome_screen_enabled = GuildFeature("WELCOME_SCREEN_ENABLED")
 )
 
 pub enum MFALevel {
@@ -827,8 +827,8 @@ pub enum MFALevel {
 pub type GuildSystemChannelFlags = int
 
 pub const (
-	SUPPRESS_JOIN_NOTIFICATIONS = GuildSystemChannelFlags(1 << 0)
-	SUPPRESS_PREMIUM_SUBSCRIPTIONS = GuildSystemChannelFlags(1 << 1)
+	suppress_join_notifications = GuildSystemChannelFlags(1 << 0)
+	suppress_premium_subscriptions = GuildSystemChannelFlags(1 << 1)
 )
 
 pub struct VoiceState {
