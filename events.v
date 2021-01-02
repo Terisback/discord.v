@@ -8,7 +8,11 @@ pub type Hello = packets.Hello
 pub type MessageCreate = Message
 pub type MessageUpdate = Message
 pub type MessageDelete = Message
-pub type GuildMemberAdd = Member
+struct GuildMemberAdd {
+	mut:
+		member Member
+		guild_id string
+}
 
 // Publishing hello event to client eventbus
 fn on_hello(mut client &Client, hello &packets.Hello){
@@ -41,8 +45,9 @@ fn on_dispatch(mut client &Client, packet &packets.Packet){
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_member_add' {
-			mut obj := Member{}
-			obj.from_json(packet.data)
+			mut obj := GuildMemberAdd{}
+			obj.member.from_json(packet.data)
+			obj.guild_id = packet.data.guild_id
 			client.events.publish(event_name, client, obj)
 		}
 		else {
