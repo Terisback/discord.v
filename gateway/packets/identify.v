@@ -2,7 +2,7 @@ module packets
 
 import os
 import x.json2 as json
-import discordv.types
+import discordv.gateway.types
 
 // Websocket Identify packet data
 pub struct Identify {

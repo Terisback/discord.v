@@ -2,7 +2,10 @@ module discordv
 
 import time
 import x.json2 as json
-import discordv.util.snowflake
+import discordv.snowflake
+
+// Permission type
+pub type Permission = int
 
 pub struct AuditLog {
 pub mut:
@@ -537,6 +540,593 @@ pub fn (mut channel Channel) from_json(f map[string]json.Any) {
 			else {}
 		}
 	}
+}
+
+pub struct Message {
+pub mut:
+	id                string
+	channel_id        string
+	guild_id          string
+	author            User
+	member            Member
+	content           string
+	timestamp         time.Time
+	edited_timestamp  time.Time
+	tts               bool
+	mention_everyone  bool
+	mentions          []User
+	mention_roles     []string
+	mention_channels  []ChannelMention
+	attachments       []Attachment
+	embeds            []Embed
+	reactions         []Reaction
+	nonce             string
+	pinned            bool
+	webhook_id        string
+	@type             MessageType
+	activity          MessageActivity
+	application       MessageApplication
+	message_reference MessageReference
+	referenced_message &Message = voidptr(0)
+	stickers 		  []Sticker
+	flags             MessageFlag
+}
+
+pub enum MessageType {
+	default
+	recipient_add
+	recipient_remove
+	call
+	channel_name_change
+	channel_icon_change
+	channel_pinned_message
+	guild_member_join
+	user_premium_guild_subscription
+	user_premium_guild_subscription_tier_1
+	user_premium_guild_subscription_tier_2
+	user_premium_guild_subscription_tier_3
+	channel_follow_add
+	guild_discovery_disqualified
+	guild_discovery_requalified
+	reply = 19
+	application_command
+}
+
+pub enum MessageActivityType {
+	join = 1
+	spectate = 2
+	listen = 3
+	join_request = 5
+}
+
+pub struct MessageActivity {
+pub mut:
+	@type    MessageActivityType
+	party_id string
+}
+
+fn (mut m MessageActivity) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj {
+		match k {
+			'type' { m.@type = MessageActivityType(v.int()) }
+			'party_id' { m.party_id = v.str() }
+			else {}
+		}
+	}
+}
+
+pub struct MessageApplication {
+pub mut:
+	id          string
+	cover_image string
+	description string
+	icon        string
+	name        string
+}
+
+fn (mut m MessageApplication) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj {
+		match k {
+			'id' { m.id = v.str() }
+			'cover_image' { m.cover_image = v.str() }
+			'description' { m.description = v.str() }
+			'icon' { m.icon = v.str() }
+			'name' { m.name = v.str() }
+			else {}
+		}
+	}
+}
+
+// Contains reference data with crossposted messages
+pub struct MessageReference {
+pub mut:
+	message_id string
+	channel_id string
+	guild_id   string
+}
+
+pub fn (mut m MessageReference) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj {
+		match k {
+			'message_id' { m.message_id = v.str() }
+			'channel_id' { m.channel_id = v.str() }
+			'guild_id' { m.guild_id = v.str() }
+			else {}
+		}
+	}
+}
+
+pub fn (m MessageReference) to_json() json.Any{
+	mut obj := map[string]json.Any{}
+	obj['message_id'] = m.message_id
+	obj['channel_id'] = m.channel_id
+	obj['guild_id'] = m.guild_id
+	return obj
+}
+
+fn (m MessageReference) iszero() bool {
+	return m.to_json().str() == MessageReference{}.to_json().str()
+}
+
+pub enum StickerType {
+	png = 1
+	apng
+	lottie
+}
+
+pub struct Sticker {
+pub mut:
+	id string
+	pack_id string
+	name string
+	description string
+	tags string
+	asset string
+	preview_asset string
+	format_type StickerType
+}
+
+pub fn (mut st Sticker) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'id' {st.id = v.str()}
+			'pack_id' {st.pack_id = v.str()}
+			'name' {st.name = v.str()}
+			'description' {st.description = v.str()}
+			'tags' {st.tags = v.str()}
+			'asset' {st.asset = v.str()}
+			'preview_asset' {st.preview_asset = v.str()}
+			'format_type' {st.format_type = StickerType(v.int())}
+			else {}
+		}
+	}
+}
+
+pub type MessageFlag = byte
+
+pub const (
+	crossposted            = MessageFlag(1 << 0)
+	is_crosspost           = MessageFlag(1 << 1)
+	suppress_embeds        = MessageFlag(1 << 2)
+	source_message_deleted = MessageFlag(1 << 3)
+	urgent                 = MessageFlag(1 << 4)
+)
+
+pub fn (mut m Message) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj {
+		match k {
+			'id' {
+				m.id = v.str()
+			}
+			'channel_id' {
+				m.channel_id = v.str()
+			}
+			'guild_id' {
+				m.guild_id = v.str()
+			}
+			'author' {
+				m.author = from_json<User>(v.as_map())
+			}
+			'member' {
+				m.member = from_json<Member>(v.as_map())
+			}
+			'content' {
+				m.content = v.str()
+			}
+			'timestamp' {
+				m.timestamp = time.parse_iso8601(v.str()) or { time.unix(0) }
+			}
+			'edited_timestamp' {
+				m.edited_timestamp = time.parse_iso8601(v.str()) or { time.unix(0) }
+			}
+			'tts' {
+				m.tts = v.bool()
+			}
+			'mention_everyone' {
+				m.mention_everyone = v.bool()
+			}
+			'mentions' {
+				m.mentions = from_json_arr<User>(v.arr())
+			}
+			'mention_roles' {
+				mut obja := v.arr()
+				for va in obja {
+					m.mention_roles << va.str()
+				}
+			}
+			'mention_channels' {
+				m.mention_channels = from_json_arr<ChannelMention>(v.arr())
+			}
+			'attachments' {
+				m.attachments = from_json_arr<Attachment>(v.arr())
+			}
+			'embeds' {
+				m.embeds = from_json_arr<Embed>(v.arr())
+			}
+			'reaction' {
+				m.reactions = from_json_arr<Reaction>(v.arr())
+			}
+			'nonce' {
+				m.nonce = v.str()
+			}
+			'pinned' {
+				m.pinned = v.bool()
+			}
+			'webhook_id' {
+				m.webhook_id = v.str()
+			}
+			'type' {
+				m.@type = MessageType(v.int())
+			}
+			'activity' {
+				m.activity = from_json<MessageActivity>(v.as_map())
+			}
+			'application' {
+				m.application = from_json<MessageApplication>(v.as_map())
+			}
+			'message_reference' {
+				m.message_reference = from_json<MessageReference>(v.as_map())
+			}
+			'referenced_message' {
+				mut ref := from_json<Message>(v.as_map())
+				m.referenced_message = &ref
+			}
+			'stickers' {
+				m.stickers = from_json_arr<Sticker>(v.arr())
+			}
+			'flags' {
+				m.flags = MessageFlag(byte(v.int()))
+			}
+			else {}
+		}
+	}
+}
+
+pub struct Embed {
+pub mut:
+	title string
+	description string
+	url string
+	timestamp time.Time
+	color int
+	footer EmbedFooter
+	image EmbedImage
+	thumbnail EmbedThumbnail
+	video EmbedVideo
+	provider EmbedProvider
+	author EmbedAuthor
+	fields []EmbedField
+}
+
+pub fn (mut embed Embed) from_json(f map[string]json.Any){
+	mut obja := f
+	for k, v in obja {
+		match k {
+			'title' {embed.title = v.str()}
+			'description' {embed.description = v.str()}
+			'url' {embed.url = v.str()}
+			'timestamp' {
+				embed.timestamp = time.parse_iso8601(v.str()) or {
+					time.unix(int(snowflake.discord_epoch / 1000))
+				}
+			}
+			'color' {embed.color = v.int()}
+			'footer' {
+				embed.footer = from_json<EmbedFooter>(v.as_map())
+			}
+			'image' {
+				embed.image = from_json<EmbedImage>(v.as_map())
+			}
+			'thumbnail' {
+				embed.thumbnail = from_json<EmbedThumbnail>(v.as_map())
+			}
+			'video' {
+				embed.video = from_json<EmbedVideo>(v.as_map())
+			}
+			'provider' {
+				embed.provider = from_json<EmbedProvider>(v.as_map())
+			}
+			'author' {
+				embed.author = from_json<EmbedAuthor>(v.as_map())
+			}
+			'fields' {
+				embed.image = from_json<EmbedImage>(v.as_map())
+			}
+			else {}
+		}
+	}
+}
+
+pub fn (mut embeds []Embed) from_json(f json.Any){
+	mut obj := f.arr()
+	for embed in obj{
+		mut e := Embed{}
+		e.from_json(embed.as_map())
+		embeds << e
+	}
+}
+
+pub fn (embed Embed) to_json() json.Any{
+	mut obj := map[string]json.Any{}
+	obj['title'] = embed.title
+	obj['description'] = embed.description
+	obj['color'] = embed.color
+	obj['footer'] = embed.footer.to_json()
+	obj['image'] = embed.image.to_json()
+	obj['thumbnail'] = embed.thumbnail.to_json()
+	obj['video'] = embed.video.to_json()
+	obj['provider'] = embed.provider.to_json()
+	obj['author'] = embed.author.to_json()
+	obj['fields'] = embed.fields.to_json()
+	return obj
+}
+
+pub fn (embed []Embed) to_json() json.Any{
+	mut obj := []json.Any{}
+	for e in embed{
+		obj << e.to_json()
+	}
+	return obj
+}
+
+pub fn (embed Embed) iszero() bool {
+	return embed.to_json().str() == Embed{}.to_json().str()
+}
+
+pub struct EmbedFooter {
+pub mut:
+	text string
+	icon_url string
+	proxy_icon_url string
+}
+
+pub fn (mut ef EmbedFooter) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'text' {ef.text = v.str()}
+			'icon_url' {ef.icon_url = v.str()}
+			'proxy_icon_url' {ef.proxy_icon_url = v.str()}
+			else {}
+		}
+	}
+}
+
+pub fn (ef EmbedFooter) to_json() json.Any {
+	mut obj := map[string]json.Any
+	obj['text'] = ef.text
+	obj['icon_url'] = ef.icon_url
+	obj['proxy_icon_url'] = ef.proxy_icon_url
+	return obj
+}
+
+pub fn (ef EmbedFooter) str() string{
+	return ef.to_json().str()
+}
+
+pub struct EmbedImage {
+pub mut:
+	url string
+	proxy_url string
+	height int
+	width int
+}
+
+pub fn (mut ei EmbedImage) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'url' {ei.url = v.str()}
+			'proxy_url' {ei.proxy_url = v.str()}
+			'height' {ei.height = v.int()}
+			'width' {ei.width = v.int()}
+			else {}
+		}
+	} 
+}
+
+pub fn (ei EmbedImage) to_json() json.Any {
+	mut obj := map[string]json.Any
+	obj['url'] = ei.url
+	obj['proxy_url'] = ei.proxy_url
+	obj['height'] = ei.height
+	obj['width'] = ei.width
+	return obj
+}
+
+pub fn (ei EmbedImage) str() string {
+	return ei.to_json().str()
+}
+
+pub struct EmbedThumbnail {
+pub mut:
+	url string
+	proxy_url string
+	height int
+	width int
+}
+
+pub fn (mut et EmbedThumbnail) from_json(f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'url' {et.url = v.str()}
+			'proxy_url' {et.proxy_url = v.str()}
+			'height' {et.height = v.int()}
+			'width' {et.width = v.int()}
+			else {}
+		}
+	} 
+}
+
+pub fn (et EmbedThumbnail) to_json() json.Any {
+	mut obj := map[string]json.Any
+	obj['url'] = et.url
+	obj['proxy_url'] = et.proxy_url
+	obj['height'] = et.height
+	obj['width'] = et.width
+	return obj
+}
+
+pub fn (et EmbedThumbnail) str() string {
+	return et.to_json().str()
+}
+
+pub struct EmbedVideo {
+pub mut:
+	url string
+	height int
+	width int
+}
+
+pub fn (mut ev EmbedVideo) from_json(f map[string]json.Any) {
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'url' {ev.url = v.str()}
+			'height' {ev.height = v.int()}
+			'width' {ev.width = v.int()}
+			else {}
+		}
+	} 
+}
+
+pub fn (ev EmbedVideo) to_json() json.Any {
+	mut obj := map[string]json.Any
+	obj['url'] = ev.url
+	obj['height'] = ev.height
+	obj['width'] = ev.width
+	return obj
+}
+
+pub fn (ev EmbedVideo) str() string {
+	return ev.to_json().str()
+}
+
+pub struct EmbedProvider {
+pub mut:
+	name string
+	url string
+}
+
+pub fn (mut ep EmbedProvider) from_json (f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'name' {ep.name = v.str()}
+			'url' {ep.url = v.str()}
+			else {}
+		}
+	}
+}
+
+pub fn (ep EmbedProvider) to_json() json.Any {
+	mut obj := map[string]json.Any
+	obj['name'] = ep.name
+	obj['url'] = ep.url
+	return obj
+}
+
+pub fn (ep EmbedProvider) str() string {
+	return ep.to_json().str()
+}
+
+pub struct EmbedAuthor {
+pub mut:
+	name string
+	url string
+	icon_url string
+	proxy_icon_url string
+}
+
+pub fn (mut ea EmbedAuthor) from_json (f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'name' {ea.name = v.str()}
+			'url' {ea.url = v.str()}
+			'icon_url' {ea.icon_url = v.str()}
+			'proxy_icon_url' {ea.proxy_icon_url = v.str()}
+			else {}
+		}
+	}
+}
+
+pub fn (ea EmbedAuthor) to_json() json.Any{
+	mut obj := map[string]json.Any
+	obj['name'] = ea.name
+	obj['url'] = ea.url
+	obj['icon_url'] = ea.icon_url
+	obj['proxy_icon_url'] = ea.proxy_icon_url
+	return obj
+}
+
+pub fn (ea EmbedAuthor) str() string {
+	return ea.to_json().str()
+}
+
+pub struct EmbedField {
+pub mut:
+	name string
+	value string
+	inline bool
+}
+
+pub fn (mut ef EmbedField) from_json (f map[string]json.Any){
+	mut obj := f
+	for k, v in obj{
+		match k {
+			'name' {ef.name = v.str()}
+			'value' {ef.value = v.str()}
+			'inline' {ef.inline = v.bool()}
+			else {}
+		}
+	}
+}
+
+pub fn (ef EmbedField) to_json() json.Any {
+	mut obj := map[string]json.Any{}
+	obj['name'] = ef.name
+	obj['value'] = ef.value
+	obj['inline'] = ef.inline
+	return obj
+}
+
+pub fn (ef []EmbedField) to_json() json.Any {
+	mut obj := []json.Any{}
+	for field in ef{
+		obj << field.to_json()
+	}
+	return obj
+}
+
+pub fn (ef EmbedField) str() string {
+	return ef.to_json().str()
 }
 
 pub struct Emoji {
@@ -1176,26 +1766,21 @@ pub fn (avatar Avatar) str() string {
 
 pub type UserFlag = int
 
-pub struct UserFlags {
-pub:
-	zero                         UserFlag = UserFlag(0)
-	discord_employee             UserFlag = UserFlag(1 << 0)
-	partnered_server_owner       UserFlag = UserFlag(1 << 1)
-	hypersquad_events            UserFlag = UserFlag(1 << 2)
-	bughunter_level1             UserFlag = UserFlag(1 << 3)
-	house_bravery                UserFlag = UserFlag(1 << 6)
-	house_brilliance             UserFlag = UserFlag(1 << 7)
-	house_balance                UserFlag = UserFlag(1 << 8)
-	early_supporter              UserFlag = UserFlag(1 << 9)
-	team_user                    UserFlag = UserFlag(1 << 10)
-	system                       UserFlag = UserFlag(1 << 12)
-	bughunter_level2             UserFlag = UserFlag(1 << 14)
-	verified_bot                 UserFlag = UserFlag(1 << 16)
-	early_verified_bot_developer UserFlag = UserFlag(1 << 17)
-}
-
 pub const (
-	user_flags = UserFlags{}
+	zero                         = UserFlag(0)
+	discord_employee             = UserFlag(1 << 0)
+	partnered_server_owner       = UserFlag(1 << 1)
+	hypersquad_events            = UserFlag(1 << 2)
+	bughunter_level1             = UserFlag(1 << 3)
+	house_bravery                = UserFlag(1 << 6)
+	house_brilliance             = UserFlag(1 << 7)
+	house_balance                = UserFlag(1 << 8)
+	early_supporter              = UserFlag(1 << 9)
+	team_user                    = UserFlag(1 << 10)
+	system                       = UserFlag(1 << 12)
+	bughunter_level2             = UserFlag(1 << 14)
+	verified_bot                 = UserFlag(1 << 16)
+	early_verified_bot_developer = UserFlag(1 << 17)
 )
 
 pub enum PremiumType {

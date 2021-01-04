@@ -1,11 +1,14 @@
 module discordv
 
 import sync
+import log
+import term
 import time
 import discordv.eventbus
+import discordv.fancylog
 import discordv.gateway
+import discordv.gateway.types
 import discordv.rest
-import discordv.types
 
 // Config struct
 pub struct Config {
@@ -26,6 +29,7 @@ mut:
 	shards      []&gateway.Connection
 pub mut:
 	rest        &rest.REST
+	log			&fancylog.Log
 }
 
 // Creates a new Discord client
@@ -36,9 +40,16 @@ pub fn new(config Config) ?&Client {
 		shard_count: config.shard_count
 		events: eventbus.new()
 		rest: rest.new(config.token)
+		log: fancylog.new()
 	}
+	$if dv_debug ? {
+		client.log.set_level(.debug)
+	}
+	client.log.set_prefix_func(prefix)
 	for i in 0 .. config.shard_count {
 		mut conn := gateway.new_connection(config.token, config.intents, i, config.shard_count) ?
+		conn.log = client.log
+		conn.set_ws_log_level(.warn)
 		conn.set_reciever(client)
 		conn.on_hello(on_hello)
 		conn.on_dispatch(on_dispatch)
@@ -56,4 +67,13 @@ pub fn (mut client Client) open() ? {
 	mut wg := sync.new_waitgroup()
 	wg.add(1)
 	wg.wait()
+}
+
+// Needed for logging purposes
+fn prefix(level log.Level, colors_supported bool) string {
+	if colors_supported {
+		v := term.bold(term.rgb(95, 155, 230, 'v'))
+		return term.bright_white('[discord.$v] ')
+	}
+	return '[discord.v] '
 }

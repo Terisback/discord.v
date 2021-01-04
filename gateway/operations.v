@@ -2,7 +2,6 @@ module gateway
 
 import time
 import discordv.gateway.packets
-import discordv.util
 
 fn (mut conn Connection) hello(packet packets.Packet) {
 	mut hello := packets.Hello{}
@@ -71,7 +70,7 @@ fn (mut conn Connection) run_heartbeat() ? {
 				data: conn.sequence
 			}
 			message := heartbeat.to_json()
-			conn.ws.write_str(message) or { util.log('Something went wrong: $err') }
+			conn.ws.write_str(message) or { conn.log.error('Something went wrong with websocket: $err') }
 			conn.last_heartbeat = now
 			conn.heartbeat_acked = false
 		}

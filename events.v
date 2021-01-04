@@ -3,8 +3,7 @@ module discordv
 import time
 import x.json2 as json
 import discordv.gateway.packets
-import discordv.util.snowflake
-import discordv.util
+import discordv.snowflake
 
 pub type Dispatch = packets.Packet
 pub type Hello = packets.Hello
@@ -775,7 +774,7 @@ fn on_dispatch(mut client &Client, packet &packets.Packet){
 			client.events.publish(event_name, client, obj)
 		}
 		else {
-			util.log('Unhandled event: $event_name')
+			client.log.info('Unhandled event: $event_name')
 		}
 	}
 }

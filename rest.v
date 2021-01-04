@@ -4,7 +4,6 @@ import net.urllib
 import x.json2 as json
 import discordv.rest
 import discordv.rest.formdata
-import discordv.util
 
 // Optional query for guild_audit_log.
 // 'limit' must be [1, 100], default 50.
@@ -40,7 +39,7 @@ pub fn (mut client Client) guild_audit_log(guild_id string, query ...GuildAuditL
 	if resp.status_code != 200 {
 		response_error := rest.ResponseCode(resp.status_code)
 		err_text := 'Status code is $resp.status_code ($response_error).\n'
-		util.log(err_text + 'Request: $req.data')
+		client.log.error(err_text + 'Request: $req.data')
 		return error(err_text)
 	}
 }
@@ -89,7 +88,7 @@ pub fn (mut client Client) channel_message_send(channel_id string, message Messa
 	if resp.status_code != 200 {
 		response_error := rest.ResponseCode(resp.status_code)
 		err_text := 'Status code is $resp.status_code ($response_error).\n'
-		util.log(err_text + 'Request: $req.data')
+		client.log.error(err_text + 'Request: $req.data')
 		return error(err_text)
 	}
 }
