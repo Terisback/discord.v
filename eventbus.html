@@ -46,55 +46,46 @@
 					<div class="doc-content">
 						<section id="eventbus" class="doc-node">
 							<div class="title"><h1> eventbus</h1></div>
-							
-						</section>
+</section>
 
 						<section id="new" class="doc-node">
 							<div class="title"><h2>fn new <a href="#new">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Ceventbus%5Ceventbus.v#L24"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&</span>EventBus</code></pre>
-
-							<p>Create new EventBus</p>
-						</section>
+<p>Create new EventBus</p>
+</section>
 						<section id="EventHandlerFn" class="doc-node">
 							<div class="title"><h2>type EventHandlerFn <a href="#EventHandlerFn">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Ceventbus%5Ceventbus.v#L4"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> EventHandlerFn <span class="token operator">=</span> <span class="token keyword">fn</span> <span class="token punctuation">(</span>client <span class="token builtin">voidptr</span><span class="token punctuation">,</span> event <span class="token builtin">voidptr</span><span class="token punctuation">)</span></code></pre>
-
-							<p>discord.v event handler function</p>
-						</section>
+<p>discord.v event handler function</p>
+</section>
 						<section id="EventBus" class="doc-node">
 							<div class="title"><h2>struct EventBus <a href="#EventBus">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Ceventbus%5Ceventbus.v#L18"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">EventBus</span> <span class="token punctuation">{</span>
 <span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
 	registry <span class="token operator">&</span>Registry
 <span class="token punctuation">}</span></code></pre>
-
-							<p>EventBus allows to subscribe and publish events</p>
-						</section>
+<p>EventBus allows to subscribe and publish events</p>
+</section>
 						<section id="EventBus.subscribe" class="doc-node">
 							<div class="title"><h2>fn (EventBus) subscribe <a href="#EventBus.subscribe">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Ceventbus%5Ceventbus.v#L32"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> eb EventBus<span class="token punctuation">)</span> <span class="token function">subscribe</span><span class="token punctuation">(</span>name <span class="token builtin">string</span><span class="token punctuation">,</span> handler EventHandlerFn<span class="token punctuation">)</span></code></pre>
-
-							<p>Subscribe handler to event</p>
-						</section>
+<p>Subscribe handler to event</p>
+</section>
 						<section id="EventBus.unsubscribe" class="doc-node">
 							<div class="title"><h2>fn (EventBus) unsubscribe <a href="#EventBus.unsubscribe">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Ceventbus%5Ceventbus.v#L40"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> eb EventBus<span class="token punctuation">)</span> <span class="token function">unsubscribe</span><span class="token punctuation">(</span>name <span class="token builtin">string</span><span class="token punctuation">,</span> handler EventHandlerFn<span class="token punctuation">)</span></code></pre>
-
-							<p>Unsubscribe handler from event</p>
-						</section>
+<p>Unsubscribe handler from event</p>
+</section>
 						<section id="EventBus.publish" class="doc-node">
 							<div class="title"><h2>fn (EventBus) publish <a href="#EventBus.publish">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Ceventbus%5Ceventbus.v#L52"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> eb EventBus<span class="token punctuation">)</span> <span class="token function">publish</span><span class="token punctuation">(</span>name <span class="token builtin">string</span><span class="token punctuation">,</span> client <span class="token builtin">voidptr</span><span class="token punctuation">,</span> event <span class="token builtin">voidptr</span><span class="token punctuation">)</span></code></pre>
-
-							<p>Publish event</p>
-						</section>
+<p>Publish event</p>
+</section>
 						<section id="EventBus.clear_all" class="doc-node">
 							<div class="title"><h2>fn (EventBus) clear_all <a href="#EventBus.clear_all">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Ceventbus%5Ceventbus.v#L61"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> eb EventBus<span class="token punctuation">)</span> <span class="token function">clear_all</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
-
-							<p>Clear all event handlers from registry</p>
-						</section>
+<p>Clear all event handlers from registry</p>
+</section>
 						<section id="EventBus.has_subscriber" class="doc-node">
 							<div class="title"><h2>fn (EventBus) has_subscriber <a href="#EventBus.has_subscriber">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Ceventbus%5Ceventbus.v#L71"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> eb EventBus<span class="token punctuation">)</span> <span class="token function">has_subscriber</span><span class="token punctuation">(</span>name <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">bool</span></code></pre>
-
-							<p>Checks if any handler is subscribed to the event</p>
-						</section>
+<p>Checks if any handler is subscribed to the event</p>
+</section>
 
 						<div class="footer">
-							Powered by vdoc. Generated on: 4 Jan 2021 08:14:50
+							Powered by vdoc. Generated on: 4 Jan 2021 08:20:48
 						</div>
 					</div>
 					<div class="doc-toc"><ul><li class="open"><a href="#new">fn new</a>        <ul>

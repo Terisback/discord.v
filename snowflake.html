@@ -46,25 +46,21 @@
 					<div class="doc-content">
 						<section id="snowflake" class="doc-node">
 							<div class="title"><h1> snowflake</h1></div>
-							
-						</section>
+</section>
 
 						<section id="Constants" class="doc-node const">
 							<div class="title"><h2>Constants <a href="#Constants">#</a></h2></div>
-							
-						</section>
+</section>
 						<section id="" class="doc-node const">
 <pre class="signature"><code><span class="token keyword">const</span> <span class="token punctuation">(</span>
 	discord_epoch <span class="token operator">=</span> <span class="token builtin">u64</span><span class="token punctuation">(</span><span class="token number">1420070400000</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span></code></pre>
-
-							<p>`` Discord's epoch in milliseconds</p>
-						</section>
+<p>`` Discord's epoch in milliseconds</p>
+</section>
 						<section id="new_snowflake" class="doc-node">
 							<div class="title"><h2>fn new_snowflake <a href="#new_snowflake">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Csnowflake%5Csnowflake.v#L20"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">new_snowflake</span><span class="token punctuation">(</span>id <span class="token builtin">u64</span><span class="token punctuation">)</span> Snowflake</code></pre>
-
-							<p>Creates a new snowflake</p>
-						</section>
+<p>Creates a new snowflake</p>
+</section>
 						<section id="Snowflake" class="doc-node">
 							<div class="title"><h2>struct Snowflake <a href="#Snowflake">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Csnowflake%5Csnowflake.v#L11"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Snowflake</span> <span class="token punctuation">{</span>
 <span class="token keyword">pub</span><span class="token punctuation">:</span>
@@ -73,32 +69,27 @@
 	internal_process_id <span class="token builtin">u64</span>
 	internal_worker_id  <span class="token builtin">u64</span>
 <span class="token punctuation">}</span></code></pre>
-
-							<p>Snowflake is the type for a Discord snowflake</p>
-						</section>
+<p>Snowflake is the type for a Discord snowflake</p>
+</section>
 						<section id="Snowflake.i64" class="doc-node">
 							<div class="title"><h2>fn (Snowflake) i64 <a href="#Snowflake.i64">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Csnowflake%5Csnowflake.v#L30"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>s Snowflake<span class="token punctuation">)</span> <span class="token builtin">i64</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">i64</span></code></pre>
-
-							<p>Gets the snowflake as an i64</p>
-						</section>
+<p>Gets the snowflake as an i64</p>
+</section>
 						<section id="Snowflake.str" class="doc-node">
 							<div class="title"><h2>fn (Snowflake) str <a href="#Snowflake.str">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Csnowflake%5Csnowflake.v#L35"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>s Snowflake<span class="token punctuation">)</span> <span class="token function">str</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
-
-							<p>Gets the snowflake as a string</p>
-						</section>
+<p>Gets the snowflake as a string</p>
+</section>
 						<section id="Snowflake.time" class="doc-node">
 							<div class="title"><h2>fn (Snowflake) time <a href="#Snowflake.time">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Csnowflake%5Csnowflake.v#L40"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>s Snowflake<span class="token punctuation">)</span> <span class="token function">time</span><span class="token punctuation">(</span><span class="token punctuation">)</span> time<span class="token punctuation">.</span>Time</code></pre>
-
-							<p>Converts the snowflake to a time.Time object</p>
-						</section>
+<p>Converts the snowflake to a time.Time object</p>
+</section>
 						<section id="Snowflake.is_nil" class="doc-node">
 							<div class="title"><h2>fn (Snowflake) is_nil <a href="#Snowflake.is_nil">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/terisback/discord.v/blob/master/C:%5CDev%5Cdiscordv%5Csnowflake%5Csnowflake.v#L45"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>s Snowflake<span class="token punctuation">)</span> <span class="token function">is_nil</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">bool</span></code></pre>
-
-							<p>Checks zero value snowflake</p>
-						</section>
+<p>Checks zero value snowflake</p>
+</section>
 
 						<div class="footer">
-							Powered by vdoc. Generated on: 4 Jan 2021 08:14:50
+							Powered by vdoc. Generated on: 4 Jan 2021 08:20:48
 						</div>
 					</div>
 					<div class="doc-toc"><ul><li class="open"><a href="#Constants">Constants</a></li>
