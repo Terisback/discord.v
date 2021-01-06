@@ -44,6 +44,8 @@ pub fn new(config Config) ?&Client {
 	}
 	$if dv_debug ? {
 		client.log.set_level(.debug)
+	} $else {
+		client.log.set_level(.warn)
 	}
 	client.log.set_prefix_func(prefix)
 	for i in 0 .. config.shard_count {

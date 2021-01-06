@@ -4,7 +4,7 @@ import net.http
 
 const (
 	api            = 'https://discord.com/api/v8'
-	bot_user_agent = 'DiscordBot (https://github.com/Terisback/discord.v, v0.0.1)'
+	bot_user_agent = 'DiscordBot (https://github.com/Terisback/discord.v, v0.1.0)'
 )
 
 // Create new discord api request
