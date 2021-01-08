@@ -51,7 +51,11 @@ pub fn new(config Config) ?&Client {
 	for i in 0 .. config.shard_count {
 		mut conn := gateway.new_connection(config.token, config.intents, i, config.shard_count) ?
 		conn.log = client.log
-		conn.set_ws_log_level(.warn)
+		$if dv_ws_debug ? {
+			conn.set_ws_log_level(.debug)
+		} $else {
+			conn.set_ws_log_level(.warn)
+		}
 		conn.set_reciever(client)
 		conn.on_hello(on_hello)
 		conn.on_dispatch(on_dispatch)
