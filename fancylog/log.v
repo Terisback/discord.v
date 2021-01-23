@@ -5,7 +5,7 @@ import log
 import term
 
 pub const (
-	colors_supported_stdout = term.can_show_color_on_stdout()	
+	colors_supported_stdout = term.can_show_color_on_stdout()
 	colors_supported_stderr = term.can_show_color_on_stderr()
 )
 
@@ -119,7 +119,7 @@ fn (mut l Log) colors_supported() bool {
 
 // Logs to stderr with 'message' then panics
 pub fn (mut l Log) fatal(message string) {
-	if l.level < .fatal { return }
+	if int(l.level) < int(log.Level.fatal) { return }
 	if !l.output_to_file && colors_supported_stdout {
 		l.log(.fatal, term.bright_bg_red(term.black(message)))
 	} else {
@@ -132,7 +132,7 @@ pub fn (mut l Log) fatal(message string) {
 // Logs to stderr with 'message' and '.error' level.
 // By default adds bright red color to message, you can disable it by 'disable_fancy()'
 pub fn (mut l Log) error(message string) {
-	if l.level < .error { return }
+	if int(l.level) < int(log.Level.error) { return }
 	if l.colors_supported() && l.fancy {
 		l.log(.error, term.bright_red(message))
 	} else {
@@ -143,7 +143,7 @@ pub fn (mut l Log) error(message string) {
 // Logs to stdout with '.warn' level.
 // By default adds bright yellow color to message, you can disable it by 'disable_fancy()'
 pub fn (mut l Log) warn(message string) {
-	if l.level < .warn { return }
+	if int(l.level) < int(log.Level.warn) { return }
 	if l.colors_supported() && l.fancy {
 		l.log(.warn, term.bright_yellow(message))
 	} else {
@@ -154,7 +154,7 @@ pub fn (mut l Log) warn(message string) {
 // Logs to stdout with '.warn' level.
 // By default adds bright green color to message, you can disable it by 'disable_fancy()'
 pub fn (mut l Log) info(message string) {
-	if l.level < .info { return }
+	if int(l.level) < int(log.Level.info) { return }
 	if l.colors_supported() && l.fancy {
 		l.log(.info, term.bright_green(message))
 	} else {
@@ -164,6 +164,6 @@ pub fn (mut l Log) info(message string) {
 
 // Logs to stdout with '.debug' level. It doesn't add color, or smth, just debug message... :(
 pub fn (mut l Log) debug(message string) {
-	if l.level < .debug { return }
+	if int(l.level) < int(log.Level.debug) { return }
 	l.log(.debug, message)
 }
