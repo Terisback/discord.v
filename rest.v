@@ -30,19 +30,19 @@ pub fn (query GuildAuditLogQuery) query() string {
 }
 
 // Returns an AuditLog struct for the guild. Requires the 'VIEW_AUDIT_LOG' permission.
-pub fn (mut client Client) guild_audit_log(guild_id string, query ...GuildAuditLogQuery) ?AuditLog {
-	mut req := rest.new_request(client.token, .get, '/guilds/$guild_id/audit-logs') ?
-	if query.len >= 1 {
-		req.url += '?${query[0].query()}' 
-	}
-	resp := client.rest.do(req) ?
-	if resp.status_code != 200 {
-		response_error := rest.ResponseCode(resp.status_code)
-		err_text := 'Status code is $resp.status_code ($response_error).\n'
-		client.log.error(err_text + 'Request: $req.data')
-		return error(err_text)
-	}
-}
+// pub fn (mut client Client) guild_audit_log(guild_id string, query ...GuildAuditLogQuery) ?AuditLog {
+// 	mut req := rest.new_request(client.token, .get, '/guilds/$guild_id/audit-logs') ?
+// 	if query.len >= 1 {
+// 		req.url += '?${query[0].query()}'
+// 	}
+// 	resp := client.rest.do(req) ?
+// 	if resp.status_code != 200 {
+// 		response_error := rest.ResponseCode(resp.status_code)
+// 		err_text := 'Status code is $resp.status_code ($response_error).\n'
+// 		client.log.error(err_text + 'Request: $req.data')
+// 		return error(err_text)
+// 	}
+// }
 
 // MessageSend stores all parameters you can send with channel_message_send.
 pub struct MessageSend {
@@ -83,7 +83,7 @@ pub fn (mut client Client) channel_message_send(channel_id string, message Messa
 		req.add_header('Content-Type', 'application/json')
 		req.data = message.to_json().str()
 	}
-	
+
 	resp := client.rest.do(req) ?
 	if resp.status_code != 200 {
 		response_error := rest.ResponseCode(resp.status_code)

@@ -37,7 +37,7 @@ fn on_message(mut ws websocket.Client, msg &websocket.Message, mut conn Connecti
 				}
 				.reconnect {
 					conn.resuming = true
-					conn.ws.close(CloseCode.normal_closure, 'Reconnect')
+					conn.ws.close(int(CloseCode.normal_closure), 'Reconnect')
 				}
 				else {
 					thing := packets.Op(packet.op)
