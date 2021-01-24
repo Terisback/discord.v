@@ -16,6 +16,7 @@ pub mut:
 	token       string
 	intents     types.Intent = guilds | guild_messages
 	shard_count int = 1
+	userdata    voidptr
 }
 
 // Client represents a connection to the Discord API
@@ -30,6 +31,7 @@ mut:
 pub mut:
 	rest        &rest.REST
 	log			&fancylog.Log
+	userdata voidptr
 }
 
 // Creates a new Discord client
@@ -38,6 +40,7 @@ pub fn new(config Config) ?&Client {
 		token: config.token
 		intents: config.intents
 		shard_count: config.shard_count
+		userdata: config.userdata
 		events: eventbus.new()
 		rest: rest.new(config.token)
 		log: fancylog.new()
