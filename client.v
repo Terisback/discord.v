@@ -31,7 +31,7 @@ mut:
 pub mut:
 	rest        &rest.REST
 	log			&fancylog.Log
-	userdata voidptr
+	userdata 	voidptr
 }
 
 // Creates a new Discord client

@@ -18,7 +18,7 @@ pub fn new_ratelimiter() &RateLimiter {
 
 // Get bucket by key
 pub fn (mut rl RateLimiter) get_bucket(key string) &Bucket {
-	rl.mutex.m_lock()
+	rl.mutex.@lock()
 	defer {
 		rl.mutex.unlock()
 	}
@@ -53,7 +53,7 @@ pub fn (mut rl RateLimiter) lock_bucket(key string) &Bucket {
 
 // Lock bucket before do a request
 pub fn (mut rl RateLimiter) lock_bucket_obj(mut bucket Bucket) &Bucket {
-	bucket.mutex.m_lock()
+	bucket.mutex.@lock()
 	wait := rl.get_wait_time(bucket, 1)
 	if wait > 0 {
 		time.sleep_ms(int(wait))

@@ -17,7 +17,7 @@ fn (mut conn Connection) hello(packet packets.Packet) {
 			op: .resume
 			data: resume.to_json_any()
 		}.to_json()
-		conn.ws.write_str(message)
+		conn.ws.write_str(message) or { panic(err) }
 		conn.resuming = false
 	} else {
 		message := packets.Packet{
@@ -28,7 +28,7 @@ fn (mut conn Connection) hello(packet packets.Packet) {
 				shard: [conn.shard_id, conn.shard_count]
 			}.to_json_any()
 		}.to_json()
-		conn.ws.write_str(message)
+		conn.ws.write_str(message) or {panic(err)}
 		conn.publish('hello', &hello)
 	}
 	conn.last_heartbeat = time.now().unix_time_milli()
@@ -50,7 +50,7 @@ fn (mut conn Connection) run_heartbeat() ? {
 		mut stop := false
 		status := conn.stop.try_pop(stop)
 		if status == .success {
-			conn.ws.close(1000, 'close() was called')
+			conn.ws.close(1000, 'close() was called')?
 			return
 		}
 		time.sleep_ms(50)
@@ -61,7 +61,9 @@ fn (mut conn Connection) run_heartbeat() ? {
 		if now - conn.last_heartbeat > conn.heartbeat_interval {
 			if conn.heartbeat_acked != true {
 				if conn.ws.state == .open {
-					conn.ws.close(1000, "heartbeat ack didn't come")
+					conn.ws.close(1000, "heartbeat ack didn't come") or {
+						panic(err)
+					}
 				}
 				continue
 			}

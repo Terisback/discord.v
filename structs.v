@@ -16,8 +16,7 @@ pub mut:
 }
 
 pub fn (mut al AuditLog) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'webhooks' {
 				al.webhooks = from_json_arr<Webhook>(v.arr())
@@ -48,8 +47,7 @@ pub mut:
 }
 
 pub fn (mut ale AuditLogEntry) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'target_id' {
 				ale.target_id = v.str()
@@ -85,8 +83,7 @@ pub mut:
 }
 
 pub fn (mut alc AuditLogChange) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'new_value' {
 				alc.new_value = v
@@ -153,8 +150,7 @@ pub mut:
 }
 
 pub fn (mut aei AuditEntryInfo) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'delete_member_days' {
 				aei.delete_member_days = v.str()
@@ -204,8 +200,7 @@ pub mut:
 }
 
 pub fn (mut activity Activity) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'name' {
 				activity.name = v.str()
@@ -269,8 +264,7 @@ pub mut:
 }
 
 pub fn (mut at ActivityTimestamp) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'start' {
 				at.start = v.int()
@@ -290,8 +284,7 @@ pub mut:
 }
 
 pub fn (mut ap ActivityParty) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'id' {
 				ap.id = v.str()
@@ -315,8 +308,7 @@ pub mut:
 }
 
 pub fn (mut aa ActivityAssets) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'large_image' {
 				aa.large_image = v.str()
@@ -343,8 +335,7 @@ pub mut:
 }
 
 pub fn (mut ass ActivitySecrets) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'join' {
 				ass.join = v.str()
@@ -383,8 +374,7 @@ pub mut:
 }
 
 pub fn (mut at Attachment) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'id' {at.id = v.str()}
 			'filename' {at.filename = v.str()}
@@ -412,8 +402,7 @@ pub mut:
 }
 
 pub fn (mut po PermissionOverwrite) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'id' { po.id = v.str() }
 			'type' { po.@type = PermissionOverwriteType(v.int()) }
@@ -443,8 +432,7 @@ pub mut:
 }
 
 pub fn (mut cm ChannelMention) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k{
 			'id' {cm.id = v.str()}
 			'guild_id' {cm.guild_id = v.str()}
@@ -478,8 +466,7 @@ pub mut:
 }
 
 pub fn (mut channel Channel) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'id' {
 				channel.id = v.str()
@@ -606,8 +593,7 @@ pub mut:
 }
 
 fn (mut m MessageActivity) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'type' { m.@type = MessageActivityType(v.int()) }
 			'party_id' { m.party_id = v.str() }
@@ -626,8 +612,7 @@ pub mut:
 }
 
 fn (mut m MessageApplication) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'id' { m.id = v.str() }
 			'cover_image' { m.cover_image = v.str() }
@@ -648,8 +633,7 @@ pub mut:
 }
 
 pub fn (mut m MessageReference) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'message_id' { m.message_id = v.str() }
 			'channel_id' { m.channel_id = v.str() }
@@ -690,8 +674,7 @@ pub mut:
 }
 
 pub fn (mut st Sticker) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'id' {st.id = v.str()}
 			'pack_id' {st.pack_id = v.str()}
@@ -717,8 +700,7 @@ pub const (
 )
 
 pub fn (mut m Message) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'id' {
 				m.id = v.str()
@@ -824,8 +806,7 @@ pub mut:
 }
 
 pub fn (mut embed Embed) from_json(f map[string]json.Any){
-	mut obja := f
-	for k, v in obja {
+	for k, v in f {
 		match k {
 			'title' {embed.title = v.str()}
 			'description' {embed.description = v.str()}
@@ -906,8 +887,7 @@ pub mut:
 }
 
 pub fn (mut ef EmbedFooter) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'text' {ef.text = v.str()}
 			'icon_url' {ef.icon_url = v.str()}
@@ -938,8 +918,7 @@ pub mut:
 }
 
 pub fn (mut ei EmbedImage) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'url' {ei.url = v.str()}
 			'proxy_url' {ei.proxy_url = v.str()}
@@ -972,8 +951,7 @@ pub mut:
 }
 
 pub fn (mut et EmbedThumbnail) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'url' {et.url = v.str()}
 			'proxy_url' {et.proxy_url = v.str()}
@@ -1005,8 +983,7 @@ pub mut:
 }
 
 pub fn (mut ev EmbedVideo) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'url' {ev.url = v.str()}
 			'height' {ev.height = v.int()}
@@ -1035,8 +1012,7 @@ pub mut:
 }
 
 pub fn (mut ep EmbedProvider) from_json (f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'name' {ep.name = v.str()}
 			'url' {ep.url = v.str()}
@@ -1065,8 +1041,7 @@ pub mut:
 }
 
 pub fn (mut ea EmbedAuthor) from_json (f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'name' {ea.name = v.str()}
 			'url' {ea.url = v.str()}
@@ -1098,8 +1073,7 @@ pub mut:
 }
 
 pub fn (mut ef EmbedField) from_json (f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'name' {ef.name = v.str()}
 			'value' {ef.value = v.str()}
@@ -1137,8 +1111,7 @@ pub mut:
 }
 
 pub fn (mut emoji Emoji) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'id' {
 				emoji.id = v.str()
@@ -1167,8 +1140,7 @@ pub mut:
 }
 
 fn (mut g UnavailableGuild) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'id' { g.id = v.str() }
 			'unavailable' { g.unavailable = v.bool() }
@@ -1190,8 +1162,7 @@ pub mut:
 }
 
 pub fn (mut member Member) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'user' {
 				member.user = from_json<User>(v.as_map())
@@ -1229,8 +1200,7 @@ pub mut:
 }
 
 pub fn (mut r Reaction) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'count' {
 				r.count = v.int()
@@ -1257,8 +1227,7 @@ pub mut:
 }
 
 pub fn (mut r Ready) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'v' {
 				r.v = v.int()
@@ -1295,8 +1264,7 @@ pub mut:
 }
 
 pub fn (mut pu PresenceUpdate) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'user' {
 				pu.user = from_json<User>(v.as_map())
@@ -1335,8 +1303,7 @@ pub mut:
 }
 
 pub fn (mut pcs PresenceClientStatus) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'desktop' {
 				pcs.desktop = PresenceStatus(v.str())
@@ -1402,8 +1369,7 @@ pub mut:
 }
 
 pub fn (mut guild Guild) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'id' {
 				guild.id = v.str()
@@ -1616,8 +1582,7 @@ pub mut:
 }
 
 pub fn (mut vs VoiceState) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'guild_id' {
 				vs.guild_id = v.str()
@@ -1678,8 +1643,7 @@ pub mut:
 }
 
 pub fn (mut vr VoiceRegion) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'id' {
 				vr.id = v.str()
@@ -1717,8 +1681,7 @@ pub mut:
 }
 
 pub fn (mut role Role) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'id' { role.id = v.str() }
 			'name' { role.name = v.str() }
@@ -1790,8 +1753,7 @@ pub enum PremiumType {
 }
 
 pub fn (mut user User) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'id' { user.id = v.str() }
 			'username' { user.username = v.str() }
@@ -1808,8 +1770,8 @@ pub fn (mut user User) from_json(f map[string]json.Any) {
 			else {}
 		}
 	}
-	if 'avatar' in obj {
-		hash := obj['avatar'].str()
+	if 'avatar' in f {
+		hash := f['avatar'].str()
 		user.avatar = Avatar{
 			user_id: user.id
 			hash: hash
@@ -1837,8 +1799,7 @@ pub mut:
 }
 
 pub fn (mut iacc IntegrationAccount) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'id' {iacc.id = v.str()}
 			'name' {iacc.name = v.str()}
@@ -1858,8 +1819,7 @@ pub mut:
 }
 
 pub fn (mut iapp IntegrationApplication) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'id' {iapp.id = v.str()}
 			'name' {iapp.name = v.str()}
@@ -1894,8 +1854,7 @@ pub mut:
 }
 
 pub fn (mut integration Integration) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'id' {integration.id = v.str()}
 			'name' {integration.name = v.str()}
@@ -1940,8 +1899,7 @@ pub mut:
 }
 
 pub fn (mut inter Interaction) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'id' {inter.id = v.str()}
 			'type' {inter.@type = InteractionType(v.int())}
@@ -1969,8 +1927,7 @@ pub mut:
 }
 
 pub fn (mut acid ApplicationCommandInteractionData) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'id' {acid.id = v.str()}
 			'name' {acid.name = v.str()}
@@ -1993,8 +1950,7 @@ pub mut:
 }
 
 pub fn (mut acido ApplicationCommandInteractionDataOption) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'name' {acido.name = v.str()}
 			'value' {acido.value = v.str()}
@@ -2023,8 +1979,7 @@ pub mut:
 }
 
 pub fn (mut webhook Webhook) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'id' {webhook.id = v.str()}
 			'type' {webhook.@type = WebhookType(v.int())}

@@ -19,8 +19,7 @@ pub mut:
 }
 
 pub fn (mut cpu ChannelPinsUpdate) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'guild_id' {
 				cpu.guild_id = v.str()
@@ -48,8 +47,7 @@ pub mut:
 }
 
 pub fn (mut gb GuildBan) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'guild_id'{
 				gb.guild_id = v.str()
@@ -72,8 +70,7 @@ pub mut:
 }
 
 pub fn (mut geu GuildEmojisUpdate) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'guild_id'{
 				geu.guild_id = v.str()
@@ -92,8 +89,7 @@ pub mut:
 }
 
 pub fn (mut geu GuildIntegrationsUpdate) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'guild_id'{
 				geu.guild_id = v.str()
@@ -110,11 +106,10 @@ pub mut:
 }
 
 pub fn (mut gma GuildMemberAdd) from_json(f map[string]json.Any){
-	mut obj := f
-	if 'guild_id' in obj {
-		gma.guild_id = obj['guild_id'].str()
+	if 'guild_id' in f {
+		gma.guild_id = f['guild_id'].str()
 	}
-	gma.member.from_json(obj)
+	gma.member.from_json(f)
 }
 
 pub struct GuildMemberRemove {
@@ -124,11 +119,10 @@ pub mut:
 }
 
 pub fn (mut gmr GuildMemberRemove) from_json(f map[string]json.Any){
-	mut obj := f
-	if 'guild_id' in obj {
-		gmr.guild_id = obj['guild_id'].str()
+	if 'guild_id' in f {
+		gmr.guild_id = f['guild_id'].str()
 	}
-	gmr.user.from_json(obj['user'].as_map())
+	gmr.user.from_json(f['user'].as_map())
 }
 
 pub struct GuildMemberUpdate {
@@ -142,8 +136,7 @@ pub mut:
 }
 
 pub fn (mut gmu GuildMemberUpdate) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj {
+	for k, v in f {
 		match k {
 			'guild_id' {
 				gmu.guild_id = v.str()
@@ -187,8 +180,7 @@ pub mut:
 }
 
 pub fn (mut gmc GuildMembersChunk) from_json(f map[string]json.Any) {
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'guild_id' {
 				gmc.guild_id = v.str()
@@ -226,8 +218,7 @@ pub mut:
 }
 
 pub fn (mut gr GuildRole) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'guild_id' {
 				gr.guild_id = v.str()
@@ -250,8 +241,7 @@ pub mut:
 }
 
 pub fn (mut grd GuildRoleDelete) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'guild_id' {
 				grd.guild_id = v.str()
@@ -279,8 +269,7 @@ pub mut:
 }
 
 pub fn (mut ic InviteCreate) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'channel_id' {
 				ic.channel_id = v.str()
@@ -327,8 +316,7 @@ pub mut:
 }
 
 pub fn (mut id InviteDelete) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'channel_id' {
 				id.channel_id = v.str()
@@ -356,8 +344,7 @@ pub mut:
 }
 
 pub fn (mut mdb MessageDeleteBulk) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'ids' {
 				mut ids := v.arr()
@@ -387,8 +374,7 @@ pub mut:
 }
 
 pub fn (mut mra MessageReactionAdd) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'user_id' {
 				mra.user_id = v.str()
@@ -423,8 +409,7 @@ pub mut:
 }
 
 pub fn (mut mra MessageReactionRemove) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'user_id' {
 				mra.user_id = v.str()
@@ -454,8 +439,7 @@ pub mut:
 }
 
 pub fn (mut mra MessageReactionRemoveAll) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'channel_id' {
 				mra.channel_id = v.str()
@@ -480,8 +464,7 @@ pub mut:
 }
 
 pub fn (mut mra MessageReactionRemoveEmoji) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'channel_id' {
 				mra.channel_id = v.str()
@@ -510,8 +493,7 @@ pub mut:
 }
 
 pub fn (mut ts TypingStart) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'channel_id' {
 				ts.channel_id = v.str()
@@ -544,8 +526,7 @@ pub mut:
 }
 
 pub fn (mut vsu VoiceServerUpdate) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'token' {
 				vsu.token = v.str()
@@ -568,8 +549,7 @@ pub mut:
 }
 
 pub fn (mut wu WebhooksUpdate) from_json(f map[string]json.Any){
-	mut obj := f
-	for k, v in obj{
+	for k, v in f {
 		match k {
 			'guild_id' {
 				wu.guild_id = v.str()

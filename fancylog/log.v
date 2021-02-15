@@ -104,7 +104,7 @@ fn (mut l Log) prefix(level log.Level) string {
 fn (mut l Log) log(level log.Level, text string) {
 	output := l.prefix(level) + text
 	if l.output_to_file {
-		l.output_file.writeln(output)
+		l.output_file.writeln(output) or { panic(err) }
 	} else {
 		match level {
 			.fatal, .error {eprintln(output)}

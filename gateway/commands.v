@@ -37,5 +37,5 @@ pub fn (mut conn Connection) request_guild_members(args RequestGuildMembersArgs)
 		op: .request_guild_members
 		data: args.to_json()
 	}.str()
-	conn.ws.write_str(command)
+	conn.ws.write_str(command) or { panic(err) }
 }
