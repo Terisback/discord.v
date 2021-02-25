@@ -31,7 +31,7 @@ mut:
 pub mut:
 	rest        &rest.REST
 	log			&fancylog.Log
-	userdata 	voidptr
+	userdata	voidptr
 }
 
 // Creates a new Discord client
@@ -71,7 +71,7 @@ pub fn new(config Config) ?&Client {
 pub fn (mut client Client) open() ? {
 	for i in 0 .. client.shards.len {
 		go client.shards[i].open() ?
-		time.sleep(5)
+		time.wait(5 * 1000000)
 	}
 	mut wg := sync.new_waitgroup()
 	wg.add(1)
