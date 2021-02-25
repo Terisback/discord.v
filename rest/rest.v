@@ -35,7 +35,7 @@ pub fn (mut rest REST) do(req http.Request) ?http.Response {
 		mut tmr := TooManyRequests{}
 		tmr.from_json(obj)
 		rest.rl.global = time.utc().unix_time_milli() + u64(tmr.retry_after * 1000)
-		time.wait(time.milliseconds(tmr.retry_after * 1000))
+		time.wait(tmr.retry_after * 1000 * time.millisecond)
 		return rest.do(req)
 	}
 	return resp
