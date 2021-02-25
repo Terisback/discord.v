@@ -53,7 +53,7 @@ fn (mut conn Connection) run_heartbeat() ? {
 			conn.ws.close(1000, 'close() was called')?
 			return
 		}
-		time.wait(50 * 1000000)
+		time.wait(time.milliseconds(50))
 		if conn.ws.state in [.connecting, .closing, .closed] {
 			continue
 		}

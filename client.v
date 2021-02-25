@@ -71,7 +71,7 @@ pub fn new(config Config) ?&Client {
 pub fn (mut client Client) open() ? {
 	for i in 0 .. client.shards.len {
 		go client.shards[i].open() ?
-		time.wait(5 * 1000000)
+		time.wait(int(time.seconds(5)))
 	}
 	mut wg := sync.new_waitgroup()
 	wg.add(1)
