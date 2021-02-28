@@ -31,15 +31,13 @@ jobs:
     - name: Checkout discord.v
       uses: actions/checkout@v2
       with:
-        path: ~/.vmodules/discordv
+        path: discordv
     - name: Install dependencies
       run: sudo apt-get install --quiet -y libssl-dev
     - name: Build V
-      run: |
-        make
-        ./v symlink
+      run: make
     - name: Build discord.v
       run: |
-        cd ~/.vmodules/discordv
-        v -prod .
+        cd discordv
+        v -path "/|@vlib|@vmodules" -prod .
         ls -lat
