@@ -1,6 +1,5 @@
 module discordv
 
-import sync
 import log
 import term
 import time
@@ -69,12 +68,14 @@ pub fn new(config Config) ?&Client {
 
 // Creates a websocket connection to Discord
 pub fn (mut client Client) open() ? {
-	shards := []thread ?{}
+	mut shards := []thread ?{}
 	for i in 0 .. client.shards.len {
 		shards << go client.shards[i].open()
 		time.sleep(5 * time.second)
 	}
-	shards.wait()
+	for shard in shards {
+		shard.wait() or { /* nothing */ }
+	}
 }
 
 // Needed for logging purposes
