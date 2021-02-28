@@ -11,7 +11,8 @@ fn main() {
 		return
 	}
 	// Creating new client
-	mut client := discordv.new_client(token: token) ?
+	config := discord.Config{token: token}
+	mut client := discordv.new_client(config) ?
 	// Add message create handler
 	client.on_message_create(on_ping)
 	// Open connection and wait till close
