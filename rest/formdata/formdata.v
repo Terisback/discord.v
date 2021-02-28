@@ -95,7 +95,7 @@ pub fn (f FormData) encode() string {
 				builder.write_string('Content-Type: ${v.content_type}\n')
 				builder.write_string('Content-Transfer-Encoding: base64\n')
 				builder.write_b(`\n`)
-				builder.write_string(base64.encode(v.data.bytestr()))
+				builder.write_string(base64.encode(v.data))
 				builder.write_b(`\n`)
 			}
 		}

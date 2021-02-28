@@ -69,13 +69,12 @@ pub fn new(config Config) ?&Client {
 
 // Creates a websocket connection to Discord
 pub fn (mut client Client) open() ? {
+	shards := []thread ?{}
 	for i in 0 .. client.shards.len {
-		go client.shards[i].open() ?
-		time.wait(5 * time.second)
+		shards << go client.shards[i].open()
+		time.sleep(5 * time.second)
 	}
-	mut wg := sync.new_waitgroup()
-	wg.add(1)
-	wg.wait()
+	shards.wait()
 }
 
 // Needed for logging purposes

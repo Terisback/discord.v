@@ -51,7 +51,8 @@ pub fn new_connection(token string, intents types.Intent, shard_id int, shard_co
 
 // Opens Websocket to Discord Gateway (It will wait till close signal)
 pub fn (mut conn Connection) open() ? {
-	go conn.run_heartbeat() ?
+	// Never handled optional
+	go conn.run_heartbeat()
 	for {
 		mut ws := websocket.new_client(default_gateway) ?
 		conn.ws = ws

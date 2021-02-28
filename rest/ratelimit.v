@@ -56,7 +56,7 @@ pub fn (mut rl RateLimiter) lock_bucket_obj(mut bucket Bucket) &Bucket {
 	bucket.mutex.@lock()
 	wait := rl.get_wait_time(bucket, 1)
 	if wait > 0 {
-		time.wait(i64(wait) * time.millisecond)
+		time.sleep(i64(wait) * time.millisecond)
 	}
 	bucket.remaining--
 	return bucket
