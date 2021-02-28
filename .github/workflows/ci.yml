@@ -39,5 +39,5 @@ jobs:
     - name: Build discord.v
       run: |
         cd discordv
-        v -path "/|@vlib|@vmodules" -prod .
+        ../v -path "/|@vlib|@vmodules" -prod .
         ls -lat
