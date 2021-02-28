@@ -1,7 +1,7 @@
 module main
 
 import os
-import discordv as vd
+import discordv
 
 fn main() {
 	// Getting token from env variable
@@ -11,7 +11,7 @@ fn main() {
 		return
 	}
 	// Creating new client
-	mut client := vd.new_client(token: token) ?
+	mut client := discordv.new_client(token: token) ?
 	// Add message create handler
 	client.on_message_create(on_ping)
 	// Open connection and wait till close
@@ -19,7 +19,7 @@ fn main() {
 }
 
 // Ping handler
-fn on_ping(mut client vd.Client, evt &vd.MessageCreate) {
+fn on_ping(mut client discordv.Client, evt &discordv.MessageCreate) {
 	// If content of message is '!ping' reply with 'pong!'
 	if evt.content == '!ping' {
 		// Send message to channel
