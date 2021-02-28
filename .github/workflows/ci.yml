@@ -28,16 +28,16 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: vlang/v
-    - name: Checkout VPM
+    - name: Checkout discord.v
       uses: actions/checkout@v2
       with:
-        path: vpm
+        path: discordv
     - name: Install dependencies
       run: sudo apt-get install --quiet -y libssl-dev
     - name: Build V
       run: make
-    - name: Build VPM
+    - name: Build discord.v
       run: |
-        cd vpm
+        cd discordv
         ../v -prod .
         ls -lat
