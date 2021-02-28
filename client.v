@@ -34,7 +34,7 @@ pub mut:
 }
 
 // Creates a new Discord client
-pub fn new_client(config Config) ?&Client {
+pub fn new(config Config) ?&Client {
 	mut client := &Client{
 		token: config.token
 		intents: config.intents
