@@ -36,7 +36,14 @@ jobs:
       run: sudo apt-get install --quiet -y libssl-dev
     - name: Build V
       run: make
-    - name: Build discord.v
+    - name: cd discordv
+      run: cd discordv
+    - name: Build ping-pong example
       run: |
-        cd discordv
         ../v -path "/home/runner/work/discord.v/discord.v/|@vlib|@vmodules" -prod ./examples/ping-pong/main.v
+    - name: Build send-embed example
+      run: |
+        ../v -path "/home/runner/work/discord.v/discord.v/|@vlib|@vmodules" -prod ./examples/send-embed/main.v
+    - name: Build upload-image example
+      run: |
+        ../v -path "/home/runner/work/discord.v/discord.v/|@vlib|@vmodules" -prod ./examples/upload-image/main.v
