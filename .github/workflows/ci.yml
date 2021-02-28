@@ -38,7 +38,5 @@ jobs:
       run: make
     - name: Build discord.v
       run: |
-        pwd
         cd discordv
-        ../v -path "/home/runner/work/discord.v/discord.v/|@vlib|@vmodules" -prod .
-        ls -lat
+        ../v -path "/home/runner/work/discord.v/discord.v/|@vlib|@vmodules" -prod ./examples/ping-pong/main.v
