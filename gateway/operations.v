@@ -17,7 +17,7 @@ fn (mut conn Connection) hello(packet packets.Packet) {
 			op: .resume
 			data: resume.to_json_any()
 		}.to_json()
-		conn.ws.write_str(message) or { panic(err) }
+		conn.ws.write_string(message) or { panic(err) }
 		conn.resuming = false
 	} else {
 		message := packets.Packet{
@@ -28,7 +28,7 @@ fn (mut conn Connection) hello(packet packets.Packet) {
 				shard: [conn.shard_id, conn.shard_count]
 			}.to_json_any()
 		}.to_json()
-		conn.ws.write_str(message) or {panic(err)}
+		conn.ws.write_string(message) or {panic(err)}
 		conn.publish('hello', &hello)
 	}
 	conn.last_heartbeat = time.now().unix_time_milli()
@@ -72,7 +72,7 @@ fn (mut conn Connection) run_heartbeat() ? {
 				data: conn.sequence
 			}
 			message := heartbeat.to_json()
-			conn.ws.write_str(message) or { conn.log.error('Something went wrong with websocket: $err') }
+			conn.ws.write_string(message) or { conn.log.error('Something went wrong with websocket: $err') }
 			conn.last_heartbeat = now
 			conn.heartbeat_acked = false
 		}

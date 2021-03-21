@@ -26,7 +26,7 @@ pub fn (mut rest REST) do(req http.Request) ?http.Response {
 	mut bucket := rest.rl.lock_bucket(key)
 	resp := req.do() or {
 		bucket.release(map[string]string{})
-		return error(err)
+		return err
 	}
 	bucket.release(resp.lheaders)
 	if resp.status_code == 429 {
