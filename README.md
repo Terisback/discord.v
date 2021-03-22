@@ -31,7 +31,15 @@ More [examples](https://github.com/Terisback/discord.v/blob/master/examples/)
 ## How to install
 
 *discord.v* uses openssl, be sure it is installed `apt install libssl-dev`  
-> Only way to run it on Windows is to use WSL (or install `openssl` headers somehow)  
+> Only way to run it on Windows is to use WSL (or install `openssl` headers somehow) 
+
+### Install via vpm
+
+```bash
+v install terisback.discordv
+```
+
+### Install via git
 
 ```bash
 git clone https://github.com/Terisback/discord.v.git ~/.vmodules/terisback/discordv
