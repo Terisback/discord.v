@@ -9,70 +9,29 @@ pub type Permission = int
 
 pub struct AuditLog {
 pub mut:
-	webhooks []Webhook
-	users []User
-	audit_log_entries []AuditLogEntry
-	integrations []Integration
+	webhooks []Webhook [fill: serializable_array]
+	users []User [fill: serializable_array]
+	audit_log_entries []AuditLogEntry [fill: serializable_array]
+	integrations []Integration [fill: serializable_array]
 }
 
-pub fn (mut al AuditLog) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'webhooks' {
-				al.webhooks = from_json_arr<Webhook>(v.arr())
-			}
-			'users' {
-				al.users = from_json_arr<User>(v.arr())
-			}
-			'audit_log_entries' {
-				al.audit_log_entries = from_json_arr<AuditLogEntry>(v.arr())
-			}
-			'integrations' {
-				al.integrations = from_json_arr<Integration>(v.arr())
-			}
-			else {}
-		}
-	}
+pub fn (mut o AuditLog) from_json(data map[string]json.Any) {
+	fill_from_json(mut o, data)
 }
 
 pub struct AuditLogEntry {
 pub mut:
 	target_id string
-	changes []AuditLogChange
+	changes []AuditLogChange [fill: serializable_array]
 	user_id string
 	id string
-	action_type AuditLogEvent
-	options AuditEntryInfo
+	action_type AuditLogEvent [fill: serializable]
+	options AuditEntryInfo [fill: serializable]
 	reason string
 }
 
-pub fn (mut ale AuditLogEntry) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'target_id' {
-				ale.target_id = v.str()
-			}
-			'changes' {
-				ale.changes = from_json_arr<AuditLogChange>(v.arr())
-			}
-			'user_id' {
-				ale.user_id = v.str()
-			}
-			'id' {
-				ale.id = v.str()
-			}
-			'action_type' {
-				ale.action_type = AuditLogEvent(v.int())
-			}
-			'options' {
-				ale.options = from_json<AuditEntryInfo>(v.as_map())
-			}
-			'reason' {
-				ale.reason = v.str()
-			}
-			else {}
-		}
-	}
+pub fn (mut o AuditLogEntry) from_json(data map[string]json.Any) {
+	fill_from_json(mut o, data)
 }
 
 pub struct AuditLogChange {
@@ -82,21 +41,8 @@ pub mut:
 	key string // TODO: write module for managing audit log changes
 }
 
-pub fn (mut alc AuditLogChange) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'new_value' {
-				alc.new_value = v
-			}
-			'old_value' {
-				alc.old_value = v
-			}
-			'key' {
-				alc.key = v.str()
-			}
-			else {}
-		}
-	}
+pub fn (mut o AuditLogChange) from_json(data map[string]json.Any) {
+	fill_from_json(mut o, data)
 }
 
 pub enum AuditLogEvent {
@@ -145,108 +91,34 @@ pub mut:
 	message_id string
 	count string
 	id string
-	@type string
+	typ string [json: 'type']
 	role_name string
 }
 
-pub fn (mut aei AuditEntryInfo) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'delete_member_days' {
-				aei.delete_member_days = v.str()
-			}
-			'members_removed' {
-				aei.members_removed = v.str()
-			}
-			'channel_id' {
-				aei.channel_id = v.str()
-			}
-			'message_id' {
-				aei.message_id = v.str()
-			}
-			'count' {
-				aei.count = v.str()
-			}
-			'id' {
-				aei.id = v.str()
-			}
-			'type' {
-				aei.@type = v.str()
-			}
-			'role_name' {
-				aei.role_name = v.str()
-			}
-			else {}
-		}
-	}
+pub fn (mut o AuditEntryInfo) from_json(data map[string]json.Any) {
+	fill_from_json(mut o, data)
 }
 
 pub struct Activity {
 pub mut:
 	name string
-	@type ActivityType
+	typ ActivityType [fill: 'enum']
 	url string
 	created_at int
-	timestamps []ActivityTimestamp
+	timestamps []ActivityTimestamp [fill: serializable_array]
 	application_id string
 	details string
 	state string
 	emoji Emoji
-	party ActivityParty
-	assets ActivityAssets
-	secrets ActivitySecrets
+	party ActivityParty [fill: serializable]
+	assets ActivityAssets [fill: serializable]
+	secrets ActivitySecrets [fill: serializable]
 	instance bool
-	flags ActivityFlags
+	flags ActivityFlags [fill: serializable]
 }
 
-pub fn (mut activity Activity) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'name' {
-				activity.name = v.str()
-			}
-			'type' {
-				activity.@type = ActivityType(v.int())
-			}
-			'url' {
-				activity.url = v.str()
-			}
-			'created_at' {
-				activity.created_at = v.int()
-			}
-			'timestamps' {
-				activity.timestamps = from_json_arr<ActivityTimestamp>(v.arr())
-			}
-			'application_id' {
-				activity.application_id = v.str()
-			}
-			'details' {
-				activity.details = v.str()
-			}
-			'state' {
-				activity.state = v.str()
-			}
-			'emoji' {
-				activity.emoji = from_json<Emoji>(v.as_map())
-			}
-			'party' {
-				activity.party = from_json<ActivityParty>(v.as_map())
-			}
-			'assets' {
-				activity.assets = from_json<ActivityAssets>(v.as_map())
-			}
-			'secrets' {
-				activity.secrets = from_json<ActivitySecrets>(v.as_map())
-			}
-			'instance' {
-				activity.instance = v.bool()
-			}
-			'flags' {
-				activity.flags = ActivityFlags(v.int())
-			}
-			else {}
-		}
-	}
+pub fn (mut o Activity) from_json(data map[string]json.Any) {
+	fill_from_json(mut o, data)
 }
 
 pub enum ActivityType {
@@ -1889,8 +1761,8 @@ pub fn (mut integration Integration) from_json(f map[string]json.Any){
 pub struct Interaction {
 pub mut:
 	id string
-	@type InteractionType
-	data ApplicationCommandInteractionData
+	typ InteractionType [json: 'type']
+	data ApplicationCommandInteractionData [fill: serializable]
 	guild_id string
 	channel_id string
 	member Member
@@ -1902,7 +1774,7 @@ pub fn (mut inter Interaction) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'id' {inter.id = v.str()}
-			'type' {inter.@type = InteractionType(v.int())}
+			'type' {inter.typ = InteractionType(v.int())}
 			'data' {inter.data = from_json<ApplicationCommandInteractionData>(v.as_map())}
 			'guild_id' {inter.guild_id = v.str()}
 			'channel_id' {inter.channel_id = v.str()}
@@ -1968,7 +1840,7 @@ pub fn (mut acido ApplicationCommandInteractionDataOption) from_json(f map[strin
 pub struct Webhook {
 pub mut:
 	id string
-	@type WebhookType
+	typ WebhookType
 	guild_id string
 	channel_id string
 	user User
@@ -1982,7 +1854,7 @@ pub fn (mut webhook Webhook) from_json(f map[string]json.Any){
 	for k, v in f {
 		match k {
 			'id' {webhook.id = v.str()}
-			'type' {webhook.@type = WebhookType(v.int())}
+			'type' {webhook.typ = WebhookType(v.int())}
 			'guild_id' {webhook.guild_id = v.str()}
 			'channel_id' {webhook.channel_id = v.str()}
 			'user' {webhook.user = from_json<User>(v.as_map())}
@@ -2014,4 +1886,71 @@ fn from_json_arr<T>(f []json.Any) []T {
 		arr << item
 	}
 	return arr
+}
+
+fn fill_from_json<T>(mut obj T, data map[string]json.Any) {
+	$for field in T.fields {
+		attr_fill := get_attribute('fill', field.attrs) or {''}
+		if attr_fill != 'ignore' {
+			attr_name := get_attribute('json', field.attrs) or {''}
+			attr_in_data := if attr_name != '' { attr_name in data } else { false }
+			if attr_in_data || field.name in data {
+				data_name := if attr_in_data { attr_name } else { field.name }
+				$if field.typ is string {
+					obj.$(field.name) = data[data_name].str()
+				} $else $if field.typ is int {
+					obj.$(field.name) = data[data_name].int()
+				} $else $if field.typ is bool {
+					obj.$(field.name) = data[data_name].bool()
+				} $else {
+					match attr_fill {
+						// 'serializable_array' {
+						// 	for row in data[data_name].arr() {
+						// 		mut item := $(field.typ){}
+						// 		item.from_json(row.as_map())
+						// 		obj.$(field.name) << item
+						// 	}
+						// }
+						'serializable' {
+							obj.$(field.name).from_json(data[data_name].as_map()) 
+						}
+						// 'enum' {
+						// 	obj.$(field.name) = $(field.typ)(data[data_name].int())
+						// }
+						else {}
+					}
+				}
+			}
+		}
+	}
+}
+
+fn fill_to_json<T>(obj T) map[string]json.Any {
+	mut data := map[string]json.Any{}
+	$for field in T.fields {
+		attr_name := get_attribute('json', field.attrs) or {''}
+		attr_in_obj := if attr_name != '' { attr_name in data } else { false }
+		data_name := if attr_in_obj { attr_name } else { field.name }
+		$if field.typ is string {
+			data[data_name] = obj.$(field.name)
+		}
+		$if field.typ is int {
+			data[data_name] = obj.$(field.name)
+		}
+		$if field.typ is bool {
+			data[data_name] = obj.$(field.name)
+		}
+	}
+	return data
+}
+
+fn get_attribute(prefix string, attrs []string) ?string {
+	for attr in attrs {
+		if attr.starts_with('$prefix:') {
+			mut attr_name := attr.trim_prefix('$prefix:')
+			attr_name = attr_name.trim(' \'')
+			return attr_name
+		}
+	}
+	return error('Not found attribute with $prefix prefix')
 }
