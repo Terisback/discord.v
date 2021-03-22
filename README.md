@@ -12,7 +12,7 @@ Yet another feature-rich Discord Bot Framework written in V <i>(<b>WIP</b>)</i><
 ## Example
 
 ```v
-import discordv as vd
+import terisback.discordv as vd
 
 fn main() {
     mut client := vd.new(token: 'token') ?
@@ -34,10 +34,10 @@ More [examples](https://github.com/Terisback/discord.v/blob/master/examples/)
 > Only way to run it on Windows is to use WSL (or install `openssl` headers somehow)  
 
 ```bash
-git clone https://github.com/Terisback/discord.v.git ~/.vmodules/discordv
+git clone https://github.com/Terisback/discord.v.git ~/.vmodules/terisback/discordv
 ```
 
-And then import `discordv` wherever you like
+And then import `terisback.discordv` wherever you like
 
 ## TODO()
 
