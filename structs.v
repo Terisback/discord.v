@@ -4,6 +4,15 @@ import time
 import x.json2 as json
 import discordv.snowflake
 
+// Optional type for fields
+pub struct Opt<T> {
+pub mut:
+	// optional value
+	val T 
+	// non empty, also this could mean that the value is nil
+	nep bool 
+}
+
 // Permission type
 pub type Permission = int
 
@@ -38,37 +47,26 @@ pub fn (mut al AuditLog) from_json(f map[string]json.Any) {
 pub struct AuditLogEntry {
 pub mut:
 	target_id string
-	changes []AuditLogChange
+	changes Opt<[]AuditLogChange>
 	user_id string
 	id string
 	action_type AuditLogEvent
-	options AuditEntryInfo
-	reason string
+	options Opt<AuditEntryInfo>
+	reason Opt<string>
 }
 
 pub fn (mut ale AuditLogEntry) from_json(f map[string]json.Any) {
+	fill_from_json(mut ale, f)
 	for k, v in f {
 		match k {
-			'target_id' {
-				ale.target_id = v.str()
-			}
 			'changes' {
-				ale.changes = from_json_arr<AuditLogChange>(v.arr())
-			}
-			'user_id' {
-				ale.user_id = v.str()
-			}
-			'id' {
-				ale.id = v.str()
-			}
-			'action_type' {
-				ale.action_type = AuditLogEvent(v.int())
+				ale.changes = {val: from_json_arr<AuditLogChange>(v.arr()), nep: true}
 			}
 			'options' {
-				ale.options = from_json<AuditEntryInfo>(v.as_map())
+				ale.options = {val: from_json<AuditEntryInfo>(v.as_map()), nep: true}
 			}
 			'reason' {
-				ale.reason = v.str()
+				ale.reason = {val: v.str(), nep: true}
 			}
 			else {}
 		}
@@ -533,30 +531,31 @@ pub struct Message {
 pub mut:
 	id                string
 	channel_id        string
-	guild_id          string
+	guild_id          Opt<string>
 	author            User
-	member            Member
+	member            Opt<Member>
 	content           string
 	timestamp         time.Time
-	edited_timestamp  time.Time
+	edited_timestamp  Opt<time.Time> [fill: ignore]
 	tts               bool
 	mention_everyone  bool
-	mentions          []User
+	mentions          Opt<[]User>
 	mention_roles     []string
-	mention_channels  []ChannelMention
+	mention_channels  Opt<[]ChannelMention>
 	attachments       []Attachment
 	embeds            []Embed
-	reactions         []Reaction
-	nonce             string
+	reactions         Opt<[]Reaction>
+	nonce             Opt<string>
 	pinned            bool
-	webhook_id        string
-	@type             MessageType
-	activity          MessageActivity
-	application       MessageApplication
-	message_reference MessageReference
+	webhook_id        Opt<string>
+	typ               MessageType [json: 'type']
+	activity          Opt<MessageActivity>
+	application       Opt<MessageApplication>
+	message_reference Opt<MessageReference> [fill: ignore]
+	// may be nil, but it cannot be placed in Opt because of a cyclic import bug
 	referenced_message &Message = voidptr(0)
-	stickers 		  []Sticker
-	flags             MessageFlag
+	stickers 		  Opt<[]Sticker>
+	flags             Opt<MessageFlag>
 }
 
 pub enum MessageType {
@@ -588,15 +587,15 @@ pub enum MessageActivityType {
 
 pub struct MessageActivity {
 pub mut:
-	@type    MessageActivityType
-	party_id string
+	typ    MessageActivityType [json: 'type']
+	party_id Opt<string>
 }
 
 fn (mut m MessageActivity) from_json(f map[string]json.Any) {
+	fill_from_json(mut m, f)
 	for k, v in f {
 		match k {
-			'type' { m.@type = MessageActivityType(v.int()) }
-			'party_id' { m.party_id = v.str() }
+			'type' { m.typ = MessageActivityType(v.int()) }
 			else {}
 		}
 	}
@@ -605,20 +604,17 @@ fn (mut m MessageActivity) from_json(f map[string]json.Any) {
 pub struct MessageApplication {
 pub mut:
 	id          string
-	cover_image string
+	cover_image Opt<string>
 	description string
-	icon        string
+	icon        Opt<string> [fill: ignore]
 	name        string
 }
 
 fn (mut m MessageApplication) from_json(f map[string]json.Any) {
+	fill_from_json(mut m, f)
 	for k, v in f {
 		match k {
-			'id' { m.id = v.str() }
-			'cover_image' { m.cover_image = v.str() }
-			'description' { m.description = v.str() }
-			'icon' { m.icon = v.str() }
-			'name' { m.name = v.str() }
+			'icon' { m.icon = {val: v.str(), nep: is_nil(v)} }
 			else {}
 		}
 	}
@@ -627,28 +623,18 @@ fn (mut m MessageApplication) from_json(f map[string]json.Any) {
 // Contains reference data with crossposted messages
 pub struct MessageReference {
 pub mut:
-	message_id string
-	channel_id string
-	guild_id   string
+	message_id Opt<string>
+	channel_id Opt<string>
+	guild_id   Opt<string>
+	fail_if_not_exists Opt<bool>
 }
 
 pub fn (mut m MessageReference) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'message_id' { m.message_id = v.str() }
-			'channel_id' { m.channel_id = v.str() }
-			'guild_id' { m.guild_id = v.str() }
-			else {}
-		}
-	}
+	fill_from_json(mut m, f)
 }
 
 pub fn (m MessageReference) to_json() json.Any{
-	mut obj := map[string]json.Any{}
-	obj['message_id'] = m.message_id
-	obj['channel_id'] = m.channel_id
-	obj['guild_id'] = m.guild_id
-	return obj
+	return fill_to_json(m)
 }
 
 fn (m MessageReference) iszero() bool {
@@ -667,22 +653,17 @@ pub mut:
 	pack_id string
 	name string
 	description string
-	tags string
+	tags Opt<string>
 	asset string
-	preview_asset string
+	preview_asset Opt<string>
 	format_type StickerType
 }
 
 pub fn (mut st Sticker) from_json(f map[string]json.Any) {
+	fill_from_json(mut st, f)
 	for k, v in f {
 		match k {
-			'id' {st.id = v.str()}
-			'pack_id' {st.pack_id = v.str()}
-			'name' {st.name = v.str()}
-			'description' {st.description = v.str()}
-			'tags' {st.tags = v.str()}
-			'asset' {st.asset = v.str()}
-			'preview_asset' {st.preview_asset = v.str()}
+			'preview_asset' {st.preview_asset = {val: v.str(), nep: true}}
 			'format_type' {st.format_type = StickerType(v.int())}
 			else {}
 		}
@@ -700,90 +681,34 @@ pub const (
 )
 
 pub fn (mut m Message) from_json(f map[string]json.Any) {
+	fill_from_json(mut m, f)
 	for k, v in f {
 		match k {
-			'id' {
-				m.id = v.str()
-			}
-			'channel_id' {
-				m.channel_id = v.str()
-			}
-			'guild_id' {
-				m.guild_id = v.str()
-			}
-			'author' {
-				m.author = from_json<User>(v.as_map())
-			}
-			'member' {
-				m.member = from_json<Member>(v.as_map())
-			}
-			'content' {
-				m.content = v.str()
-			}
-			'timestamp' {
-				m.timestamp = time.parse_iso8601(v.str()) or { time.unix(0) }
-			}
-			'edited_timestamp' {
-				m.edited_timestamp = time.parse_iso8601(v.str()) or { time.unix(0) }
-			}
-			'tts' {
-				m.tts = v.bool()
-			}
-			'mention_everyone' {
-				m.mention_everyone = v.bool()
-			}
-			'mentions' {
-				m.mentions = from_json_arr<User>(v.arr())
-			}
+			'author' {m.author = from_json<User>(v.as_map())}
+			'member' {m.member = {val: from_json<Member>(v.as_map()), nep: true}}
+			'timestamp' {m.timestamp = time.parse_iso8601(v.str()) or { time.unix(0) }}
+			'edited_timestamp' {m.edited_timestamp = {val: time.parse_iso8601(v.str()) or { time.unix(0) }, nep: is_nil(v)}}
+			'mentions' {m.mentions = {val: from_json_arr<User>(v.arr()), nep: true}}
 			'mention_roles' {
 				mut obja := v.arr()
 				for va in obja {
 					m.mention_roles << va.str()
 				}
 			}
-			'mention_channels' {
-				m.mention_channels = from_json_arr<ChannelMention>(v.arr())
-			}
-			'attachments' {
-				m.attachments = from_json_arr<Attachment>(v.arr())
-			}
-			'embeds' {
-				m.embeds = from_json_arr<Embed>(v.arr())
-			}
-			'reaction' {
-				m.reactions = from_json_arr<Reaction>(v.arr())
-			}
-			'nonce' {
-				m.nonce = v.str()
-			}
-			'pinned' {
-				m.pinned = v.bool()
-			}
-			'webhook_id' {
-				m.webhook_id = v.str()
-			}
-			'type' {
-				m.@type = MessageType(v.int())
-			}
-			'activity' {
-				m.activity = from_json<MessageActivity>(v.as_map())
-			}
-			'application' {
-				m.application = from_json<MessageApplication>(v.as_map())
-			}
-			'message_reference' {
-				m.message_reference = from_json<MessageReference>(v.as_map())
-			}
+			'mention_channels' {m.mention_channels = {val: from_json_arr<ChannelMention>(v.arr()), nep: true}}
+			'attachments' {m.attachments = from_json_arr<Attachment>(v.arr())}
+			'embeds' {m.embeds = from_json_arr<Embed>(v.arr())}
+			'reaction' {m.reactions = {val: from_json_arr<Reaction>(v.arr()), nep: true}}
+			'type' {m.typ = MessageType(v.int())}
+			'activity' {m.activity = {val: from_json<MessageActivity>(v.as_map()), nep: true}}
+			'application' {m.application = {val: from_json<MessageApplication>(v.as_map()), nep: true}}
+			'message_reference' {m.message_reference = {val: from_json<MessageReference>(v.as_map()), nep: true}}
 			'referenced_message' {
 				mut ref := from_json<Message>(v.as_map())
 				m.referenced_message = &ref
 			}
-			'stickers' {
-				m.stickers = from_json_arr<Sticker>(v.arr())
-			}
-			'flags' {
-				m.flags = MessageFlag(byte(v.int()))
-			}
+			'stickers' {m.stickers = {val: from_json_arr<Sticker>(v.arr()), nep: true}}
+			'flags' {m.flags = {val: MessageFlag(byte(v.int())), nep: true}}
 			else {}
 		}
 	}
@@ -1151,45 +1076,53 @@ fn (mut g UnavailableGuild) from_json(f map[string]json.Any) {
 
 pub struct Member {
 pub mut:
-	user User
-	nick string
+	user Opt<User>
+	nick Opt<string>
 	roles []string
 	joined_at time.Time
-	premium_since time.Time
+	premium_since Opt<time.Time>
 	deaf bool
 	mute bool
-	pending bool
+	pending Opt<bool>
+	// total permissions of the member in the channel, 
+	// including overrides, returned when in the interaction object
+	permissions Opt<string>
 }
 
 pub fn (mut member Member) from_json(f map[string]json.Any){
+	fill_from_json(mut member, f)
 	for k, v in f {
 		match k {
-			'user' {
-				member.user = from_json<User>(v.as_map())
-			}
-			'nick' {member.nick = v.str()}
+			'user' {member.user = {val: from_json<User>(v.as_map()), nep: true}}
+			'nick' {member.nick = {val: v.str(), nep: is_nil(v)}}
 			'roles' {
 				mut roles := v.arr()
 				for role in roles {
+					println('Added role ${role.str()}')
 					member.roles << role.str()
 				}
 			}
-			'joined_at' {
-				member.joined_at = time.parse_iso8601(v.str()) or {
-					time.unix(int(snowflake.discord_epoch / 1000))
-				}
-			}
-			'premium_since' {
-				member.premium_since = time.parse_iso8601(v.str()) or {
-					time.unix(int(snowflake.discord_epoch / 1000))
-				}
-			}
-			'deaf' {member.deaf = v.bool()}
-			'mute' {member.mute = v.bool()}
-			'pending' {member.pending = v.bool()}
+			'joined_at' {member.joined_at = time.parse_iso8601(v.str()) or {time.unix(0)}}
+			'premium_since' {member.premium_since = {val: time.parse_iso8601(v.str()) or {time.unix(0)}, nep: is_nil(v)}}
 			else{}
 		}
 	}
+}
+
+pub fn (member Member) to_json() json.Any {
+	mut obj := fill_to_json(member)
+
+	// error: cannot convert 'struct terisback__discordv__User' to 'struct terisback__discordv__User *'
+	//fill_field<User>(mut obj, 'user', member.user)
+
+	if member.user.nep {
+		obj['user'] = member.user.val.to_json()
+	}
+	return obj
+}
+
+pub fn (member Member) str() string {
+	return member.to_json().str()
 }
 
 pub struct Reaction {
@@ -1701,16 +1634,16 @@ pub mut:
 	id            string
 	username      string
 	discriminator string
-	avatar        Avatar
-	bot           bool
-	system        bool
-	mfa_enabled   bool
-	locale        string
-	verified      bool
-	email         string
-	flags         UserFlag
-	premium_type  PremiumType
-	public_flags  UserFlag
+	avatar        Opt<Avatar> [fill: ignore]
+	bot           Opt<bool>
+	system        Opt<bool>
+	mfa_enabled   Opt<bool>
+	locale        Opt<string>
+	verified      Opt<bool>
+	email         Opt<string>
+	flags         Opt<UserFlag>
+	premium_type  Opt<PremiumType>
+	public_flags  Opt<UserFlag>
 }
 
 pub struct Avatar {
@@ -1723,11 +1656,19 @@ pub fn (avatar Avatar) url() string {
 	return 'https://cdn.discordapp.com/avatars/$avatar.user_id/{$avatar.hash}.png'
 }
 
+pub fn (avatar Avatar) to_json() json.Any {
+	return avatar.hash
+}
+
 pub fn (avatar Avatar) str() string {
 	return avatar.hash
 }
 
 pub type UserFlag = int
+
+pub fn (en UserFlag) to_json() json.Any {
+	return int(en)
+}
 
 pub const (
 	zero                         = UserFlag(0)
@@ -1747,36 +1688,40 @@ pub const (
 )
 
 pub enum PremiumType {
-	@none
+	non
 	nitro_classic
 	nitro
+}
+
+pub fn (en PremiumType) to_json() json.Any {
+	return int(en)
 }
 
 pub fn (mut user User) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'id' { user.id = v.str() }
-			'username' { user.username = v.str() }
-			'discriminator' { user.discriminator = v.str() }
-			'bot' { user.bot = v.bool() }
-			'system' { user.system = v.bool() }
-			'mfa_enabled' { user.mfa_enabled = v.bool() }
-			'locale' { user.locale = v.str() }
-			'verified' { user.verified = v.bool() }
-			'email' { user.email = v.str() }
-			'flags' { user.flags = UserFlag(v.int()) }
-			'premium_type' { user.premium_type = PremiumType(v.int()) }
-			'public_flags' { user.public_flags = UserFlag(v.int()) }
+			'flags' { user.flags = {val: UserFlag(v.int()), nep: true} }
+			'premium_type' { user.premium_type = {val: PremiumType(v.int()), nep: true} }
+			'public_flags' { user.public_flags = {val: UserFlag(v.int()), nep: true} }
 			else {}
 		}
 	}
 	if 'avatar' in f {
 		hash := f['avatar'].str()
-		user.avatar = Avatar{
+		user.avatar = {val: Avatar{
 			user_id: user.id
 			hash: hash
-		}
+		}, nep: true}
 	}
+}
+
+pub fn (user User) to_json() json.Any {
+	mut obj := fill_to_json(user)
+	fill_field<Avatar>(mut obj, 'avatar', user.avatar)
+	fill_field<UserFlag>(mut obj, 'flags', user.flags)
+	fill_field<PremiumType>(mut obj, 'premium_type', user.premium_type)
+	fill_field<UserFlag>(mut obj, 'public_flags', user.public_flags)
+	return obj
 }
 
 pub enum IntegrationExpireBehavior {
@@ -2006,6 +1951,11 @@ fn from_json<T> (f map[string]json.Any) T {
 	return obj
 }
 
+// This shit doesn't work
+// fn from_json_opt<T> (data map[string]json.Any) Opt<T> {
+// 	return {val: from_json<T>(data), nep: true}
+// }
+
 fn from_json_arr<T>(f []json.Any) []T {
 	mut arr := []T{}
 	for fs in f {
@@ -2014,4 +1964,93 @@ fn from_json_arr<T>(f []json.Any) []T {
 		arr << item
 	}
 	return arr
+}
+
+fn fill_from_json<T>(mut obj T, data map[string]json.Any) {
+	if 'member' in data {
+		println(data['member'])
+	}
+	$for field in T.fields {
+		attr_ignore := get_attribute('fill', field.attrs) or {''}
+		if attr_ignore != 'ignore' {
+			attr_name := get_attribute('json', field.attrs) or {''}
+			attr_in_data := if attr_name != '' { attr_name in data } else { false }
+			if attr_in_data || field.name in data {
+				data_name := if attr_in_data { attr_name } else { field.name }
+				$if field.typ is string {
+					obj.$(field.name) = data[data_name].str()
+				}
+				$if field.typ is int {
+					obj.$(field.name) = data[data_name].int()
+				}
+				$if field.typ is bool {
+					obj.$(field.name) = data[data_name].bool()
+				}
+				$if field.typ is Opt<string> {
+					obj.$(field.name) = {val: data[data_name].str(), nep: true}
+				}
+				$if field.typ is Opt<int> {
+					obj.$(field.name) = {val: data[data_name].int(), nep: true}
+				}
+				$if field.typ is Opt<bool> {
+					obj.$(field.name) = {val: data[data_name].bool(), nep: true}
+				}
+			}
+		}
+	}
+}
+
+fn fill_to_json<T>(obj T) map[string]json.Any {
+	mut data := map[string]json.Any{}
+	$for field in T.fields {
+		attr_name := get_attribute('json', field.attrs) or {''}
+		attr_in_obj := if attr_name != '' { attr_name in data } else { false }
+		data_name := if attr_in_obj { attr_name } else { field.name }
+		$if field.typ is string {
+			data[data_name] = obj.$(field.name)
+		}
+		$if field.typ is int {
+			data[data_name] = obj.$(field.name)
+		}
+		$if field.typ is bool {
+			data[data_name] = obj.$(field.name)
+		}
+		$if field.typ is Opt<string> {
+			if obj.$(field.name).nep {
+				data[data_name] = obj.$(field.name).val
+			}
+		}
+		$if field.typ is Opt<int> {
+			if obj.$(field.name).nep {
+				data[data_name] = obj.$(field.name).val
+			}
+		}
+		$if field.typ is Opt<bool> {
+			if obj.$(field.name).nep {
+				data[data_name] = obj.$(field.name).val
+			}
+		}
+	}
+	return data
+}
+
+fn fill_field<T>(mut obj map[string]json.Any, field_name string, data Opt<T>) {
+	if data.nep {
+		obj[field_name] = data.val.to_json()
+	}
+}
+
+fn get_attribute(prefix string, attrs []string) ?string {
+	for attr in attrs {
+		if attr.starts_with('$prefix:') {
+			mut attr_name := attr.trim_prefix('$prefix:')
+			attr_name = attr_name.trim_space()
+			return attr_name
+		}
+	}
+	return error('Not found attribute with $prefix prefix')
+}
+
+fn is_nil(v json.Any) bool {
+	return v.str() == 'null'
 }
