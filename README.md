@@ -36,7 +36,7 @@ More [examples](https://github.com/Terisback/discord.v/blob/master/examples/)
 ### Install via vpm
 
 ```bash
-v install terisback.discordv
+v install Terisback.discordv
 ```
 
 ### Install via git
