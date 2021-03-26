@@ -2,14 +2,14 @@ module packets
 
 import os
 import x.json2 as json
-import discordv.gateway.types
+import gateway.intents
 
 // Websocket Identify packet data
 pub struct Identify {
 pub:
 	token      string
 	properties IdentifyProperties = IdentifyProperties{}
-	intents    types.Intent
+	intents    intents.Intent
 	shard      []int
 }
 
