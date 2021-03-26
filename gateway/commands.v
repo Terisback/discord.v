@@ -1,7 +1,7 @@
 module gateway
 
 import x.json2 as json
-import discordv.gateway.packets
+import gateway.packets
 
 // request_guild_members arguments
 pub struct RequestGuildMembersArgs {
@@ -32,10 +32,10 @@ pub fn (req RequestGuildMembersArgs) to_json() json.Any {
 }
 
 // Request guild members (It will wait answer from websocket)
-pub fn (mut conn Connection) request_guild_members(args RequestGuildMembersArgs) {
+pub fn (mut shard Shard) request_guild_members(args RequestGuildMembersArgs) {
 	mut command := packets.Packet{
 		op: .request_guild_members
 		data: args.to_json()
 	}.str()
-	conn.ws.write_string(command) or { panic(err) }
+	shard.ws.write_string(command) or { panic(err) }
 }
