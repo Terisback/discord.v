@@ -69,35 +69,42 @@ pub fn new_shard(config Config) ?&Shard {
 }
 
 // Opens Websocket to Discord Gateway (It will wait till close signal)
-pub fn (mut shard Shard) run() thread ? {
+pub fn (mut shard Shard) run() thread {
 	go shard.run_dispatcher()
-	go shard.run_websocket()
+	go shard.run_websocket() 
 	return go shard.run_heartbeat()
 }
 
-fn (mut shard Shard) run_dispatcher() ? {
+fn (mut shard Shard) run_dispatcher() {
 	for !shard.running {
-		packet := <-shard.event_queue ?
+		packet := <-shard.event_queue or {
+			shard.log.warn('Dispatcher #$shard.id: Unable to push event into event queue')
+		}
 		shard.dispatch(&packet)
 	}
 }
 
-fn (mut shard Shard) run_websocket() ? {
+fn (mut shard Shard) run_websocket() {
 	defer { shard.ws.free() }
 	for !shard.running {
-		shard.ws.connect() ?
-		shard.ws.listen() or { shard.log.warn('#$shard.id Websocket listen: $err') }
+		shard.ws.connect() or {
+			shard.log.warn('Websocket #$shard.id: Unable to connect to gateway')
+			continue
+		}
+		shard.ws.listen() or { 
+			shard.log.warn('#$shard.id Websocket listen: $err') 
+		}
 	}
 }
 
 // Run heartbeat loop. Will execute till stop signal recieved
-fn (mut shard Shard) run_heartbeat() ? {
+fn (mut shard Shard) run_heartbeat() {
 	for {
 		mut stop := false
 		status := shard.stop.try_pop(stop)
 		if status == .success {
 			shard.running = false
-			shard.ws.close(1000, 'close() was called')?
+			shard.ws.close(1000, 'close() was called') or {}
 			return
 		}
 		time.sleep(50 * time.millisecond)
@@ -122,7 +129,9 @@ fn (mut shard Shard) run_heartbeat() ? {
 				data: shard.sequence
 			}
 			message := heartbeat.to_json()
-			shard.ws.write_string(message) or { shard.log.error('Something went wrong with websocket: $err') }
+			shard.ws.write_string(message) or { 
+				shard.log.error('Something went when tried to write to websocket: $err') 
+			}
 			shard.last_heartbeat = now
 			shard.heartbeat_acked = false
 		}
