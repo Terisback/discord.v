@@ -30,8 +30,9 @@ pub fn (mut rest REST) do(req http.Request) ?http.Response {
 	}
 	bucket.release(resp.lheaders)
 	if resp.status_code == 429 {
-		eprintln('warn: ratelimited')
-		mut obj := json.raw_decode(resp.text) ?
+		mut obj := json.raw_decode(resp.text.replace('\n','')) or {
+			panic(err)
+		}
 		mut tmr := TooManyRequests{}
 		tmr.from_json(obj)
 		rest.rl.global = time.utc().unix_time_milli() + u64(tmr.retry_after) * 1000
