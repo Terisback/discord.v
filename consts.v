@@ -1,7 +1,5 @@
 module discordv
 
-import discordv.gateway.types
-
 // Constants for general managment
 pub const (
 	create_instant_invite = Permission(0x00000001)

@@ -19,12 +19,12 @@ pub mut:
 // Client represents a connection to the Discord API
 pub struct Client {
 	token       string
-	intents     types.Intent
+	intents     gateway.Intent
 pub:
 	shard_count int
 mut:
 	events      &eventbus.EventBus
-	shards      []&gateway.Connection
+	shards      []&gateway.Shard
 pub mut:
 	rest        &rest.REST
 	log			&log.Logger
@@ -42,42 +42,41 @@ pub fn new(config Config) ?&Client {
 		rest: rest.new(config.token)
 		log: &log.Log{}
 	}
+	mut m_log := &log.Log{}
 	$if dv_debug ? {
-		client.log.set_level(.debug)
+		m_log.set_level(.debug)
 	} $else {
-		client.log.set_level(.warn)
+		m_log.set_level(.warn)
 	}
+	client.log = m_log
 	for i in 0 .. config.shard_count {
-		mut conn := gateway.new_shard(
+		mut shard := gateway.new_shard(
 			token: config.token, 
 			intents: config.intents, 
-			id: i, 
+			shard_id: i, 
 			shards_in_total: config.shard_count
 		) ?
-		conn.log = client.log
+		shard.log = client.log
 		$if dv_ws_debug ? {
-			conn.set_ws_log_level(.debug)
+			shard.set_ws_log_level(.debug)
 		} $else {
-			conn.set_ws_log_level(.warn)
+			shard.set_ws_log_level(.warn)
 		}
-		conn.set_reciever(client)
-		conn.on_hello(on_hello)
-		conn.on_dispatch(on_dispatch)
-		client.shards << conn
+		shard.set_reciever(client)
+		shard.on_dispatch(on_dispatch)
+		client.shards << shard
 	}
 	return client
 }
 
 // Creates a websocket connection to Discord
-pub fn (mut client Client) open() ? {
-	mut shards := []thread ?{}
+pub fn (mut client Client) run() []thread {
+	mut shards := []thread{}
 	for i in 0 .. client.shards.len {
-		shards << go client.shards[i].open()
+		shards << client.shards[i].run()
 		time.sleep(5 * time.second)
 	}
-	for shard in shards {
-		shard.wait() or { /* nothing */ }
-	}
+	return shards
 }
 
 // Needed for logging purposes
