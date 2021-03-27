@@ -15,7 +15,7 @@ fn main() {
 	// Add message create handler
 	client.on_message_create(on_ping)
 	// Open connection and wait till close
-	client.open() ?
+	client.run().wait()
 }
 
 // Ping handler
