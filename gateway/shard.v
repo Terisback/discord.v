@@ -60,6 +60,11 @@ pub fn new_shard(config Config) ?&Shard {
 		events: eventbus.new()
 		log: &log.Log{}
 	}
+	shard.ws.logger.set_level(shard.ws_log_level)
+	shard.ws.on_open_ref(on_open, shard)
+	shard.ws.on_error_ref(on_error, shard)
+	shard.ws.on_message_ref(on_message, shard)
+	shard.ws.on_close_ref(on_close, shard)
 	return shard
 }
 
@@ -78,14 +83,8 @@ fn (mut shard Shard) run_dispatcher() ? {
 }
 
 fn (mut shard Shard) run_websocket() ? {
+	defer { shard.ws.free() }
 	for !shard.running {
-		mut ws := websocket.new_client(shard.gateway) ?
-		shard.ws = ws
-		shard.ws.logger.set_level(shard.ws_log_level)
-		shard.ws.on_open_ref(on_open, shard)
-		shard.ws.on_error_ref(on_error, shard)
-		shard.ws.on_message_ref(on_message, shard)
-		shard.ws.on_close_ref(on_close, shard)
 		shard.ws.connect() ?
 		shard.ws.listen() or { shard.log.warn('#$shard.id Websocket listen: $err') }
 	}
@@ -103,6 +102,9 @@ fn (mut shard Shard) run_heartbeat() ? {
 		}
 		time.sleep(50 * time.millisecond)
 		if shard.ws.state in [.connecting, .closing, .closed] {
+			shard.heartbeat_acked = true
+			shard.heartbeat_interval = 1000
+			shard.last_heartbeat = 0
 			continue
 		}
 		now := time.now().unix_time_milli()
