@@ -4,16 +4,14 @@ import log
 import term
 import time
 import discordv.eventbus
-import discordv.fancylog
 import discordv.gateway
-import discordv.gateway.types
 import discordv.rest
 
 // Config struct
 pub struct Config {
 pub mut:
 	token       string
-	intents     types.Intent = guilds | guild_messages
+	intents     gateway.Intent = gateway.guilds | gateway.guild_messages
 	shard_count int = 1
 	userdata    voidptr
 }
@@ -29,7 +27,7 @@ mut:
 	shards      []&gateway.Connection
 pub mut:
 	rest        &rest.REST
-	log			&fancylog.Log
+	log			&log.Logger
 	userdata	voidptr
 }
 
@@ -42,16 +40,20 @@ pub fn new(config Config) ?&Client {
 		userdata: config.userdata
 		events: eventbus.new()
 		rest: rest.new(config.token)
-		log: fancylog.new()
+		log: &log.Log{}
 	}
 	$if dv_debug ? {
 		client.log.set_level(.debug)
 	} $else {
 		client.log.set_level(.warn)
 	}
-	client.log.set_prefix_func(prefix)
 	for i in 0 .. config.shard_count {
-		mut conn := gateway.new_connection(config.token, config.intents, i, config.shard_count) ?
+		mut conn := gateway.new_shard(
+			token: config.token, 
+			intents: config.intents, 
+			id: i, 
+			shards_in_total: config.shard_count
+		) ?
 		conn.log = client.log
 		$if dv_ws_debug ? {
 			conn.set_ws_log_level(.debug)

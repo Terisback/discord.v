@@ -1,4 +1,4 @@
-module intents
+module gateway
 
 // Intent type for gateway connection
 pub type Intent = u16

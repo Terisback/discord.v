@@ -4,7 +4,6 @@ import time
 import log
 import x.websocket
 import discordv.eventbus
-import gateway.intents
 import gateway.packets
 import sync
 
@@ -14,7 +13,7 @@ const (
 
 pub struct Config {
 	token string
-	intents intents.Intent = intents.guilds | intents.guild_messages
+	intents Intent = guilds | guild_messages
 	shard_id int
 	shards_in_total int = 1
 	gateway string
@@ -23,7 +22,7 @@ pub struct Config {
 pub struct Shard {
 	gateway            string
 	token              string
-	intents            intents.Intent
+	intents            Intent
 pub:
 	id                 int
 	total_count        int = 1
