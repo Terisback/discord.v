@@ -17,7 +17,7 @@ import terisback.discordv as vd
 fn main() {
     mut client := vd.new(token: 'token') ?
     client.on_message_create(on_ping)
-    client.open() ?
+    client.run().wait()
 }
 
 fn on_ping(mut client vd.Client, evt &vd.MessageCreate) {
