@@ -28,7 +28,6 @@ pub:
 	total_count        int = 1
 mut:
 	reciever           voidptr = voidptr(0)
-	event_queue        chan packets.Packet = chan packets.Packet{cap:64}
 	events             &eventbus.EventBus
 	ws                 &websocket.Client
 	ws_log_level       log.Level = .info
@@ -70,18 +69,8 @@ pub fn new_shard(config Config) ?&Shard {
 
 // Opens Websocket to Discord Gateway (It will wait till close signal)
 pub fn (mut shard Shard) run() thread {
-	go shard.run_dispatcher()
 	go shard.run_websocket() 
 	return go shard.run_heartbeat()
-}
-
-fn (mut shard Shard) run_dispatcher() {
-	for !shard.running {
-		packet := <-shard.event_queue or {
-			shard.log.warn('Dispatcher #$shard.id: Unable to pop event from event queue')
-		}
-		shard.dispatch(&packet)
-	}
 }
 
 fn (mut shard Shard) run_websocket() {

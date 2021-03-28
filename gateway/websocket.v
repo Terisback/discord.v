@@ -24,7 +24,7 @@ fn on_message(mut ws websocket.Client, msg &websocket.Message, mut shard Shard) 
 			shard.sequence = packet.sequence
 			match packets.Op(packet.op) {
 				.dispatch {
-					shard.event_queue <- packet
+					shard.dispatch(&packet)
 				}
 				.hello {
 					shard.handle_hello(packet)
