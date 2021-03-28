@@ -2,14 +2,13 @@ module packets
 
 import os
 import x.json2 as json
-import discordv.gateway.types
 
 // Websocket Identify packet data
 pub struct Identify {
 pub:
 	token      string
 	properties IdentifyProperties = IdentifyProperties{}
-	intents    types.Intent
+	intents    int
 	shard      []int
 }
 
@@ -24,7 +23,7 @@ pub:
 pub fn (d Identify) to_json_any() json.Any {
 	mut obj := map[string]json.Any{}
 	obj['token'] = d.token
-	obj['intents'] = int(d.intents)
+	obj['intents'] = d.intents
 	if d.shard.len != 2 {
 		mut shards := []json.Any{}
 		shards << int(0)

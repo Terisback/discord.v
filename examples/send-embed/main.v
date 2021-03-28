@@ -15,7 +15,7 @@ fn main() {
 	// Add message create handler
 	client.on_message_create(reply_with_embed)
 	// Open connection and wait till close
-	client.open() ?
+	client.run().wait()
 }
 
 fn reply_with_embed(mut client vd.Client, evt &vd.MessageCreate) {

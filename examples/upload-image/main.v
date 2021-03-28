@@ -19,7 +19,7 @@ fn main() {
 	// Add message create handler
 	client.on_message_create(img)
 	// Open connection and wait till close
-	client.open() ?
+	client.run().wait()
 }
 
 // Image sender
