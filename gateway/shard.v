@@ -78,7 +78,7 @@ pub fn (mut shard Shard) run() thread {
 fn (mut shard Shard) run_dispatcher() {
 	for !shard.running {
 		packet := <-shard.event_queue or {
-			shard.log.warn('Dispatcher #$shard.id: Unable to push event into event queue')
+			shard.log.warn('Dispatcher #$shard.id: Unable to pop event from event queue')
 		}
 		shard.dispatch(&packet)
 	}
