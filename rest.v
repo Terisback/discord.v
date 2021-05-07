@@ -71,7 +71,7 @@ pub fn (ms MessageSend) to_json() json.Any {
 
 // Post a message to a guild text or DM channel. If operating on a guild channel, this endpoint requires the SEND_MESSAGES permission to be present on the current user.
 pub fn (mut client Client) channel_message_send(channel_id string, message MessageSend) ? {
-	mut req := rest.new_request(client.token, .post, '/channels/$channel_id/messages') ?
+	mut req := client.rest.req(.post, '/channels/$channel_id/messages') ?
 
 	if message.file.filename != '' {
 		mut form := formdata.new() ?
@@ -95,7 +95,7 @@ pub fn (mut client Client) channel_message_send(channel_id string, message Messa
 
 // Delete message from a channel
 pub fn (mut client Client) channel_message_delete(channel_id string, message_id string) ? {
-	mut req := rest.new_request(client.token, .delete, '/channels/$channel_id/messages/$message_id') ?
+	mut req := client.rest.req(.delete, '/channels/$channel_id/messages/$message_id') ?
 
 	resp := client.rest.do(req) ?
 	if resp.status_code != 204 {

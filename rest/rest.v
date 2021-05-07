@@ -4,6 +4,11 @@ import net.http
 import time
 import x.json2 as json
 
+const (
+	api            = 'https://discord.com/api/v8'
+	bot_user_agent = 'DiscordBot (https://github.com/Terisback/discord.v, v0.1.0)'
+)
+
 // REST struct allows making requests to api with rate limiting
 pub struct REST {
 pub:
@@ -18,6 +23,22 @@ pub fn new(token string) &REST {
 		token: token
 		rl: &RateLimiter{}
 	}
+}
+
+// Create new discord api request
+pub fn new_request(token string, method http.Method, path string) ?http.Request {
+	mut req := http.new_request(method, api + path, '') ?
+	req.add_header('Authorization', 'Bot $token')
+	req.add_header('User-Agent', bot_user_agent)
+	return req
+}
+
+// Create new discord api request
+pub fn (mut rest REST) req(method http.Method, path string) ?http.Request {
+	mut req := http.new_request(method, api + path, '') ?
+	req.add_header('Authorization', 'Bot $rest.token')
+	req.add_header('User-Agent', bot_user_agent)
+	return req
 }
 
 // Make a request taking into account the rate limits
