@@ -79,6 +79,18 @@ pub fn (mut client Client) run() []thread {
 	return shards
 }
 
+fn (mut client Client) shard_index(guild_id string) int {
+	return (guild_id.int() >> 22) % client.shards.len
+}
+
+pub fn (mut client Client) session_id(guild_id string) string {
+	return client.shard(guild_id).get_session_id()
+}
+
+pub fn (mut client Client) shard(guild_id string) &gateway.Shard {
+	return client.shards[client.shard_index(guild_id)]
+} 
+
 // Needed for logging purposes
 fn prefix(level log.Level, colors_supported bool) string {
 	if colors_supported {
