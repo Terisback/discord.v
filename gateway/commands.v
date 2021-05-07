@@ -39,3 +39,35 @@ pub fn (mut shard Shard) request_guild_members(args RequestGuildMembersArgs) {
 	}.str()
 	shard.ws.write_string(command) or { panic(err) }
 }
+
+struct VoiceChannelJoinData {
+	guild_id string
+	channel_id string
+	self_mute bool
+	self_deaf bool
+}
+
+pub fn (data VoiceChannelJoinData) to_json() json.Any {
+	mut obj := map[string]json.Any{}
+	obj['guild_id'] = data.guild_id
+	obj['channel_id'] = data.channel_id
+	obj['self_mute'] = data.self_mute
+	obj['self_deaf'] = data.self_deaf
+	return obj
+}
+
+// initiates a voice session to a voice channel, but does not complete it.
+// if channel_id is empty, bot gonna disconnect.
+pub fn (mut shard Shard) channel_voice_join_manual(guild_id string, channel_id string, mute bool, deaf bool) ? {
+	mut command := packets.Packet{
+		op: .voice_state_update
+		data: VoiceChannelJoinData{
+			guild_id: guild_id
+			channel_id: channel_id
+			self_mute: mute
+			self_deaf: deaf
+		}.to_json()
+	}.str()
+	shard.ws.write_string(command) ?
+	shard.log.info('Connected to voice channel [guild_id: $guild_id, channel_id: $channel_id]')
+}
