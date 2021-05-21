@@ -3,7 +3,7 @@ module gateway
 import gateway.packets
 
 // Add packet handler to Dispatch packet
-pub fn (mut shard Shard) on_dispatch(handler fn(reciever voidptr, dispatch &packets.Packet)) {
+pub fn (mut shard Shard) on_dispatch(handler fn (voidptr, &packets.Packet)) {
 	shard.events.subscribe('dispatch', handler)
 }
 

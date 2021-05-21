@@ -38,10 +38,10 @@ pub fn (s Snowflake) str() string {
 
 // Converts the snowflake to a time.Time object
 pub fn (s Snowflake) time() time.Time {
-	return time.unix(int(((s.id >> 22) + discord_epoch) / 1000))
+	return time.unix(int(((s.id >> 22) + snowflake.discord_epoch) / 1000))
 }
 
-// Checks zero value snowflake 
+// Checks zero value snowflake
 pub fn (s Snowflake) is_zero() bool {
 	return s.id == 0
 }

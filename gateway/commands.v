@@ -41,10 +41,10 @@ pub fn (mut shard Shard) request_guild_members(args RequestGuildMembersArgs) {
 }
 
 struct VoiceChannelJoinData {
-	guild_id string
+	guild_id   string
 	channel_id string
-	self_mute bool
-	self_deaf bool
+	self_mute  bool
+	self_deaf  bool
 }
 
 pub fn (data VoiceChannelJoinData) to_json() json.Any {

@@ -9,10 +9,10 @@ pub type Permission = int
 
 pub struct AuditLog {
 pub mut:
-	webhooks []Webhook
-	users []User
+	webhooks          []Webhook
+	users             []User
 	audit_log_entries []AuditLogEntry
-	integrations []Integration
+	integrations      []Integration
 }
 
 pub fn (mut al AuditLog) from_json(f map[string]json.Any) {
@@ -37,13 +37,13 @@ pub fn (mut al AuditLog) from_json(f map[string]json.Any) {
 
 pub struct AuditLogEntry {
 pub mut:
-	target_id string
-	changes []AuditLogChange
-	user_id string
-	id string
+	target_id   string
+	changes     []AuditLogChange
+	user_id     string
+	id          string
 	action_type AuditLogEvent
-	options AuditEntryInfo
-	reason string
+	options     AuditEntryInfo
+	reason      string
 }
 
 pub fn (mut ale AuditLogEntry) from_json(f map[string]json.Any) {
@@ -79,7 +79,7 @@ pub struct AuditLogChange {
 pub mut:
 	new_value json.Any
 	old_value json.Any
-	key string // TODO: write module for managing audit log changes
+	key       string // TODO: write module for managing audit log changes
 }
 
 pub fn (mut alc AuditLogChange) from_json(f map[string]json.Any) {
@@ -106,7 +106,7 @@ pub enum AuditLogEvent {
 	channel_delete
 	channel_overwrite_create
 	channel_overwrite_update
-	channel_overwrite_delete	
+	channel_overwrite_delete
 	member_kick = 20
 	member_prune
 	member_ban_add
@@ -123,7 +123,7 @@ pub enum AuditLogEvent {
 	invite_update
 	invite_delete
 	webhook_create = 50
-	webhook_update	
+	webhook_update
 	webhook_delete
 	emoji_create = 60
 	emoji_update
@@ -140,13 +140,13 @@ pub enum AuditLogEvent {
 pub struct AuditEntryInfo {
 pub mut:
 	delete_member_days string
-	members_removed string
-	channel_id string
-	message_id string
-	count string
-	id string
-	@type string
-	role_name string
+	members_removed    string
+	channel_id         string
+	message_id         string
+	count              string
+	id                 string
+	@type              string
+	role_name          string
 }
 
 pub fn (mut aei AuditEntryInfo) from_json(f map[string]json.Any) {
@@ -183,20 +183,20 @@ pub fn (mut aei AuditEntryInfo) from_json(f map[string]json.Any) {
 
 pub struct Activity {
 pub mut:
-	name string
-	@type ActivityType
-	url string
-	created_at int
-	timestamps []ActivityTimestamp
+	name           string
+	@type          ActivityType
+	url            string
+	created_at     int
+	timestamps     []ActivityTimestamp
 	application_id string
-	details string
-	state string
-	emoji Emoji
-	party ActivityParty
-	assets ActivityAssets
-	secrets ActivitySecrets
-	instance bool
-	flags ActivityFlags
+	details        string
+	state          string
+	emoji          Emoji
+	party          ActivityParty
+	assets         ActivityAssets
+	secrets        ActivitySecrets
+	instance       bool
+	flags          ActivityFlags
 }
 
 pub fn (mut activity Activity) from_json(f map[string]json.Any) {
@@ -260,10 +260,10 @@ pub enum ActivityType {
 pub struct ActivityTimestamp {
 pub mut:
 	start int
-	end int
+	end   int
 }
 
-pub fn (mut at ActivityTimestamp) from_json(f map[string]json.Any){
+pub fn (mut at ActivityTimestamp) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'start' {
@@ -279,11 +279,11 @@ pub fn (mut at ActivityTimestamp) from_json(f map[string]json.Any){
 
 pub struct ActivityParty {
 pub mut:
-	id string
+	id   string
 	size [2]int
 }
 
-pub fn (mut ap ActivityParty) from_json(f map[string]json.Any){
+pub fn (mut ap ActivityParty) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'id' {
@@ -302,12 +302,12 @@ pub fn (mut ap ActivityParty) from_json(f map[string]json.Any){
 pub struct ActivityAssets {
 pub mut:
 	large_image string
-	large_text string
+	large_text  string
 	small_image string
-	small_text string
+	small_text  string
 }
 
-pub fn (mut aa ActivityAssets) from_json(f map[string]json.Any){
+pub fn (mut aa ActivityAssets) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'large_image' {
@@ -329,12 +329,12 @@ pub fn (mut aa ActivityAssets) from_json(f map[string]json.Any){
 
 pub struct ActivitySecrets {
 pub mut:
-	join string
+	join     string
 	spectate string
-	@match string
+	@match   string
 }
 
-pub fn (mut ass ActivitySecrets) from_json(f map[string]json.Any){
+pub fn (mut ass ActivitySecrets) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'join' {
@@ -354,35 +354,35 @@ pub fn (mut ass ActivitySecrets) from_json(f map[string]json.Any){
 pub type ActivityFlags = int
 
 pub const (
-	instance = ActivityFlags(1 << 0)
-	join = ActivityFlags(1 << 1)
-	spectate = ActivityFlags(1 << 2)
+	instance     = ActivityFlags(1 << 0)
+	join         = ActivityFlags(1 << 1)
+	spectate     = ActivityFlags(1 << 2)
 	join_request = ActivityFlags(1 << 3)
-	sync = ActivityFlags(1 << 4)
-	play = ActivityFlags(1 << 5)
+	sync         = ActivityFlags(1 << 4)
+	play         = ActivityFlags(1 << 5)
 )
 
 pub struct Attachment {
 pub mut:
-	id string
-	filename string
-	size int
-	url string
+	id        string
+	filename  string
+	size      int
+	url       string
 	proxy_url string
-	height int
-	width int
+	height    int
+	width     int
 }
 
 pub fn (mut at Attachment) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'id' {at.id = v.str()}
-			'filename' {at.filename = v.str()}
-			'size' {at.size = v.int()}
-			'url' {at.url = v.str()}
-			'proxy_url' {at.proxy_url = v.str()}
-			'height' {at.height = v.int()}
-			'width' {at.width = v.int()}
+			'id' { at.id = v.str() }
+			'filename' { at.filename = v.str() }
+			'size' { at.size = v.int() }
+			'url' { at.url = v.str() }
+			'proxy_url' { at.proxy_url = v.str() }
+			'height' { at.height = v.int() }
+			'width' { at.width = v.int() }
 			else {}
 		}
 	}
@@ -425,19 +425,19 @@ enum ChannelType {
 
 pub struct ChannelMention {
 pub mut:
-	id string
+	id       string
 	guild_id string
-	@type ChannelType
-	name string
+	@type    ChannelType
+	name     string
 }
 
-pub fn (mut cm ChannelMention) from_json(f map[string]json.Any){
+pub fn (mut cm ChannelMention) from_json(f map[string]json.Any) {
 	for k, v in f {
-		match k{
-			'id' {cm.id = v.str()}
-			'guild_id' {cm.guild_id = v.str()}
-			'type' {cm.@type = ChannelType(v.int())}
-			'name' {cm.name = v.str()}
+		match k {
+			'id' { cm.id = v.str() }
+			'guild_id' { cm.guild_id = v.str() }
+			'type' { cm.@type = ChannelType(v.int()) }
+			'name' { cm.name = v.str() }
 			else {}
 		}
 	}
@@ -531,32 +531,32 @@ pub fn (mut channel Channel) from_json(f map[string]json.Any) {
 
 pub struct Message {
 pub mut:
-	id                string
-	channel_id        string
-	guild_id          string
-	author            User
-	member            Member
-	content           string
-	timestamp         time.Time
-	edited_timestamp  time.Time
-	tts               bool
-	mention_everyone  bool
-	mentions          []User
-	mention_roles     []string
-	mention_channels  []ChannelMention
-	attachments       []Attachment
-	embeds            []Embed
-	reactions         []Reaction
-	nonce             string
-	pinned            bool
-	webhook_id        string
-	@type             MessageType
-	activity          MessageActivity
-	application       MessageApplication
-	message_reference MessageReference
+	id                 string
+	channel_id         string
+	guild_id           string
+	author             User
+	member             Member
+	content            string
+	timestamp          time.Time
+	edited_timestamp   time.Time
+	tts                bool
+	mention_everyone   bool
+	mentions           []User
+	mention_roles      []string
+	mention_channels   []ChannelMention
+	attachments        []Attachment
+	embeds             []Embed
+	reactions          []Reaction
+	nonce              string
+	pinned             bool
+	webhook_id         string
+	@type              MessageType
+	activity           MessageActivity
+	application        MessageApplication
+	message_reference  MessageReference
 	referenced_message &Message = voidptr(0)
-	stickers 		  []Sticker
-	flags             MessageFlag
+	stickers           []Sticker
+	flags              MessageFlag
 }
 
 pub enum MessageType {
@@ -643,7 +643,7 @@ pub fn (mut m MessageReference) from_json(f map[string]json.Any) {
 	}
 }
 
-pub fn (m MessageReference) to_json() json.Any{
+pub fn (m MessageReference) to_json() json.Any {
 	mut obj := map[string]json.Any{}
 	obj['message_id'] = m.message_id
 	obj['channel_id'] = m.channel_id
@@ -663,27 +663,27 @@ pub enum StickerType {
 
 pub struct Sticker {
 pub mut:
-	id string
-	pack_id string
-	name string
-	description string
-	tags string
-	asset string
+	id            string
+	pack_id       string
+	name          string
+	description   string
+	tags          string
+	asset         string
 	preview_asset string
-	format_type StickerType
+	format_type   StickerType
 }
 
 pub fn (mut st Sticker) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'id' {st.id = v.str()}
-			'pack_id' {st.pack_id = v.str()}
-			'name' {st.name = v.str()}
-			'description' {st.description = v.str()}
-			'tags' {st.tags = v.str()}
-			'asset' {st.asset = v.str()}
-			'preview_asset' {st.preview_asset = v.str()}
-			'format_type' {st.format_type = StickerType(v.int())}
+			'id' { st.id = v.str() }
+			'pack_id' { st.pack_id = v.str() }
+			'name' { st.name = v.str() }
+			'description' { st.description = v.str() }
+			'tags' { st.tags = v.str() }
+			'asset' { st.asset = v.str() }
+			'preview_asset' { st.preview_asset = v.str() }
+			'format_type' { st.format_type = StickerType(v.int()) }
 			else {}
 		}
 	}
@@ -791,32 +791,40 @@ pub fn (mut m Message) from_json(f map[string]json.Any) {
 
 pub struct Embed {
 pub mut:
-	title string
+	title       string
 	description string
-	url string
-	timestamp time.Time
-	color int
-	footer EmbedFooter
-	image EmbedImage
-	thumbnail EmbedThumbnail
-	video EmbedVideo
-	provider EmbedProvider
-	author EmbedAuthor
-	fields []EmbedField
+	url         string
+	timestamp   time.Time
+	color       int
+	footer      EmbedFooter
+	image       EmbedImage
+	thumbnail   EmbedThumbnail
+	video       EmbedVideo
+	provider    EmbedProvider
+	author      EmbedAuthor
+	fields      []EmbedField
 }
 
-pub fn (mut embed Embed) from_json(f map[string]json.Any){
+pub fn (mut embed Embed) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'title' {embed.title = v.str()}
-			'description' {embed.description = v.str()}
-			'url' {embed.url = v.str()}
+			'title' {
+				embed.title = v.str()
+			}
+			'description' {
+				embed.description = v.str()
+			}
+			'url' {
+				embed.url = v.str()
+			}
 			'timestamp' {
 				embed.timestamp = time.parse_iso8601(v.str()) or {
 					time.unix(int(snowflake.discord_epoch / 1000))
 				}
 			}
-			'color' {embed.color = v.int()}
+			'color' {
+				embed.color = v.int()
+			}
 			'footer' {
 				embed.footer = from_json<EmbedFooter>(v.as_map())
 			}
@@ -843,16 +851,16 @@ pub fn (mut embed Embed) from_json(f map[string]json.Any){
 	}
 }
 
-pub fn (mut embeds []Embed) from_json(f json.Any){
+pub fn (mut embeds []Embed) from_json(f json.Any) {
 	mut obj := f.arr()
-	for embed in obj{
+	for embed in obj {
 		mut e := Embed{}
 		e.from_json(embed.as_map())
 		embeds << e
 	}
 }
 
-pub fn (embed Embed) to_json() json.Any{
+pub fn (embed Embed) to_json() json.Any {
 	mut obj := map[string]json.Any{}
 	obj['title'] = embed.title
 	obj['description'] = embed.description
@@ -867,9 +875,9 @@ pub fn (embed Embed) to_json() json.Any{
 	return obj
 }
 
-pub fn (embed []Embed) to_json() json.Any{
+pub fn (embed []Embed) to_json() json.Any {
 	mut obj := []json.Any{}
-	for e in embed{
+	for e in embed {
 		obj << e.to_json()
 	}
 	return obj
@@ -881,56 +889,56 @@ pub fn (embed Embed) iszero() bool {
 
 pub struct EmbedFooter {
 pub mut:
-	text string
-	icon_url string
+	text           string
+	icon_url       string
 	proxy_icon_url string
 }
 
-pub fn (mut ef EmbedFooter) from_json(f map[string]json.Any){
+pub fn (mut ef EmbedFooter) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'text' {ef.text = v.str()}
-			'icon_url' {ef.icon_url = v.str()}
-			'proxy_icon_url' {ef.proxy_icon_url = v.str()}
+			'text' { ef.text = v.str() }
+			'icon_url' { ef.icon_url = v.str() }
+			'proxy_icon_url' { ef.proxy_icon_url = v.str() }
 			else {}
 		}
 	}
 }
 
 pub fn (ef EmbedFooter) to_json() json.Any {
-	mut obj := map[string]json.Any
+	mut obj := map[string]json.Any{}
 	obj['text'] = ef.text
 	obj['icon_url'] = ef.icon_url
 	obj['proxy_icon_url'] = ef.proxy_icon_url
 	return obj
 }
 
-pub fn (ef EmbedFooter) str() string{
+pub fn (ef EmbedFooter) str() string {
 	return ef.to_json().str()
 }
 
 pub struct EmbedImage {
 pub mut:
-	url string
+	url       string
 	proxy_url string
-	height int
-	width int
+	height    int
+	width     int
 }
 
-pub fn (mut ei EmbedImage) from_json(f map[string]json.Any){
+pub fn (mut ei EmbedImage) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'url' {ei.url = v.str()}
-			'proxy_url' {ei.proxy_url = v.str()}
-			'height' {ei.height = v.int()}
-			'width' {ei.width = v.int()}
+			'url' { ei.url = v.str() }
+			'proxy_url' { ei.proxy_url = v.str() }
+			'height' { ei.height = v.int() }
+			'width' { ei.width = v.int() }
 			else {}
 		}
-	} 
+	}
 }
 
 pub fn (ei EmbedImage) to_json() json.Any {
-	mut obj := map[string]json.Any
+	mut obj := map[string]json.Any{}
 	obj['url'] = ei.url
 	obj['proxy_url'] = ei.proxy_url
 	obj['height'] = ei.height
@@ -944,26 +952,26 @@ pub fn (ei EmbedImage) str() string {
 
 pub struct EmbedThumbnail {
 pub mut:
-	url string
+	url       string
 	proxy_url string
-	height int
-	width int
+	height    int
+	width     int
 }
 
-pub fn (mut et EmbedThumbnail) from_json(f map[string]json.Any){
+pub fn (mut et EmbedThumbnail) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'url' {et.url = v.str()}
-			'proxy_url' {et.proxy_url = v.str()}
-			'height' {et.height = v.int()}
-			'width' {et.width = v.int()}
+			'url' { et.url = v.str() }
+			'proxy_url' { et.proxy_url = v.str() }
+			'height' { et.height = v.int() }
+			'width' { et.width = v.int() }
 			else {}
 		}
-	} 
+	}
 }
 
 pub fn (et EmbedThumbnail) to_json() json.Any {
-	mut obj := map[string]json.Any
+	mut obj := map[string]json.Any{}
 	obj['url'] = et.url
 	obj['proxy_url'] = et.proxy_url
 	obj['height'] = et.height
@@ -977,24 +985,24 @@ pub fn (et EmbedThumbnail) str() string {
 
 pub struct EmbedVideo {
 pub mut:
-	url string
+	url    string
 	height int
-	width int
+	width  int
 }
 
 pub fn (mut ev EmbedVideo) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'url' {ev.url = v.str()}
-			'height' {ev.height = v.int()}
-			'width' {ev.width = v.int()}
+			'url' { ev.url = v.str() }
+			'height' { ev.height = v.int() }
+			'width' { ev.width = v.int() }
 			else {}
 		}
-	} 
+	}
 }
 
 pub fn (ev EmbedVideo) to_json() json.Any {
-	mut obj := map[string]json.Any
+	mut obj := map[string]json.Any{}
 	obj['url'] = ev.url
 	obj['height'] = ev.height
 	obj['width'] = ev.width
@@ -1008,21 +1016,21 @@ pub fn (ev EmbedVideo) str() string {
 pub struct EmbedProvider {
 pub mut:
 	name string
-	url string
+	url  string
 }
 
-pub fn (mut ep EmbedProvider) from_json (f map[string]json.Any){
+pub fn (mut ep EmbedProvider) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'name' {ep.name = v.str()}
-			'url' {ep.url = v.str()}
+			'name' { ep.name = v.str() }
+			'url' { ep.url = v.str() }
 			else {}
 		}
 	}
 }
 
 pub fn (ep EmbedProvider) to_json() json.Any {
-	mut obj := map[string]json.Any
+	mut obj := map[string]json.Any{}
 	obj['name'] = ep.name
 	obj['url'] = ep.url
 	return obj
@@ -1034,26 +1042,26 @@ pub fn (ep EmbedProvider) str() string {
 
 pub struct EmbedAuthor {
 pub mut:
-	name string
-	url string
-	icon_url string
+	name           string
+	url            string
+	icon_url       string
 	proxy_icon_url string
 }
 
-pub fn (mut ea EmbedAuthor) from_json (f map[string]json.Any){
+pub fn (mut ea EmbedAuthor) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'name' {ea.name = v.str()}
-			'url' {ea.url = v.str()}
-			'icon_url' {ea.icon_url = v.str()}
-			'proxy_icon_url' {ea.proxy_icon_url = v.str()}
+			'name' { ea.name = v.str() }
+			'url' { ea.url = v.str() }
+			'icon_url' { ea.icon_url = v.str() }
+			'proxy_icon_url' { ea.proxy_icon_url = v.str() }
 			else {}
 		}
 	}
 }
 
-pub fn (ea EmbedAuthor) to_json() json.Any{
-	mut obj := map[string]json.Any
+pub fn (ea EmbedAuthor) to_json() json.Any {
+	mut obj := map[string]json.Any{}
 	obj['name'] = ea.name
 	obj['url'] = ea.url
 	obj['icon_url'] = ea.icon_url
@@ -1067,17 +1075,17 @@ pub fn (ea EmbedAuthor) str() string {
 
 pub struct EmbedField {
 pub mut:
-	name string
-	value string
+	name   string
+	value  string
 	inline bool
 }
 
-pub fn (mut ef EmbedField) from_json (f map[string]json.Any){
+pub fn (mut ef EmbedField) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'name' {ef.name = v.str()}
-			'value' {ef.value = v.str()}
-			'inline' {ef.inline = v.bool()}
+			'name' { ef.name = v.str() }
+			'value' { ef.value = v.str() }
+			'inline' { ef.inline = v.bool() }
 			else {}
 		}
 	}
@@ -1093,7 +1101,7 @@ pub fn (ef EmbedField) to_json() json.Any {
 
 pub fn (ef []EmbedField) to_json() json.Any {
 	mut obj := []json.Any{}
-	for field in ef{
+	for field in ef {
 		obj << field.to_json()
 	}
 	return obj
@@ -1151,23 +1159,25 @@ fn (mut g UnavailableGuild) from_json(f map[string]json.Any) {
 
 pub struct Member {
 pub mut:
-	user User
-	nick string
-	roles []string
-	joined_at time.Time
+	user          User
+	nick          string
+	roles         []string
+	joined_at     time.Time
 	premium_since time.Time
-	deaf bool
-	mute bool
-	pending bool
+	deaf          bool
+	mute          bool
+	pending       bool
 }
 
-pub fn (mut member Member) from_json(f map[string]json.Any){
+pub fn (mut member Member) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'user' {
 				member.user = from_json<User>(v.as_map())
 			}
-			'nick' {member.nick = v.str()}
+			'nick' {
+				member.nick = v.str()
+			}
 			'roles' {
 				mut roles := v.arr()
 				for role in roles {
@@ -1184,10 +1194,16 @@ pub fn (mut member Member) from_json(f map[string]json.Any){
 					time.unix(int(snowflake.discord_epoch / 1000))
 				}
 			}
-			'deaf' {member.deaf = v.bool()}
-			'mute' {member.mute = v.bool()}
-			'pending' {member.pending = v.bool()}
-			else{}
+			'deaf' {
+				member.deaf = v.bool()
+			}
+			'mute' {
+				member.mute = v.bool()
+			}
+			'pending' {
+				member.pending = v.bool()
+			}
+			else {}
 		}
 	}
 }
@@ -1256,14 +1272,14 @@ pub fn (mut r Ready) from_json(f map[string]json.Any) {
 
 pub struct PresenceUpdate {
 pub mut:
-	user User
-	guild_id string
-	status PresenceStatus
-	activities []Activity
+	user          User
+	guild_id      string
+	status        PresenceStatus
+	activities    []Activity
 	client_status PresenceClientStatus
 }
 
-pub fn (mut pu PresenceUpdate) from_json(f map[string]json.Any){
+pub fn (mut pu PresenceUpdate) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'user' {
@@ -1289,17 +1305,17 @@ pub fn (mut pu PresenceUpdate) from_json(f map[string]json.Any){
 pub type PresenceStatus = string
 
 pub const (
-	idle = PresenceStatus('idle')
-	dnd = PresenceStatus('dnd')
-	online = PresenceStatus('online')
+	idle    = PresenceStatus('idle')
+	dnd     = PresenceStatus('dnd')
+	online  = PresenceStatus('online')
 	offline = PresenceStatus('offline')
 )
 
 pub struct PresenceClientStatus {
 pub mut:
-	desktop PresenceStatus = offline
-	mobile PresenceStatus = offline
-	web PresenceStatus = offline
+	desktop PresenceStatus = discordv.offline
+	mobile  PresenceStatus = discordv.offline
+	web     PresenceStatus = discordv.offline
 }
 
 pub fn (mut pcs PresenceClientStatus) from_json(f map[string]json.Any) {
@@ -1321,51 +1337,51 @@ pub fn (mut pcs PresenceClientStatus) from_json(f map[string]json.Any) {
 
 pub struct Guild {
 pub mut:
-	id string
-	name string
-	icon string
-	icon_hash string
-	splash string
-	discovery_splash string
-	owner bool
-	owner_id string
-	permissions string
-	region string
-	afk_channel_id string
-	afk_timeout int
-	widget_enabled bool
-	widget_channel_id string
-	verification_level GuildVerificationLevel
+	id                            string
+	name                          string
+	icon                          string
+	icon_hash                     string
+	splash                        string
+	discovery_splash              string
+	owner                         bool
+	owner_id                      string
+	permissions                   string
+	region                        string
+	afk_channel_id                string
+	afk_timeout                   int
+	widget_enabled                bool
+	widget_channel_id             string
+	verification_level            GuildVerificationLevel
 	default_message_notifications GuildMessageNotificationsLevel
-	explicit_content_filter GuildExplicitContentFilterLevel
-	roles []Role
-	emojis []Emoji
-	features []GuildFeature
-	mfa_level MFALevel
-	application_id string
-	system_channel_id string
-	system_channel_flags string
-	rules_channel_id string
-	joined_at time.Time
-	large bool
-	unavailable bool
-	member_count int
-	voice_states []VoiceState
-	members []Member
-	channels []Channel
-	presences []PresenceUpdate
-	max_presences int = 25000
-	max_members int
-	vanity_url_code string
-	description string
-	banner string
-	premium_tier GuildPremiumTier
-	premium_subscription_count int
-	preferred_locale string = "en-US"
-	public_updates_channel_id string
-	max_video_channel_users int
-	approximate_member_count int
-	approximate_presence_count int
+	explicit_content_filter       GuildExplicitContentFilterLevel
+	roles                         []Role
+	emojis                        []Emoji
+	features                      []GuildFeature
+	mfa_level                     MFALevel
+	application_id                string
+	system_channel_id             string
+	system_channel_flags          string
+	rules_channel_id              string
+	joined_at                     time.Time
+	large                         bool
+	unavailable                   bool
+	member_count                  int
+	voice_states                  []VoiceState
+	members                       []Member
+	channels                      []Channel
+	presences                     []PresenceUpdate
+	max_presences                 int = 25000
+	max_members                   int
+	vanity_url_code               string
+	description                   string
+	banner                        string
+	premium_tier                  GuildPremiumTier
+	premium_subscription_count    int
+	preferred_locale              string = 'en-US'
+	public_updates_channel_id     string
+	max_video_channel_users       int
+	approximate_member_count      int
+	approximate_presence_count    int
 }
 
 pub fn (mut guild Guild) from_json(f map[string]json.Any) {
@@ -1380,13 +1396,13 @@ pub fn (mut guild Guild) from_json(f map[string]json.Any) {
 			'icon' {
 				guild.icon = v.str()
 			}
-			'icon_hash'{
+			'icon_hash' {
 				guild.icon_hash = v.str()
 			}
 			'splash' {
 				guild.splash = v.str()
 			}
-			'discovery_splash'{
+			'discovery_splash' {
 				guild.discovery_splash = v.str()
 			}
 			'owner' {
@@ -1538,19 +1554,19 @@ pub enum GuildExplicitContentFilterLevel {
 pub type GuildFeature = string
 
 pub const (
-	invite_splash = GuildFeature("INVITE_SPLASH")
-	vip_regions = GuildFeature("VIP_REGIONS")
-	vanity_url = GuildFeature("VANITY_URL")
-	verified = GuildFeature("VERIFIED")
-	partnered = GuildFeature("PARTNERED")
-	community = GuildFeature("COMMUNITY")
-	commerce = GuildFeature("COMMERCE")
-	news = GuildFeature("NEWS")
-	discoverable = GuildFeature("DISCOVERABLE")
-	featurable = GuildFeature("FEATURABLE")
-	animated_icon = GuildFeature("ANIMATED_ICON")
-	banner = GuildFeature("BANNER")
-	welcome_screen_enabled = GuildFeature("WELCOME_SCREEN_ENABLED")
+	invite_splash          = GuildFeature('INVITE_SPLASH')
+	vip_regions            = GuildFeature('VIP_REGIONS')
+	vanity_url             = GuildFeature('VANITY_URL')
+	verified               = GuildFeature('VERIFIED')
+	partnered              = GuildFeature('PARTNERED')
+	community              = GuildFeature('COMMUNITY')
+	commerce               = GuildFeature('COMMERCE')
+	news                   = GuildFeature('NEWS')
+	discoverable           = GuildFeature('DISCOVERABLE')
+	featurable             = GuildFeature('FEATURABLE')
+	animated_icon          = GuildFeature('ANIMATED_ICON')
+	banner                 = GuildFeature('BANNER')
+	welcome_screen_enabled = GuildFeature('WELCOME_SCREEN_ENABLED')
 )
 
 pub enum MFALevel {
@@ -1561,24 +1577,24 @@ pub enum MFALevel {
 pub type GuildSystemChannelFlags = int
 
 pub const (
-	suppress_join_notifications = GuildSystemChannelFlags(1 << 0)
+	suppress_join_notifications    = GuildSystemChannelFlags(1 << 0)
 	suppress_premium_subscriptions = GuildSystemChannelFlags(1 << 1)
 )
 
 pub struct VoiceState {
 pub mut:
-	guild_id string
-	channel_id string
-	user_id string
-	member Member
-	session_id string
-	deaf bool
-	mute bool
-	self_deaf bool
-	self_mute bool
+	guild_id    string
+	channel_id  string
+	user_id     string
+	member      Member
+	session_id  string
+	deaf        bool
+	mute        bool
+	self_deaf   bool
+	self_mute   bool
 	self_stream bool
-	self_video bool
-	suppress bool
+	self_video  bool
+	suppress    bool
 }
 
 pub fn (mut vs VoiceState) from_json(f map[string]json.Any) {
@@ -1634,12 +1650,12 @@ pub enum GuildPremiumTier {
 
 pub struct VoiceRegion {
 pub mut:
-	id string
-	name string
-	vip bool
-	optimal bool
+	id         string
+	name       string
+	vip        bool
+	optimal    bool
 	deprecated bool
-	custom bool
+	custom     bool
 }
 
 pub fn (mut vr VoiceRegion) from_json(f map[string]json.Any) {
@@ -1716,7 +1732,7 @@ pub mut:
 pub struct Avatar {
 	user_id string
 pub:
-	hash    string
+	hash string
 }
 
 pub fn (avatar Avatar) url() string {
@@ -1786,23 +1802,23 @@ pub enum IntegrationExpireBehavior {
 
 pub type IntegrationType = string
 
-pub const(
-	twitch = IntegrationType('twitch')
+pub const (
+	twitch  = IntegrationType('twitch')
 	youtube = IntegrationType('youtube')
 	discord = IntegrationType('discord')
 )
 
 pub struct IntegrationAccount {
 pub mut:
-	id string
+	id   string
 	name string
 }
 
 pub fn (mut iacc IntegrationAccount) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'id' {iacc.id = v.str()}
-			'name' {iacc.name = v.str()}
+			'id' { iacc.id = v.str() }
+			'name' { iacc.name = v.str() }
 			else {}
 		}
 	}
@@ -1810,22 +1826,32 @@ pub fn (mut iacc IntegrationAccount) from_json(f map[string]json.Any) {
 
 pub struct IntegrationApplication {
 pub mut:
-	id string
-	name string
-	icon string
+	id          string
+	name        string
+	icon        string
 	description string
-	summary string
-	bot User
+	summary     string
+	bot         User
 }
 
-pub fn (mut iapp IntegrationApplication) from_json(f map[string]json.Any){
+pub fn (mut iapp IntegrationApplication) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'id' {iapp.id = v.str()}
-			'name' {iapp.name = v.str()}
-			'icon' {iapp.icon = v.str()}
-			'description' {iapp.description = v.str()}
-			'summary' {iapp.summary = v.str()}
+			'id' {
+				iapp.id = v.str()
+			}
+			'name' {
+				iapp.name = v.str()
+			}
+			'icon' {
+				iapp.icon = v.str()
+			}
+			'description' {
+				iapp.description = v.str()
+			}
+			'summary' {
+				iapp.summary = v.str()
+			}
 			'bot' {
 				iapp.bot = from_json<User>(v.as_map())
 			}
@@ -1836,35 +1862,53 @@ pub fn (mut iapp IntegrationApplication) from_json(f map[string]json.Any){
 
 pub struct Integration {
 pub mut:
-	id string
-	name string
-	@type IntegrationType
-	enabled bool
-	syncing bool
-	role_id string
-	enable_emoticons bool
-	expire_behavior IntegrationExpireBehavior
+	id                  string
+	name                string
+	@type               IntegrationType
+	enabled             bool
+	syncing             bool
+	role_id             string
+	enable_emoticons    bool
+	expire_behavior     IntegrationExpireBehavior
 	expire_grace_period int
-	user User
-	account IntegrationAccount
-	synced_at time.Time
-	subscriber_count int
-	revoked bool
-	application IntegrationApplication
+	user                User
+	account             IntegrationAccount
+	synced_at           time.Time
+	subscriber_count    int
+	revoked             bool
+	application         IntegrationApplication
 }
 
-pub fn (mut integration Integration) from_json(f map[string]json.Any){
+pub fn (mut integration Integration) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'id' {integration.id = v.str()}
-			'name' {integration.name = v.str()}
-			'type' {integration.@type = IntegrationType(v.str())}
-			'enabled' {integration.enabled = v.bool()}
-			'syncing' {integration.syncing = v.bool()}
-			'role_id' {integration.role_id = v.str()}
-			'enable_emoticons' {integration.enable_emoticons = v.bool()}
-			'expire_behavior' {integration.expire_behavior = IntegrationExpireBehavior(v.int())}
-			'expire_grace_period' {integration.expire_grace_period = v.int()}
+			'id' {
+				integration.id = v.str()
+			}
+			'name' {
+				integration.name = v.str()
+			}
+			'type' {
+				integration.@type = IntegrationType(v.str())
+			}
+			'enabled' {
+				integration.enabled = v.bool()
+			}
+			'syncing' {
+				integration.syncing = v.bool()
+			}
+			'role_id' {
+				integration.role_id = v.str()
+			}
+			'enable_emoticons' {
+				integration.enable_emoticons = v.bool()
+			}
+			'expire_behavior' {
+				integration.expire_behavior = IntegrationExpireBehavior(v.int())
+			}
+			'expire_grace_period' {
+				integration.expire_grace_period = v.int()
+			}
 			'user' {
 				integration.user = from_json<User>(v.as_map())
 			}
@@ -1876,39 +1920,43 @@ pub fn (mut integration Integration) from_json(f map[string]json.Any){
 					time.unix(int(snowflake.discord_epoch / 1000))
 				}
 			}
-			'subscriber_count' {integration.subscriber_count = v.int()}
-			'revoked' {integration.revoked = v.bool()}
+			'subscriber_count' {
+				integration.subscriber_count = v.int()
+			}
+			'revoked' {
+				integration.revoked = v.bool()
+			}
 			'application' {
 				integration.application = from_json<IntegrationApplication>(v.as_map())
 			}
-			else{}
+			else {}
 		}
 	}
 }
 
 pub struct Interaction {
 pub mut:
-	id string
-	@type InteractionType
-	data ApplicationCommandInteractionData
-	guild_id string
+	id         string
+	@type      InteractionType
+	data       ApplicationCommandInteractionData
+	guild_id   string
 	channel_id string
-	member Member
-	token string
-	version int
+	member     Member
+	token      string
+	version    int
 }
 
 pub fn (mut inter Interaction) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'id' {inter.id = v.str()}
-			'type' {inter.@type = InteractionType(v.int())}
-			'data' {inter.data = from_json<ApplicationCommandInteractionData>(v.as_map())}
-			'guild_id' {inter.guild_id = v.str()}
-			'channel_id' {inter.channel_id = v.str()}
-			'member' {inter.member = from_json<Member>(v.as_map())}
-			'token' {inter.token = v.str()}
-			'version' {inter.version = v.int()}
+			'id' { inter.id = v.str() }
+			'type' { inter.@type = InteractionType(v.int()) }
+			'data' { inter.data = from_json<ApplicationCommandInteractionData>(v.as_map()) }
+			'guild_id' { inter.guild_id = v.str() }
+			'channel_id' { inter.channel_id = v.str() }
+			'member' { inter.member = from_json<Member>(v.as_map()) }
+			'token' { inter.token = v.str() }
+			'version' { inter.version = v.int() }
 			else {}
 		}
 	}
@@ -1921,16 +1969,20 @@ pub enum InteractionType {
 
 pub struct ApplicationCommandInteractionData {
 pub mut:
-	id string
-	name string
+	id      string
+	name    string
 	options []&ApplicationCommandInteractionDataOption
 }
 
 pub fn (mut acid ApplicationCommandInteractionData) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'id' {acid.id = v.str()}
-			'name' {acid.name = v.str()}
+			'id' {
+				acid.id = v.str()
+			}
+			'name' {
+				acid.name = v.str()
+			}
 			'options' {
 				mut arr := from_json_arr<ApplicationCommandInteractionDataOption>(v.arr())
 				for item in arr {
@@ -1945,16 +1997,20 @@ pub fn (mut acid ApplicationCommandInteractionData) from_json(f map[string]json.
 [heap]
 pub struct ApplicationCommandInteractionDataOption {
 pub mut:
-	name string
-	value string
+	name    string
+	value   string
 	options []&ApplicationCommandInteractionDataOption
 }
 
 pub fn (mut acido ApplicationCommandInteractionDataOption) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'name' {acido.name = v.str()}
-			'value' {acido.value = v.str()}
+			'name' {
+				acido.name = v.str()
+			}
+			'value' {
+				acido.value = v.str()
+			}
 			'options' {
 				mut arr := from_json_arr<ApplicationCommandInteractionDataOption>(v.arr())
 				for item in arr {
@@ -1968,29 +2024,29 @@ pub fn (mut acido ApplicationCommandInteractionDataOption) from_json(f map[strin
 
 pub struct Webhook {
 pub mut:
-	id string
-	@type WebhookType
-	guild_id string
-	channel_id string
-	user User
-	name string
-	avatar string
-	token string
+	id             string
+	@type          WebhookType
+	guild_id       string
+	channel_id     string
+	user           User
+	name           string
+	avatar         string
+	token          string
 	application_id string
 }
 
-pub fn (mut webhook Webhook) from_json(f map[string]json.Any){
+pub fn (mut webhook Webhook) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'id' {webhook.id = v.str()}
-			'type' {webhook.@type = WebhookType(v.int())}
-			'guild_id' {webhook.guild_id = v.str()}
-			'channel_id' {webhook.channel_id = v.str()}
-			'user' {webhook.user = from_json<User>(v.as_map())}
-			'name' {webhook.name = v.str()}
-			'avatar' {webhook.avatar = v.str()}
-			'token' {webhook.token = v.str()}
-			'application_id' {webhook.application_id = v.str()}
+			'id' { webhook.id = v.str() }
+			'type' { webhook.@type = WebhookType(v.int()) }
+			'guild_id' { webhook.guild_id = v.str() }
+			'channel_id' { webhook.channel_id = v.str() }
+			'user' { webhook.user = from_json<User>(v.as_map()) }
+			'name' { webhook.name = v.str() }
+			'avatar' { webhook.avatar = v.str() }
+			'token' { webhook.token = v.str() }
+			'application_id' { webhook.application_id = v.str() }
 			else {}
 		}
 	}
@@ -2001,7 +2057,7 @@ pub enum WebhookType {
 	channel_follower
 }
 
-fn from_json<T> (f map[string]json.Any) T {
+fn from_json<T>(f map[string]json.Any) T {
 	mut obj := T{}
 	obj.from_json(f)
 	return obj

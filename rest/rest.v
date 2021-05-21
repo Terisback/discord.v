@@ -14,7 +14,7 @@ pub struct REST {
 pub:
 	token string
 mut:
-	rl    &RateLimiter
+	rl &RateLimiter
 }
 
 // Create new REST manager
@@ -27,17 +27,17 @@ pub fn new(token string) &REST {
 
 // Create new discord api request
 pub fn new_request(token string, method http.Method, path string) ?http.Request {
-	mut req := http.new_request(method, api + path, '') ?
+	mut req := http.new_request(method, rest.api + path, '') ?
 	req.add_header(.authorization, 'Bot $token')
-	req.add_header(.user_agent, bot_user_agent)
+	req.add_header(.user_agent, rest.bot_user_agent)
 	return req
 }
 
 // Create new discord api request
 pub fn (mut rest REST) req(method http.Method, path string) ?http.Request {
-	mut req := http.new_request(method, api + path, '') ?
+	mut req := http.new_request(method, rest.api + path, '') ?
 	req.add_header(.authorization, 'Bot $rest.token')
-	req.add_header(.user_agent, bot_user_agent)
+	req.add_header(.user_agent, rest.bot_user_agent)
 	return req
 }
 
@@ -51,9 +51,7 @@ pub fn (mut rest REST) do(req http.Request) ?http.Response {
 	}
 	bucket.release(resp.header)
 	if resp.status_code == 429 {
-		mut obj := json.raw_decode(resp.text.replace('\n','')) or {
-			panic(err)
-		}
+		mut obj := json.raw_decode(resp.text.replace('\n', '')) or { panic(err) }
 		mut tmr := TooManyRequests{}
 		tmr.from_json(obj)
 		rest.rl.global = time.utc().unix_time_milli() + u64(tmr.retry_after) * 1000

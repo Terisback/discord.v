@@ -8,10 +8,10 @@ import discordv.rest.formdata
 // Optional query for guild_audit_log.
 // 'limit' must be [1, 100], default 50.
 pub struct GuildAuditLogQuery {
-	user_id string
+	user_id     string
 	action_type AuditLogEvent
-	before string
-	limit int = 50
+	before      string
+	limit       int = 50
 }
 
 pub fn (query GuildAuditLogQuery) query() string {
@@ -47,11 +47,11 @@ pub fn (query GuildAuditLogQuery) query() string {
 // MessageSend stores all parameters you can send with channel_message_send.
 pub struct MessageSend {
 pub mut:
-	content string
-	embed Embed
-	tts bool
-	file File
-	nonce string
+	content   string
+	embed     Embed
+	tts       bool
+	file      File
+	nonce     string
 	reference MessageReference
 }
 

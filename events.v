@@ -5,20 +5,20 @@ import x.json2 as json
 import discordv.gateway.packets
 import discordv.snowflake
 
-pub type Dispatch = packets.Packet
-pub type Hello = packets.Hello
+pub type Dispatch = gateway.packets.Packet
+pub type Hello = gateway.packets.Hello
 pub type ChannelCreate = Channel
 pub type ChannelUpdate = Channel
 pub type ChannelDelete = Channel
 
 pub struct ChannelPinsUpdate {
 pub mut:
-	guild_id string
-	channel_id string
+	guild_id           string
+	channel_id         string
 	last_pin_timestamp time.Time
 }
 
-pub fn (mut cpu ChannelPinsUpdate) from_json(f map[string]json.Any){
+pub fn (mut cpu ChannelPinsUpdate) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'guild_id' {
@@ -36,6 +36,7 @@ pub fn (mut cpu ChannelPinsUpdate) from_json(f map[string]json.Any){
 		}
 	}
 }
+
 pub type GuildCreate = Guild
 pub type GuildUpdate = Guild
 pub type GuildDelete = UnavailableGuild
@@ -43,13 +44,13 @@ pub type GuildDelete = UnavailableGuild
 struct GuildBan {
 pub mut:
 	guild_id string
-	user User
+	user     User
 }
 
 pub fn (mut gb GuildBan) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'guild_id'{
+			'guild_id' {
 				gb.guild_id = v.str()
 			}
 			'user' {
@@ -66,13 +67,13 @@ pub type GuildBanRemove = GuildBan
 pub struct GuildEmojisUpdate {
 pub mut:
 	guild_id string
-	emojis []Emoji
+	emojis   []Emoji
 }
 
 pub fn (mut geu GuildEmojisUpdate) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'guild_id'{
+			'guild_id' {
 				geu.guild_id = v.str()
 			}
 			'emojis' {
@@ -91,7 +92,7 @@ pub mut:
 pub fn (mut geu GuildIntegrationsUpdate) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'guild_id'{
+			'guild_id' {
 				geu.guild_id = v.str()
 			}
 			else {}
@@ -102,10 +103,10 @@ pub fn (mut geu GuildIntegrationsUpdate) from_json(f map[string]json.Any) {
 pub struct GuildMemberAdd {
 pub mut:
 	guild_id string
-	member Member
+	member   Member
 }
 
-pub fn (mut gma GuildMemberAdd) from_json(f map[string]json.Any){
+pub fn (mut gma GuildMemberAdd) from_json(f map[string]json.Any) {
 	if 'guild_id' in f {
 		gma.guild_id = f['guild_id'].str()
 	}
@@ -115,10 +116,10 @@ pub fn (mut gma GuildMemberAdd) from_json(f map[string]json.Any){
 pub struct GuildMemberRemove {
 pub mut:
 	guild_id string
-	user User
+	user     User
 }
 
-pub fn (mut gmr GuildMemberRemove) from_json(f map[string]json.Any){
+pub fn (mut gmr GuildMemberRemove) from_json(f map[string]json.Any) {
 	if 'guild_id' in f {
 		gmr.guild_id = f['guild_id'].str()
 	}
@@ -127,11 +128,11 @@ pub fn (mut gmr GuildMemberRemove) from_json(f map[string]json.Any){
 
 pub struct GuildMemberUpdate {
 pub mut:
-	guild_id string
-	roles []string
-	user User
-	nick string
-	joined_at time.Time
+	guild_id      string
+	roles         []string
+	user          User
+	nick          string
+	joined_at     time.Time
 	premium_since time.Time
 }
 
@@ -170,13 +171,13 @@ pub fn (mut gmu GuildMemberUpdate) from_json(f map[string]json.Any) {
 
 pub struct GuildMembersChunk {
 pub mut:
-	guild_id string
-	members []Member
+	guild_id    string
+	members     []Member
 	chunk_index int
 	chunk_count int
-	not_found []string
-	presences []PresenceUpdate
-	nonce string
+	not_found   []string
+	presences   []PresenceUpdate
+	nonce       string
 }
 
 pub fn (mut gmc GuildMembersChunk) from_json(f map[string]json.Any) {
@@ -214,10 +215,10 @@ pub fn (mut gmc GuildMembersChunk) from_json(f map[string]json.Any) {
 struct GuildRole {
 pub mut:
 	guild_id string
-	role Role
+	role     Role
 }
 
-pub fn (mut gr GuildRole) from_json(f map[string]json.Any){
+pub fn (mut gr GuildRole) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'guild_id' {
@@ -237,10 +238,10 @@ pub type GuildRoleUpdate = GuildRole
 pub struct GuildRoleDelete {
 pub mut:
 	guild_id string
-	role_id string
+	role_id  string
 }
 
-pub fn (mut grd GuildRoleDelete) from_json(f map[string]json.Any){
+pub fn (mut grd GuildRoleDelete) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'guild_id' {
@@ -256,19 +257,19 @@ pub fn (mut grd GuildRoleDelete) from_json(f map[string]json.Any){
 
 pub struct InviteCreate {
 pub mut:
-	channel_id string
-	code string
-	created_at time.Time
-	guild_id string
-	inviter User
-	max_age int
-	max_uses int
+	channel_id  string
+	code        string
+	created_at  time.Time
+	guild_id    string
+	inviter     User
+	max_age     int
+	max_uses    int
 	target_user User
-	temporary bool
-	uses int
+	temporary   bool
+	uses        int
 }
 
-pub fn (mut ic InviteCreate) from_json(f map[string]json.Any){
+pub fn (mut ic InviteCreate) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'channel_id' {
@@ -311,11 +312,11 @@ pub fn (mut ic InviteCreate) from_json(f map[string]json.Any){
 pub struct InviteDelete {
 pub mut:
 	channel_id string
-	guild_id string
-	code string
+	guild_id   string
+	code       string
 }
 
-pub fn (mut id InviteDelete) from_json(f map[string]json.Any){
+pub fn (mut id InviteDelete) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'channel_id' {
@@ -338,12 +339,12 @@ pub type MessageDelete = Message
 
 pub struct MessageDeleteBulk {
 pub mut:
-	ids []string
+	ids        []string
 	channel_id string
-	guild_id string
+	guild_id   string
 }
 
-pub fn (mut mdb MessageDeleteBulk) from_json(f map[string]json.Any){
+pub fn (mut mdb MessageDeleteBulk) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'ids' {
@@ -365,15 +366,15 @@ pub fn (mut mdb MessageDeleteBulk) from_json(f map[string]json.Any){
 
 pub struct MessageReactionAdd {
 pub mut:
-	user_id string
+	user_id    string
 	channel_id string
 	message_id string
-	guild_id string
-	member Member
-	emoji Emoji
+	guild_id   string
+	member     Member
+	emoji      Emoji
 }
 
-pub fn (mut mra MessageReactionAdd) from_json(f map[string]json.Any){
+pub fn (mut mra MessageReactionAdd) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'user_id' {
@@ -401,14 +402,14 @@ pub fn (mut mra MessageReactionAdd) from_json(f map[string]json.Any){
 
 pub struct MessageReactionRemove {
 pub mut:
-	user_id string
+	user_id    string
 	channel_id string
 	message_id string
-	guild_id string
-	emoji Emoji
+	guild_id   string
+	emoji      Emoji
 }
 
-pub fn (mut mra MessageReactionRemove) from_json(f map[string]json.Any){
+pub fn (mut mra MessageReactionRemove) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'user_id' {
@@ -435,10 +436,10 @@ pub struct MessageReactionRemoveAll {
 pub mut:
 	channel_id string
 	message_id string
-	guild_id string
+	guild_id   string
 }
 
-pub fn (mut mra MessageReactionRemoveAll) from_json(f map[string]json.Any){
+pub fn (mut mra MessageReactionRemoveAll) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'channel_id' {
@@ -459,11 +460,11 @@ pub struct MessageReactionRemoveEmoji {
 pub mut:
 	channel_id string
 	message_id string
-	guild_id string
-	emoji Emoji
+	guild_id   string
+	emoji      Emoji
 }
 
-pub fn (mut mra MessageReactionRemoveEmoji) from_json(f map[string]json.Any){
+pub fn (mut mra MessageReactionRemoveEmoji) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'channel_id' {
@@ -486,13 +487,13 @@ pub fn (mut mra MessageReactionRemoveEmoji) from_json(f map[string]json.Any){
 pub struct TypingStart {
 pub mut:
 	channel_id string
-	guild_id string
-	user_id string
-	timestamp int
-	member Member
+	guild_id   string
+	user_id    string
+	timestamp  int
+	member     Member
 }
 
-pub fn (mut ts TypingStart) from_json(f map[string]json.Any){
+pub fn (mut ts TypingStart) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'channel_id' {
@@ -520,12 +521,12 @@ pub type VoiceStateUpdate = VoiceState
 
 pub struct VoiceServerUpdate {
 pub mut:
-	token string
+	token    string
 	guild_id string
 	endpoint string
 }
 
-pub fn (mut vsu VoiceServerUpdate) from_json(f map[string]json.Any){
+pub fn (mut vsu VoiceServerUpdate) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'token' {
@@ -544,11 +545,11 @@ pub fn (mut vsu VoiceServerUpdate) from_json(f map[string]json.Any){
 
 pub struct WebhooksUpdate {
 pub mut:
-	guild_id string
+	guild_id   string
 	channel_id string
 }
 
-pub fn (mut wu WebhooksUpdate) from_json(f map[string]json.Any){
+pub fn (mut wu WebhooksUpdate) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'guild_id' {
@@ -565,32 +566,32 @@ pub fn (mut wu WebhooksUpdate) from_json(f map[string]json.Any){
 pub type InteractionCreate = Interaction
 
 // Publishing hello event to client eventbus
-fn on_hello(mut client &Client, hello &packets.Hello){
+fn on_hello(mut client Client, hello &gateway.packets.Hello) {
 	client.events.publish('hello', client, hello)
 }
 
 // Deals with packets from gateway. Publishing to client eventbus
-fn on_dispatch(mut client &Client, packet &packets.Packet){
+fn on_dispatch(mut client Client, packet &gateway.packets.Packet) {
 	event_name := packet.event.to_lower()
 	mut data := packet.data.as_map()
 	client.events.publish('dispatch', client, packet)
 	match event_name {
-		'ready' { 
+		'ready' {
 			mut obj := Ready{}
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
-		'channel_create' { 
+		'channel_create' {
 			mut obj := ChannelCreate{}
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
-		'channel_update' { 
+		'channel_update' {
 			mut obj := ChannelUpdate{}
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
-		'channel_delete' { 
+		'channel_delete' {
 			mut obj := ChannelDelete{}
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
@@ -678,17 +679,17 @@ fn on_dispatch(mut client &Client, packet &packets.Packet){
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
-		'message_create' { 
+		'message_create' {
 			mut obj := MessageCreate{}
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
-		'message_update' { 
+		'message_update' {
 			mut obj := MessageUpdate{}
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
-		'message_delete' { 
+		'message_delete' {
 			mut obj := MessageDelete{}
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
@@ -760,186 +761,186 @@ fn on_dispatch(mut client &Client, packet &packets.Packet){
 }
 
 // Add event handler to Dispatch event
-pub fn (mut client Client) on_dispatch(handler fn(mut client &Client, event &Dispatch)){
+pub fn (mut client Client) on_dispatch(handler fn (mut Client, &Dispatch)) {
 	client.events.subscribe('dispatch', handler)
 }
 
 // Add event handler to Hello event
-pub fn (mut client Client) on_hello(handler fn(mut client &Client, event &Hello)){
+pub fn (mut client Client) on_hello(handler fn (mut Client, &Hello)) {
 	client.events.subscribe('hello', handler)
 }
 
 // Add event handler to Ready event
-pub fn (mut client Client) on_ready(handler fn(mut client &Client, event &Ready)){
+pub fn (mut client Client) on_ready(handler fn (mut Client, &Ready)) {
 	client.events.subscribe('ready', handler)
 }
 
 // Add event handler to ChannelCreate event
-pub fn (mut client Client) on_channel_create(handler fn(mut client &Client, event &ChannelCreate)){
+pub fn (mut client Client) on_channel_create(handler fn (mut Client, &ChannelCreate)) {
 	client.events.subscribe('channel_create', handler)
 }
 
 // Add event handler to ChannelUpdate event
-pub fn (mut client Client) on_channel_update(handler fn(mut client &Client, event &ChannelUpdate)){
+pub fn (mut client Client) on_channel_update(handler fn (mut Client, &ChannelUpdate)) {
 	client.events.subscribe('channel_update', handler)
 }
 
 // Add event handler to ChannelDelete event
-pub fn (mut client Client) on_channel_delete(handler fn(mut client &Client, event &ChannelDelete)){
+pub fn (mut client Client) on_channel_delete(handler fn (mut Client, &ChannelDelete)) {
 	client.events.subscribe('channel_delete', handler)
 }
 
 // Add event handler to ChannelPinsUpdate event
-pub fn (mut client Client) on_channel_pins_update(handler fn(mut client &Client, event &ChannelPinsUpdate)){
+pub fn (mut client Client) on_channel_pins_update(handler fn (mut Client, &ChannelPinsUpdate)) {
 	client.events.subscribe('channel_pins_update', handler)
 }
 
 // Add event handler to GuildCreate event
-pub fn (mut client Client) on_guild_create(handler fn(mut client &Client, event &GuildCreate)){
+pub fn (mut client Client) on_guild_create(handler fn (mut Client, &GuildCreate)) {
 	client.events.subscribe('guild_create', handler)
 }
 
 // Add event handler to GuildUpdate event
-pub fn (mut client Client) on_guild_update(handler fn(mut client &Client, event &GuildUpdate)){
+pub fn (mut client Client) on_guild_update(handler fn (mut Client, &GuildUpdate)) {
 	client.events.subscribe('guild_create', handler)
 }
 
 // Add event handler to GuildDelete event
-pub fn (mut client Client) on_guild_delete(handler fn(mut client &Client, event &GuildDelete)){
+pub fn (mut client Client) on_guild_delete(handler fn (mut Client, &GuildDelete)) {
 	client.events.subscribe('guild_create', handler)
 }
 
 // Add event handler to GuildBanAdd event
-pub fn (mut client Client) on_guild_ban_add(handler fn(mut client &Client, event &GuildBanAdd)){
+pub fn (mut client Client) on_guild_ban_add(handler fn (mut Client, &GuildBanAdd)) {
 	client.events.subscribe('guild_ban_add', handler)
 }
 
 // Add event handler to GuildBanRemove event
-pub fn (mut client Client) on_guild_ban_remove(handler fn(mut client &Client, event &GuildBanRemove)){
+pub fn (mut client Client) on_guild_ban_remove(handler fn (mut Client, &GuildBanRemove)) {
 	client.events.subscribe('guild_ban_remove', handler)
 }
 
 // Add event handler to GuildEmojisUpdate event
-pub fn (mut client Client) on_guild_emojis_update(handler fn(mut client &Client, event &GuildEmojisUpdate)){
+pub fn (mut client Client) on_guild_emojis_update(handler fn (mut Client, &GuildEmojisUpdate)) {
 	client.events.subscribe('guild_emojis_update', handler)
 }
 
 // Add event handler to GuildIntegrationsUpdate event
-pub fn (mut client Client) on_guild_integrations_update(handler fn(mut client &Client, event &GuildIntegrationsUpdate)){
+pub fn (mut client Client) on_guild_integrations_update(handler fn (mut Client, &GuildIntegrationsUpdate)) {
 	client.events.subscribe('guild_integrations_update', handler)
 }
 
 // Add event handler to GuildMemberAdd event
-pub fn (mut client Client) on_guild_member_add(handler fn(mut client &Client, event &GuildMemberAdd)){
+pub fn (mut client Client) on_guild_member_add(handler fn (mut Client, &GuildMemberAdd)) {
 	client.events.subscribe('guild_member_add', handler)
 }
 
 // Add event handler to GuildMemberRemove event
-pub fn (mut client Client) on_guild_member_remove(handler fn(mut client &Client, event &GuildMemberRemove)){
+pub fn (mut client Client) on_guild_member_remove(handler fn (mut Client, &GuildMemberRemove)) {
 	client.events.subscribe('guild_member_remove', handler)
 }
 
 // Add event handler to GuildMemberUpdate event
-pub fn (mut client Client) on_guild_member_update(handler fn(mut client &Client, event &GuildMemberUpdate)){
+pub fn (mut client Client) on_guild_member_update(handler fn (mut Client, &GuildMemberUpdate)) {
 	client.events.subscribe('guild_member_update', handler)
 }
 
 // Add event handler to GuildRoleCreate event
-pub fn (mut client Client) on_guild_role_create(handler fn(mut client &Client, event &GuildRoleCreate)){
+pub fn (mut client Client) on_guild_role_create(handler fn (mut Client, &GuildRoleCreate)) {
 	client.events.subscribe('guild_role_create', handler)
 }
 
 // Add event handler to GuildRoleUpdate event
-pub fn (mut client Client) on_guild_role_update(handler fn(mut client &Client, event &GuildRoleUpdate)){
+pub fn (mut client Client) on_guild_role_update(handler fn (mut Client, &GuildRoleUpdate)) {
 	client.events.subscribe('guild_role_update', handler)
 }
 
 // Add event handler to GuildRoleDelete event
-pub fn (mut client Client) on_guild_role_delete(handler fn(mut client &Client, event &GuildRoleDelete)){
+pub fn (mut client Client) on_guild_role_delete(handler fn (mut Client, &GuildRoleDelete)) {
 	client.events.subscribe('guild_role_delete', handler)
 }
 
 // Add event handler to InviteCreate event
-pub fn (mut client Client) on_invite_create(handler fn(mut client &Client, event &InviteCreate)){
+pub fn (mut client Client) on_invite_create(handler fn (mut Client, &InviteCreate)) {
 	client.events.subscribe('invite_create', handler)
 }
 
 // Add event handler to InviteDelete event
-pub fn (mut client Client) on_invite_delete(handler fn(mut client &Client, event &InviteDelete)){
+pub fn (mut client Client) on_invite_delete(handler fn (mut Client, &InviteDelete)) {
 	client.events.subscribe('invite_delete', handler)
 }
 
 // Add event handler to MessageCreate event
-pub fn (mut client Client) on_message_create(handler fn(mut client &Client, event &MessageCreate)){
+pub fn (mut client Client) on_message_create(handler fn (mut Client, &MessageCreate)) {
 	client.events.subscribe('message_create', handler)
 }
 
 // Add event handler to MessageUpdate event
-pub fn (mut client Client) on_message_update(handler fn(mut client &Client, event &MessageUpdate)){
+pub fn (mut client Client) on_message_update(handler fn (mut Client, &MessageUpdate)) {
 	client.events.subscribe('message_update', handler)
 }
 
 // Add event handler to MessageDelete event
-pub fn (mut client Client) on_message_delete(handler fn(mut client &Client, event &MessageDelete)){
+pub fn (mut client Client) on_message_delete(handler fn (mut Client, &MessageDelete)) {
 	client.events.subscribe('message_delete', handler)
 }
 
 // Add event handler to MessageDeleteBulk event
-pub fn (mut client Client) on_message_delete_bulk(handler fn(mut client &Client, event &MessageDeleteBulk)){
+pub fn (mut client Client) on_message_delete_bulk(handler fn (mut Client, &MessageDeleteBulk)) {
 	client.events.subscribe('message_delete_bulk', handler)
 }
 
 // Add event handler to MessageReactionAdd event
-pub fn (mut client Client) on_message_reaction_add(handler fn(mut client &Client, event &MessageReactionAdd)){
+pub fn (mut client Client) on_message_reaction_add(handler fn (mut Client, &MessageReactionAdd)) {
 	client.events.subscribe('message_reaction_add', handler)
 }
 
 // Add event handler to MessageReactionRemove event
-pub fn (mut client Client) on_message_reaction_remove(handler fn(mut client &Client, event &MessageReactionRemove)){
+pub fn (mut client Client) on_message_reaction_remove(handler fn (mut Client, &MessageReactionRemove)) {
 	client.events.subscribe('message_reaction_remove', handler)
 }
 
 // Add event handler to MessageReactionRemoveAll event
-pub fn (mut client Client) on_message_reaction_remove_all(handler fn(mut client &Client, event &MessageReactionRemoveAll)){
+pub fn (mut client Client) on_message_reaction_remove_all(handler fn (mut Client, &MessageReactionRemoveAll)) {
 	client.events.subscribe('message_reaction_remove_all', handler)
 }
 
 // Add event handler to MessageReactionRemoveEmoji event
-pub fn (mut client Client) on_message_reaction_remove_emoji(handler fn(mut client &Client, event &MessageReactionRemoveEmoji)){
+pub fn (mut client Client) on_message_reaction_remove_emoji(handler fn (mut Client, &MessageReactionRemoveEmoji)) {
 	client.events.subscribe('message_reaction_remove_emoji', handler)
 }
 
 // Add event handler to PresenceUpdate event
-pub fn (mut client Client) on_presence_update(handler fn(mut client &Client, event &PresenceUpdate)){
+pub fn (mut client Client) on_presence_update(handler fn (mut Client, &PresenceUpdate)) {
 	client.events.subscribe('presence_update', handler)
 }
 
 // Add event handler to TypingStart event
-pub fn (mut client Client) on_typing_start(handler fn(mut client &Client, event &TypingStart)){
+pub fn (mut client Client) on_typing_start(handler fn (mut Client, &TypingStart)) {
 	client.events.subscribe('typing_start', handler)
 }
 
 // Add event handler to UserUpdate event
-pub fn (mut client Client) on_user_update(handler fn(mut client &Client, event &UserUpdate)){
+pub fn (mut client Client) on_user_update(handler fn (mut Client, &UserUpdate)) {
 	client.events.subscribe('user_update', handler)
 }
 
 // Add event handler to VoiceStateUpdate event
-pub fn (mut client Client) on_voice_state_update(handler fn(mut client &Client, event &VoiceStateUpdate)){
+pub fn (mut client Client) on_voice_state_update(handler fn (mut Client, &VoiceStateUpdate)) {
 	client.events.subscribe('voice_state_update', handler)
 }
 
 // Add event handler to VoiceServerUpdate event
-pub fn (mut client Client) on_voice_server_update(handler fn(mut client &Client, event &VoiceServerUpdate)){
+pub fn (mut client Client) on_voice_server_update(handler fn (mut Client, &VoiceServerUpdate)) {
 	client.events.subscribe('voice_server_update', handler)
 }
 
 // Add event handler to WebhooksUpdate event
-pub fn (mut client Client) on_webhooks_update(handler fn(mut client &Client, event &WebhooksUpdate)){
+pub fn (mut client Client) on_webhooks_update(handler fn (mut Client, &WebhooksUpdate)) {
 	client.events.subscribe('webhooks_update', handler)
 }
 
 // Add event handler to InteractionCreate event
-pub fn (mut client Client) on_interaction_create(handler fn(mut client &Client, event &InteractionCreate)){
+pub fn (mut client Client) on_interaction_create(handler fn (mut Client, &InteractionCreate)) {
 	client.events.subscribe('interaction_create', handler)
 }

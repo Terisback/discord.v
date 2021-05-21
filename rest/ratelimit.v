@@ -83,11 +83,11 @@ pub fn (mut bucket Bucket) release(header http.Header) {
 	if header.keys().len == 0 {
 		return
 	}
-	if header.contains_custom("x-ratelimit-reset") {
-		bucket.reset = u64((header.get_custom("x-ratelimit-reset") or { return err }).f64() * 1000)
+	if header.contains_custom('x-ratelimit-reset') {
+		bucket.reset = u64((header.get_custom('x-ratelimit-reset') or { return err }).f64() * 1000)
 	}
-	if header.contains_custom("x-ratelimit-remaining") {
-		bucket.remaining = (header.get_custom("x-ratelimit-remaining") or { return err }).int()
+	if header.contains_custom('x-ratelimit-remaining') {
+		bucket.remaining = (header.get_custom('x-ratelimit-remaining') or { return err }).int()
 	}
 }
 

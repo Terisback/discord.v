@@ -29,7 +29,7 @@ fn (mut shard Shard) handle_hello(packet packets.Packet) {
 				shard: [shard.id, shard.total_count]
 			}.to_json_any()
 		}.to_json()
-		shard.ws.write_string(message) or {panic(err)}
+		shard.ws.write_string(message) or { panic(err) }
 	}
 	shard.last_heartbeat = time.now().unix_time_milli()
 }
