@@ -5,8 +5,8 @@ import x.json2 as json
 import discordv.gateway.packets
 import discordv.snowflake
 
-pub type Dispatch = gateway.packets.Packet
-pub type Hello = gateway.packets.Hello
+pub type Dispatch = packets.Packet
+pub type Hello = packets.Hello
 pub type ChannelCreate = Channel
 pub type ChannelUpdate = Channel
 pub type ChannelDelete = Channel
@@ -566,12 +566,12 @@ pub fn (mut wu WebhooksUpdate) from_json(f map[string]json.Any) {
 pub type InteractionCreate = Interaction
 
 // Publishing hello event to client eventbus
-fn on_hello(mut client Client, hello &gateway.packets.Hello) {
+fn on_hello(mut client Client, hello &packets.Hello) {
 	client.events.publish('hello', client, hello)
 }
 
 // Deals with packets from gateway. Publishing to client eventbus
-fn on_dispatch(mut client Client, packet &gateway.packets.Packet) {
+fn on_dispatch(mut client Client, packet &packets.Packet) {
 	event_name := packet.event.to_lower()
 	mut data := packet.data.as_map()
 	client.events.publish('dispatch', client, packet)
