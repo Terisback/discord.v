@@ -90,7 +90,7 @@ fn (mut shard Shard) run_websocket() {
 fn (mut shard Shard) run_heartbeat() {
 	for {
 		mut stop := false
-		status := shard.stop.try_pop(stop)
+		status := shard.stop.try_pop(mut stop)
 		if status == .success {
 			shard.running = false
 			shard.ws.close(1000, 'close() was called') or {}
@@ -144,4 +144,9 @@ pub fn (mut shard Shard) set_ws_log_level(level log.Level) {
 // Send close signal (It doesn't close immediately)
 pub fn (mut shard Shard) close() {
 	shard.stop <- true
+}
+
+// Return the shard's session id
+pub fn (mut shard Shard) get_session_id() string {
+	return shard.session_id
 }

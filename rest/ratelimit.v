@@ -2,8 +2,10 @@ module rest
 
 import sync
 import time
+import net.http
 import x.json2 as json
 
+[heap]
 struct RateLimiter {
 pub mut:
 	mutex   &sync.Mutex = sync.new_mutex()
@@ -63,6 +65,7 @@ pub fn (mut rl RateLimiter) lock_bucket_obj(mut bucket Bucket) &Bucket {
 }
 
 // Bucket is needed to control the number of requests up to a certain endpoint
+[heap]
 struct Bucket {
 pub mut:
 	rl        &RateLimiter
@@ -73,18 +76,18 @@ pub mut:
 }
 
 // Update bucket limits from responce headers
-pub fn (mut bucket Bucket) release(headers map[string]string) {
+pub fn (mut bucket Bucket) release(header http.Header) {
 	defer {
 		bucket.mutex.unlock()
 	}
-	if headers.len == 0 {
+	if header.keys().len == 0 {
 		return
 	}
-	if 'x-ratelimit-reset' in headers {
-		bucket.reset = u64(headers['x-ratelimit-reset'].f64() * 1000)
+	if header.contains_custom("x-ratelimit-reset") {
+		bucket.reset = u64((header.get_custom("x-ratelimit-reset") or { return err }).f64() * 1000)
 	}
-	if 'x-ratelimit-remaining' in headers {
-		bucket.remaining = headers['x-ratelimit-remaining'].int()
+	if header.contains_custom("x-ratelimit-remaining") {
+		bucket.remaining = (header.get_custom("x-ratelimit-remaining") or { return err }).int()
 	}
 }
 

@@ -75,12 +75,12 @@ pub fn (mut client Client) channel_message_send(channel_id string, message Messa
 
 	if message.file.filename != '' {
 		mut form := formdata.new() ?
-		req.add_header('Content-Type', form.content_type())
+		req.add_header(.content_type, form.content_type())
 		form.add('payload_json', message.to_json().str())
 		form.add_file('file', message.file.filename, message.file.data)
 		req.data = form.encode()
 	} else {
-		req.add_header('Content-Type', 'application/json')
+		req.add_header(.content_type, 'application/json')
 		req.data = message.to_json().str()
 	}
 

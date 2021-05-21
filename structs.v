@@ -1942,6 +1942,7 @@ pub fn (mut acid ApplicationCommandInteractionData) from_json(f map[string]json.
 	}
 }
 
+[heap]
 pub struct ApplicationCommandInteractionDataOption {
 pub mut:
 	name string

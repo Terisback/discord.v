@@ -28,16 +28,16 @@ pub fn new(token string) &REST {
 // Create new discord api request
 pub fn new_request(token string, method http.Method, path string) ?http.Request {
 	mut req := http.new_request(method, api + path, '') ?
-	req.add_header('Authorization', 'Bot $token')
-	req.add_header('User-Agent', bot_user_agent)
+	req.add_header(.authorization, 'Bot $token')
+	req.add_header(.user_agent, bot_user_agent)
 	return req
 }
 
 // Create new discord api request
 pub fn (mut rest REST) req(method http.Method, path string) ?http.Request {
 	mut req := http.new_request(method, api + path, '') ?
-	req.add_header('Authorization', 'Bot $rest.token')
-	req.add_header('User-Agent', bot_user_agent)
+	req.add_header(.authorization, 'Bot $rest.token')
+	req.add_header(.user_agent, bot_user_agent)
 	return req
 }
 
@@ -46,10 +46,10 @@ pub fn (mut rest REST) do(req http.Request) ?http.Response {
 	key := req.url
 	mut bucket := rest.rl.lock_bucket(key)
 	resp := req.do() or {
-		bucket.release(map[string]string{})
+		bucket.mutex.unlock()
 		return err
 	}
-	bucket.release(resp.lheaders)
+	bucket.release(resp.header)
 	if resp.status_code == 429 {
 		mut obj := json.raw_decode(resp.text.replace('\n','')) or {
 			panic(err)
