@@ -37,7 +37,7 @@ fn on_message(mut ws websocket.Client, msg &websocket.Message, mut shard Shard) 
 				}
 				.reconnect {
 					shard.resuming = true
-					shard.ws.close(int(CloseCode.normal_closure), 'Reconnect')?
+					shard.ws.close(int(CloseCode.normal_closure), 'Reconnect') ?
 				}
 				else {
 					thing := packets.Op(packet.op)

@@ -20,23 +20,27 @@ fn main() {
 
 fn reply_with_embed(mut client vd.Client, evt &vd.MessageCreate) {
 	if evt.content == '!repo' {
-		client.channel_message_send(evt.channel_id, embed: vd.Embed{
-			title: 'V UI'
-			description: 'Example embed, all kinds of fields should work. Feel free to be free)'
-			image: {url: 'https://raw.githubusercontent.com/vlang/ui/master/examples/screenshot.png'}
-			fields: [
-				vd.EmbedField{
-					name: 'Repo link:'
-					value: '[Github Repo](https://github.com/vlang/ui)'
-					inline: true
-				},
-				vd.EmbedField{
-					name: 'Vlang Repo:'
-					value: '**Vlang** [*Repo*](https://github.com/vlang/v)'
-					inline: true
+		client.channel_message_send(evt.channel_id,
+			embed: vd.Embed{
+				title: 'V UI'
+				description: 'Example embed, all kinds of fields should work. Feel free to be free)'
+				image: {
+					url: 'https://raw.githubusercontent.com/vlang/ui/master/examples/screenshot.png'
 				}
-			]
-			color: 0x5f9be6 // V Color
-		}) or { }
+				fields: [
+					vd.EmbedField{
+						name: 'Repo link:'
+						value: '[Github Repo](https://github.com/vlang/ui)'
+						inline: true
+					},
+					vd.EmbedField{
+						name: 'Vlang Repo:'
+						value: '**Vlang** [*Repo*](https://github.com/vlang/v)'
+						inline: true
+					},
+				]
+				color: 0x5f9be6 // V Color
+			}
+		) or {}
 	}
 }

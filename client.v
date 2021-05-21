@@ -18,17 +18,17 @@ pub mut:
 
 // Client represents a connection to the Discord API
 pub struct Client {
-	token       string
-	intents     gateway.Intent
+	token   string
+	intents gateway.Intent
 pub:
 	shard_count int
 mut:
-	events      &eventbus.EventBus
-	shards      []&gateway.Shard
+	events &eventbus.EventBus
+	shards []&gateway.Shard
 pub mut:
-	rest        &rest.REST
-	log			&log.Logger
-	userdata	voidptr
+	rest     &rest.REST
+	log      &log.Logger
+	userdata voidptr
 }
 
 // Creates a new Discord client
@@ -51,9 +51,9 @@ pub fn new(config Config) ?&Client {
 	client.log = m_log
 	for i in 0 .. config.shard_count {
 		mut shard := gateway.new_shard(
-			token: config.token, 
-			intents: config.intents, 
-			shard_id: i, 
+			token: config.token
+			intents: config.intents
+			shard_id: i
 			shards_in_total: config.shard_count
 		) ?
 		shard.log = client.log
@@ -89,7 +89,7 @@ pub fn (mut client Client) session_id(guild_id string) string {
 
 pub fn (mut client Client) shard(guild_id string) &gateway.Shard {
 	return client.shards[client.shard_index(guild_id)]
-} 
+}
 
 // Needed for logging purposes
 fn prefix(level log.Level, colors_supported bool) string {

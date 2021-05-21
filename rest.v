@@ -8,10 +8,10 @@ import discordv.rest.formdata
 // Optional query for guild_audit_log.
 // 'limit' must be [1, 100], default 50.
 pub struct GuildAuditLogQuery {
-	user_id string
+	user_id     string
 	action_type AuditLogEvent
-	before string
-	limit int = 50
+	before      string
+	limit       int = 50
 }
 
 pub fn (query GuildAuditLogQuery) query() string {
@@ -47,11 +47,11 @@ pub fn (query GuildAuditLogQuery) query() string {
 // MessageSend stores all parameters you can send with channel_message_send.
 pub struct MessageSend {
 pub mut:
-	content string
-	embed Embed
-	tts bool
-	file File
-	nonce string
+	content   string
+	embed     Embed
+	tts       bool
+	file      File
+	nonce     string
 	reference MessageReference
 }
 
@@ -75,12 +75,12 @@ pub fn (mut client Client) channel_message_send(channel_id string, message Messa
 
 	if message.file.filename != '' {
 		mut form := formdata.new() ?
-		req.add_header('Content-Type', form.content_type())
+		req.add_header(.content_type, form.content_type())
 		form.add('payload_json', message.to_json().str())
 		form.add_file('file', message.file.filename, message.file.data)
 		req.data = form.encode()
 	} else {
-		req.add_header('Content-Type', 'application/json')
+		req.add_header(.content_type, 'application/json')
 		req.data = message.to_json().str()
 	}
 

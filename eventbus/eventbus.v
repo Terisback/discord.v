@@ -48,7 +48,7 @@ pub fn (mut eb EventBus) unsubscribe(name string, handler EventHandlerFn) {
 	}
 }
 
-// Publish event 
+// Publish event
 pub fn (mut eb EventBus) publish(name string, client voidptr, event voidptr) {
 	for e in eb.registry.events {
 		if e.name == name {

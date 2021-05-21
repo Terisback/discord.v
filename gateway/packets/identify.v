@@ -12,7 +12,7 @@ pub:
 	shard      []int
 }
 
-// Identify packet properies 
+// Identify packet properies
 pub struct IdentifyProperties {
 pub:
 	os      string = os.user_os()

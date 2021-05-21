@@ -11,7 +11,7 @@ fn main() {
 		return
 	}
 	// Read image
-	image := os.read_bytes(os.dir(os.executable())+"/v_logo.png") ?
+	image := os.read_bytes(os.dir(os.executable()) + '/v_logo.png') ?
 	// Creating new client
 	mut client := vd.new(token: token) ?
 	// Add image as userdata
@@ -27,9 +27,11 @@ fn img(mut client vd.Client, evt &vd.MessageCreate) {
 	// If content of message is '!image' reply with image
 	if evt.content == '!image' {
 		// Send image to channel
-		client.channel_message_send(evt.channel_id, file: vd.File{
-			filename: 'v-logo.png'
-			data: &[]byte(client.userdata)
-		}) or { }
+		client.channel_message_send(evt.channel_id,
+			file: vd.File{
+				filename: 'v-logo.png'
+				data: &[]byte(client.userdata)
+			}
+		) or {}
 	}
 }
