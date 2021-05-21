@@ -34,17 +34,17 @@ pub fn new_request(token string, method http.Method, path string) ?http.Request 
 }
 
 // Create new discord api request
-pub fn (mut rest REST) req(method http.Method, path string) ?http.Request {
+pub fn (mut rst REST) req(method http.Method, path string) ?http.Request {
 	mut req := http.new_request(method, rest.api + path, '') ?
-	req.add_header(.authorization, 'Bot $rest.token')
+	req.add_header(.authorization, 'Bot $rst.token')
 	req.add_header(.user_agent, rest.bot_user_agent)
 	return req
 }
 
 // Make a request taking into account the rate limits
-pub fn (mut rest REST) do(req http.Request) ?http.Response {
+pub fn (mut rst REST) do(req http.Request) ?http.Response {
 	key := req.url
-	mut bucket := rest.rl.lock_bucket(key)
+	mut bucket := rst.rl.lock_bucket(key)
 	resp := req.do() or {
 		bucket.mutex.unlock()
 		return err
@@ -54,9 +54,9 @@ pub fn (mut rest REST) do(req http.Request) ?http.Response {
 		mut obj := json.raw_decode(resp.text.replace('\n', '')) or { panic(err) }
 		mut tmr := TooManyRequests{}
 		tmr.from_json(obj)
-		rest.rl.global = time.utc().unix_time_milli() + u64(tmr.retry_after) * 1000
+		rst.rl.global = time.utc().unix_time_milli() + u64(tmr.retry_after) * 1000
 		time.sleep(i64(tmr.retry_after) * 1000 * time.millisecond)
-		return rest.do(req)
+		return rst.do(req)
 	}
 	return resp
 }
