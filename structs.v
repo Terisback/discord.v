@@ -1985,8 +1985,8 @@ pub fn (mut acid ApplicationCommandInteractionData) from_json(f map[string]json.
 			}
 			'options' {
 				mut arr := from_json_arr<ApplicationCommandInteractionDataOption>(v.arr())
-				for item in arr {
-					acid.options << &item
+				for mut item in arr {
+					acid.options << item
 				}
 			}
 			else {}
