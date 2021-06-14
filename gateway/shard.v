@@ -11,13 +11,15 @@ const (
 )
 
 pub struct Config {
-	token           string
+	token           string [required]
 	intents         Intent = guilds | guild_messages
 	shard_id        int
 	shards_in_total int = 1
 	gateway         string
+	dispatchers int = 1
 }
 
+[heap]
 pub struct Shard {
 	gateway string
 	token   string
@@ -26,8 +28,10 @@ pub:
 	id          int
 	total_count int = 1
 mut:
-	reciever     voidptr = voidptr(0)
-	events       &eventbus.EventBus
+	reciever voidptr
+	events chan DispatchArgs
+	dispatchers  []&Dispatcher
+	eb       &eventbus.EventBus
 	ws           &websocket.Client
 	ws_log_level log.Level = .info
 
@@ -55,8 +59,12 @@ pub fn new_shard(config Config) ?&Shard {
 		id: config.shard_id
 		total_count: config.shards_in_total
 		ws: ws
-		events: eventbus.new()
+		events: chan DispatchArgs{}
+		eb: eventbus.new()
 		log: &log.Log{}
+	}
+	for _ in 0..config.dispatchers {
+		shard.dispatchers << new_dispatcher(shard.eb, shard.events)
 	}
 	shard.ws.logger.set_level(shard.ws_log_level)
 	shard.ws.on_open_ref(on_open, shard)
@@ -68,6 +76,9 @@ pub fn new_shard(config Config) ?&Shard {
 
 // Opens Websocket to Discord Gateway (It will wait till close signal)
 pub fn (mut shard Shard) run() thread {
+	for mut dispatcher in shard.dispatchers {
+		dispatcher.run()
+	}
 	go shard.run_websocket()
 	return go shard.run_heartbeat()
 }
@@ -127,9 +138,15 @@ fn (mut shard Shard) run_heartbeat() {
 // Send publish from Websocket
 fn (mut shard Shard) dispatch(data voidptr) {
 	if shard.reciever != voidptr(0) {
-		shard.events.publish('dispatch', shard.reciever, data)
+		shard.events <- DispatchArgs{
+			reciever: shard.reciever
+			data: data
+		}
 	} else {
-		shard.events.publish('dispatch', shard, data)
+		shard.events <- DispatchArgs{
+			reciever: shard
+			data: data
+		}
 	}
 }
 
@@ -146,4 +163,14 @@ pub fn (mut shard Shard) close() {
 // Return the shard's session id
 pub fn (mut shard Shard) get_session_id() string {
 	return shard.session_id
+}
+
+// Add packet handler to Dispatch packet
+pub fn (mut shard Shard) on_dispatch(handler fn (voidptr, &packets.Packet)) {
+	shard.eb.subscribe('dispatch', handler)
+}
+
+// Set reciever, it will provided as first argument to dispatch handlers
+pub fn (mut shard Shard) set_reciever(reciever voidptr) {
+	shard.reciever = reciever
 }

@@ -10,13 +10,15 @@ import discordv.rest
 // Config struct
 pub struct Config {
 pub mut:
-	token       string
+	token       string [required]
 	intents     gateway.Intent = gateway.guilds | gateway.guild_messages
 	shard_count int = 1
 	userdata    voidptr
+	dispatchers_on_shard int = 1
 }
 
 // Client represents a connection to the Discord API
+[heap]
 pub struct Client {
 	token   string
 	intents gateway.Intent
@@ -55,6 +57,7 @@ pub fn new(config Config) ?&Client {
 			intents: config.intents
 			shard_id: i
 			shards_in_total: config.shard_count
+			dispatchers: config.dispatchers_on_shard
 		) ?
 		shard.log = client.log
 		$if dv_ws_debug ? {
@@ -83,12 +86,12 @@ fn (mut client Client) shard_index(guild_id string) int {
 	return (guild_id.int() >> 22) % client.shards.len
 }
 
-pub fn (mut client Client) session_id(guild_id string) string {
-	return client.shard(guild_id).get_session_id()
-}
-
 pub fn (mut client Client) shard(guild_id string) &gateway.Shard {
 	return client.shards[client.shard_index(guild_id)]
+}
+
+pub fn (mut client Client) session_id(guild_id string) string {
+	return client.shard(guild_id).get_session_id()
 }
 
 // Needed for logging purposes

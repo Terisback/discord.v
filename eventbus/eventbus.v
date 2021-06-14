@@ -4,6 +4,7 @@ module eventbus
 pub type EventHandlerFn = fn (client voidptr, event voidptr)
 
 // Registry of event handlers
+[heap]
 struct Registry {
 mut:
 	events []EventHandler
@@ -15,6 +16,7 @@ struct EventHandler {
 }
 
 // EventBus allows to subscribe and publish events
+[heap]
 pub struct EventBus {
 pub mut:
 	registry &Registry
