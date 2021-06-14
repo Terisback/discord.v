@@ -1,11 +1,11 @@
 module gateway
 
-import discordv.eventbus
+import eventbus
 
 pub struct DispatchArgs {
 pub:
 	reciever voidptr
-	data voidptr
+	data     voidptr
 }
 
 [heap]
@@ -36,9 +36,7 @@ pub fn (mut d Dispatcher) stop() {
 
 fn (mut d Dispatcher) loop() {
 	for {
-		args := <-d.packages or {
-			break
-		}
+		args := <-d.packages or { break }
 
 		d.event_bus.publish('dispatch', args.reciever, args.data)
 	}

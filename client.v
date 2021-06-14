@@ -3,17 +3,17 @@ module discordv
 import log
 import term
 import time
-import discordv.eventbus
-import discordv.gateway
-import discordv.rest
+import eventbus
+import gateway
+import rest
 
 // Config struct
 pub struct Config {
 pub mut:
-	token       string [required]
-	intents     gateway.Intent = gateway.guilds | gateway.guild_messages
-	shard_count int = 1
-	userdata    voidptr
+	token                string         [required]
+	intents              gateway.Intent = gateway.guilds | gateway.guild_messages
+	shard_count          int = 1
+	userdata             voidptr
 	dispatchers_on_shard int = 1
 }
 

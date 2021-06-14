@@ -2,8 +2,8 @@ module discordv
 
 import net.urllib
 import x.json2 as json
-import discordv.rest
-import discordv.rest.formdata
+import rest
+import rest.formdata
 
 // Optional query for guild_audit_log.
 // 'limit' must be [1, 100], default 50.

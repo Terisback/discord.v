@@ -2,7 +2,7 @@ module discordv
 
 import time
 import x.json2 as json
-import discordv.snowflake
+import snowflake
 
 // Permission type
 pub type Permission = int

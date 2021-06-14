@@ -2,8 +2,8 @@ module discordv
 
 import time
 import x.json2 as json
-import discordv.gateway.packets
-import discordv.snowflake
+import gateway.packets
+import snowflake
 
 pub type Dispatch = packets.Packet
 pub type Hello = packets.Hello

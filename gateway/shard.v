@@ -3,7 +3,7 @@ module gateway
 import time
 import log
 import x.websocket
-import discordv.eventbus
+import eventbus
 import gateway.packets
 
 const (
@@ -16,7 +16,7 @@ pub struct Config {
 	shard_id        int
 	shards_in_total int = 1
 	gateway         string
-	dispatchers int = 1
+	dispatchers     int = 1
 }
 
 [heap]
@@ -28,10 +28,10 @@ pub:
 	id          int
 	total_count int = 1
 mut:
-	reciever voidptr
-	events chan DispatchArgs
+	reciever     voidptr
+	events       chan DispatchArgs
 	dispatchers  []&Dispatcher
-	eb       &eventbus.EventBus
+	eb           &eventbus.EventBus
 	ws           &websocket.Client
 	ws_log_level log.Level = .info
 
@@ -63,7 +63,7 @@ pub fn new_shard(config Config) ?&Shard {
 		eb: eventbus.new()
 		log: &log.Log{}
 	}
-	for _ in 0..config.dispatchers {
+	for _ in 0 .. config.dispatchers {
 		shard.dispatchers << new_dispatcher(shard.eb, shard.events)
 	}
 	shard.ws.logger.set_level(shard.ws_log_level)
