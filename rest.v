@@ -1,7 +1,9 @@
 module discordv
 
+import math.mathutil as m
 import net.urllib
-import x.json2 as json
+import json
+import x.json2
 import rest
 import rest.formdata
 
@@ -25,24 +27,25 @@ pub fn (query GuildAuditLogQuery) query() string {
 	if query.before != '' {
 		values.add('before', query.before)
 	}
-	values.add('limit', query.limit.str())
+	values.add('limit', m.min(m.max(1, query.limit), 100).str())
 	return values.encode()
 }
 
 // Returns an AuditLog struct for the guild. Requires the 'VIEW_AUDIT_LOG' permission.
-// pub fn (mut client Client) guild_audit_log(guild_id string, query ...GuildAuditLogQuery) ?AuditLog {
-// 	mut req := rest.new_request(client.token, .get, '/guilds/$guild_id/audit-logs') ?
-// 	if query.len >= 1 {
-// 		req.url += '?${query[0].query()}'
-// 	}
-// 	resp := client.rest.do(req) ?
-// 	if resp.status_code != 200 {
-// 		response_error := rest.ResponseCode(resp.status_code)
-// 		err_text := 'Status code is $resp.status_code ($response_error).\n'
-// 		client.log.error(err_text + 'Request: $req.data')
-// 		return error(err_text)
-// 	}
-// }
+pub fn (mut client Client) guild_audit_log(guild_id string, query GuildAuditLogQuery) ?AuditLog {
+	mut req := client.rest.req(.get, '/guilds/$guild_id/audit-logs') ?
+	req.url += '${query.query()}'
+
+	resp := client.rest.do(req) ?
+	if resp.status_code != 200 {
+		response_error := rest.ResponseCode(resp.status_code)
+		err_text := 'Status code is $resp.status_code ($response_error).\n'
+		client.log.error(err_text + 'Request: $req.data')
+		return error(err_text)
+	}
+
+	return json.decode(AuditLog, resp.text)
+}
 
 // MessageSend stores all parameters you can send with channel_message_send.
 pub struct MessageSend {
@@ -55,8 +58,8 @@ pub mut:
 	reference MessageReference
 }
 
-pub fn (ms MessageSend) to_json() json.Any {
-	mut obj := map[string]json.Any{}
+pub fn (ms MessageSend) to_json() json2.Any {
+	mut obj := map[string]json2.Any{}
 	obj['content'] = ms.content
 	obj['nonce'] = ms.nonce
 	obj['tts'] = ms.tts

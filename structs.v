@@ -77,8 +77,8 @@ pub fn (mut ale AuditLogEntry) from_json(f map[string]json.Any) {
 
 pub struct AuditLogChange {
 pub mut:
-	new_value json.Any
-	old_value json.Any
+	new_value json.Any [skip]
+	old_value json.Any [skip]
 	key       string // TODO: write module for managing audit log changes
 }
 
@@ -1937,7 +1937,7 @@ pub fn (mut integration Integration) from_json(f map[string]json.Any) {
 pub struct Interaction {
 pub mut:
 	id         string
-	@type      InteractionType
+	@type      InteractionType [json: "type"]
 	data       ApplicationCommandInteractionData
 	guild_id   string
 	channel_id string
@@ -2025,7 +2025,7 @@ pub fn (mut acido ApplicationCommandInteractionDataOption) from_json(f map[strin
 pub struct Webhook {
 pub mut:
 	id             string
-	@type          WebhookType
+	@type          WebhookType [json: "type"]
 	guild_id       string
 	channel_id     string
 	user           User
