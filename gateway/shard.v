@@ -93,7 +93,7 @@ fn (mut shard Shard) run_websocket() {
 			continue
 		}
 		shard.ws.listen() or { shard.log.warn('#$shard.id Websocket listen: $err') }
-		time.sleep(time.second)
+		time.sleep(5 * time.second)
 	}
 }
 
