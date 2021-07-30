@@ -34,7 +34,7 @@ pub fn (query GuildAuditLogQuery) query() string {
 // Returns an AuditLog struct for the guild. Requires the 'VIEW_AUDIT_LOG' permission.
 pub fn (mut client Client) guild_audit_log(guild_id string, query GuildAuditLogQuery) ?AuditLog {
 	mut req := client.rest.req(.get, '/guilds/$guild_id/audit-logs') ?
-	req.url += '${query.query()}'
+	req.url += '$query.query()'
 
 	resp := client.rest.do(req) ?
 	if resp.status_code != 200 {
@@ -44,7 +44,7 @@ pub fn (mut client Client) guild_audit_log(guild_id string, query GuildAuditLogQ
 		return error(err_text)
 	}
 
-	return json.decode(AuditLog, resp.text)
+	return json.decode(AuditLog, resp.text) or {}
 }
 
 // MessageSend stores all parameters you can send with channel_message_send.
@@ -64,10 +64,10 @@ pub fn (ms MessageSend) to_json() json2.Any {
 	obj['nonce'] = ms.nonce
 	obj['tts'] = ms.tts
 	if !ms.embed.iszero() {
-		obj['embed'] = ms.embed.to_json()
+		obj['embed'] = json.encode(ms.embed)
 	}
 	if !ms.reference.iszero() {
-		obj['message_reference'] = ms.reference.to_json()
+		obj['message_reference'] = json.encode(ms.reference)
 	}
 	return obj
 }

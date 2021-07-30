@@ -2,7 +2,7 @@ module rest
 
 import net.http
 import time
-import x.json2 as json
+import json
 
 const (
 	api            = 'https://discord.com/api/v8'
@@ -51,11 +51,9 @@ pub fn (mut rst REST) do(req http.Request) ?http.Response {
 	}
 	bucket.release(resp.header)
 	if resp.status_code == 429 {
-		mut obj := json.raw_decode(resp.text.replace('\n', '')) or { panic(err) }
-		mut tmr := TooManyRequests{}
-		tmr.from_json(obj)
-		rst.rl.global = time.utc().unix_time_milli() + u64(tmr.retry_after) * 1000
-		time.sleep(i64(tmr.retry_after) * 1000 * time.millisecond)
+		tmr := json.decode(TooManyRequests, resp.text.replace('\n', '')) or { panic(err) }
+		rst.rl.global = time.utc().unix_time_milli() + u64(tmr.retry_after * 1000)
+		time.sleep(i64(tmr.retry_after * 1000) * time.millisecond)
 		return rst.do(req)
 	}
 	return resp
@@ -64,7 +62,7 @@ pub fn (mut rst REST) do(req http.Request) ?http.Response {
 // REST API Error Message
 struct ApiErrorMessage {
 	code    int
-	errors  json.Any
+	errors  string [raw]
 	message string
 }
 

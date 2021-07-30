@@ -1,7 +1,7 @@
 module gateway
 
-import x.json2 as json
-import x.websocket
+import json
+import net.websocket
 import gateway.packets
 
 // Handles open event for Websocket
@@ -14,15 +14,24 @@ fn on_error(mut ws websocket.Client, error string, mut shard Shard) ? {
 	shard.log.error('#$shard.id Gateway error: $error')
 }
 
+// un 23 18:19:22 ubuntu vbot[49007]: 2021-06-23 18:19:22 [ERROR] #0 Gateway error: failed to read next message: net: socket error: 4
+// Jun 23 18:19:22 ubuntu vbot[49007]: 2021-06-23 18:19:22 [WARN ] #0 Websocket listen: net: socket error: 4
+// Jun 23 19:06:47 ubuntu vbot[49007]: 2021-06-23 19:06:47 [ERROR] #0 Gateway error: failed to read next message: net: socket error: 4
+// Jun 23 19:06:47 ubuntu vbot[49007]: 2021-06-23 19:06:47 [WARN ] #0 Websocket listen: net: socket error: 4
+// Jun 23 19:08:40 ubuntu vbot[49007]: 2021-06-23 19:08:40 [ERROR] #0 Gateway error: failed to read next message: net: socket error: 4
+// Jun 23 19:08:40 ubuntu vbot[49007]: 2021-06-23 19:08:40 [WARN ] #0 Websocket listen: net: socket error: 4
+// Jun 23 21:15:58 ubuntu vbot[49007]: 2021-06-23 21:15:58 [ERROR] #0 Gateway error: failed to read next message: net: socket error: 4
+// Jun 23 21:15:58 ubuntu vbot[49007]: 2021-06-23 21:15:58 [WARN ] #0 Websocket listen: net: socket error: 4
+// Jun 23 21:50:22 ubuntu vbot[49007]: 2021-06-23 21:50:22 [ERROR] #0 Gateway error: failed to read next message: net: socket error: 4
+// Jun 23 21:50:22 ubuntu vbot[49007]: 2021-06-23 21:50:22 [WARN ] #0 Websocket listen: net: socket error: 4
+
 // Handles message event for Websocket
 fn on_message(mut ws websocket.Client, msg &websocket.Message, mut shard Shard) ? {
 	match msg.opcode {
 		.text_frame {
-			mut obj := json.raw_decode(msg.payload.bytestr()) ?
-			mut packet := packets.Packet{}
-			packet.from_json(obj)
+			packet := json.decode(packets.Packet, msg.payload.bytestr()) ?
 			shard.sequence = packet.sequence
-			match packets.Op(packet.op) {
+			match packet.op {
 				.dispatch {
 					shard.dispatch(&packet)
 				}
@@ -36,12 +45,10 @@ fn on_message(mut ws websocket.Client, msg &websocket.Message, mut shard Shard) 
 					shard.handle_invalid_session(packet)
 				}
 				.reconnect {
-					shard.resuming = true
-					shard.ws.close(int(CloseCode.normal_closure), 'Reconnect') ?
+					shard.handle_reconnect(packet)
 				}
 				else {
-					thing := packets.Op(packet.op)
-					shard.log.info('#$shard.id Unhandled opcode: $packet.op ($thing)')
+					shard.log.info('#$shard.id Unhandled opcode: ${int(packet.op)} ($packet.op)')
 				}
 			}
 		}

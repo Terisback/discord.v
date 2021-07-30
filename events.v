@@ -1,7 +1,8 @@
 module discordv
 
 import time
-import x.json2 as json
+import json
+import x.json2
 import gateway.packets
 import snowflake
 
@@ -18,15 +19,11 @@ pub mut:
 	last_pin_timestamp time.Time
 }
 
-pub fn (mut cpu ChannelPinsUpdate) from_json(f map[string]json.Any) {
+pub fn (mut cpu ChannelPinsUpdate) from_json(data string) {
+	obj := json2.raw_decode(data) or { return }
+	f := obj.as_map()
 	for k, v in f {
 		match k {
-			'guild_id' {
-				cpu.guild_id = v.str()
-			}
-			'channel_id' {
-				cpu.channel_id = v.str()
-			}
 			'last_pin_timestamp' {
 				cpu.last_pin_timestamp = time.parse_iso8601(v.str()) or {
 					time.unix(int(snowflake.discord_epoch / 1000))
@@ -47,20 +44,6 @@ pub mut:
 	user     User
 }
 
-pub fn (mut gb GuildBan) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'guild_id' {
-				gb.guild_id = v.str()
-			}
-			'user' {
-				gb.user = from_json<User>(v.as_map())
-			}
-			else {}
-		}
-	}
-}
-
 pub type GuildBanAdd = GuildBan
 pub type GuildBanRemove = GuildBan
 
@@ -70,34 +53,9 @@ pub mut:
 	emojis   []Emoji
 }
 
-pub fn (mut geu GuildEmojisUpdate) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'guild_id' {
-				geu.guild_id = v.str()
-			}
-			'emojis' {
-				geu.emojis = from_json_arr<Emoji>(v.arr())
-			}
-			else {}
-		}
-	}
-}
-
 pub struct GuildIntegrationsUpdate {
 pub mut:
 	guild_id string
-}
-
-pub fn (mut geu GuildIntegrationsUpdate) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'guild_id' {
-				geu.guild_id = v.str()
-			}
-			else {}
-		}
-	}
 }
 
 pub struct GuildMemberAdd {
@@ -106,24 +64,10 @@ pub mut:
 	member   Member
 }
 
-pub fn (mut gma GuildMemberAdd) from_json(f map[string]json.Any) {
-	if 'guild_id' in f {
-		gma.guild_id = f['guild_id'].str()
-	}
-	gma.member.from_json(f)
-}
-
 pub struct GuildMemberRemove {
 pub mut:
 	guild_id string
 	user     User
-}
-
-pub fn (mut gmr GuildMemberRemove) from_json(f map[string]json.Any) {
-	if 'guild_id' in f {
-		gmr.guild_id = f['guild_id'].str()
-	}
-	gmr.user.from_json(f['user'].as_map())
 }
 
 pub struct GuildMemberUpdate {
@@ -136,24 +80,11 @@ pub mut:
 	premium_since time.Time
 }
 
-pub fn (mut gmu GuildMemberUpdate) from_json(f map[string]json.Any) {
+pub fn (mut gmu GuildMemberUpdate) from_json(data string) {
+	obj := json2.raw_decode(data) or { return }
+	f := obj.as_map()
 	for k, v in f {
 		match k {
-			'guild_id' {
-				gmu.guild_id = v.str()
-			}
-			'roles' {
-				mut roles := v.arr()
-				for role in roles {
-					gmu.roles << role.str()
-				}
-			}
-			'user' {
-				gmu.user = from_json<User>(v.as_map())
-			}
-			'nick' {
-				gmu.nick = v.str()
-			}
 			'joined_at' {
 				gmu.joined_at = time.parse_iso8601(v.str()) or {
 					time.unix(int(snowflake.discord_epoch / 1000))
@@ -180,56 +111,10 @@ pub mut:
 	nonce       string
 }
 
-pub fn (mut gmc GuildMembersChunk) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'guild_id' {
-				gmc.guild_id = v.str()
-			}
-			'members' {
-				gmc.members = from_json_arr<Member>(v.arr())
-			}
-			'chunk_index' {
-				gmc.chunk_index = v.int()
-			}
-			'chunk_count' {
-				gmc.chunk_count = v.int()
-			}
-			'not_found' {
-				mut ids := v.arr()
-				for id in ids {
-					gmc.not_found << id.str()
-				}
-			}
-			'presences' {
-				gmc.presences = from_json_arr<PresenceUpdate>(v.arr())
-			}
-			'nonce' {
-				gmc.nonce = v.str()
-			}
-			else {}
-		}
-	}
-}
-
 struct GuildRole {
 pub mut:
 	guild_id string
 	role     Role
-}
-
-pub fn (mut gr GuildRole) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'guild_id' {
-				gr.guild_id = v.str()
-			}
-			'role' {
-				gr.role = from_json<Role>(v.as_map())
-			}
-			else {}
-		}
-	}
 }
 
 pub type GuildRoleCreate = GuildRole
@@ -239,20 +124,6 @@ pub struct GuildRoleDelete {
 pub mut:
 	guild_id string
 	role_id  string
-}
-
-pub fn (mut grd GuildRoleDelete) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'guild_id' {
-				grd.guild_id = v.str()
-			}
-			'role_id' {
-				grd.role_id = v.str()
-			}
-			else {}
-		}
-	}
 }
 
 pub struct InviteCreate {
@@ -269,42 +140,12 @@ pub mut:
 	uses        int
 }
 
-pub fn (mut ic InviteCreate) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'channel_id' {
-				ic.channel_id = v.str()
-			}
-			'code' {
-				ic.code = v.str()
-			}
-			'created_at' {
-				ic.created_at = time.parse_iso8601(v.str()) or {
-					time.unix(int(snowflake.discord_epoch / 1000))
-				}
-			}
-			'guild_id' {
-				ic.guild_id = v.str()
-			}
-			'inviter' {
-				ic.inviter = from_json<User>(v.as_map())
-			}
-			'max_age' {
-				ic.max_age = v.int()
-			}
-			'max_uses' {
-				ic.max_uses = v.int()
-			}
-			'target_user' {
-				ic.target_user = from_json<User>(v.as_map())
-			}
-			'temporary' {
-				ic.temporary = v.bool()
-			}
-			'uses' {
-				ic.uses = v.int()
-			}
-			else {}
+pub fn (mut ic InviteCreate) from_json(data string) {
+	obj := json2.raw_decode(data) or { return }
+	mmm := obj.as_map()
+	if 'created_at' in mmm {
+		ic.created_at = time.parse_iso8601(mmm['created_at'].str()) or {
+			time.unix(int(snowflake.discord_epoch / 1000))
 		}
 	}
 }
@@ -314,23 +155,6 @@ pub mut:
 	channel_id string
 	guild_id   string
 	code       string
-}
-
-pub fn (mut id InviteDelete) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'channel_id' {
-				id.channel_id = v.str()
-			}
-			'guild_id' {
-				id.guild_id = v.str()
-			}
-			'code' {
-				id.code = v.str()
-			}
-			else {}
-		}
-	}
 }
 
 pub type MessageCreate = Message
@@ -344,26 +168,6 @@ pub mut:
 	guild_id   string
 }
 
-pub fn (mut mdb MessageDeleteBulk) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'ids' {
-				mut ids := v.arr()
-				for id in ids {
-					mdb.ids << id.str()
-				}
-			}
-			'channel_id' {
-				mdb.channel_id = v.str()
-			}
-			'guild_id' {
-				mdb.guild_id = v.str()
-			}
-			else {}
-		}
-	}
-}
-
 pub struct MessageReactionAdd {
 pub mut:
 	user_id    string
@@ -372,32 +176,6 @@ pub mut:
 	guild_id   string
 	member     Member
 	emoji      Emoji
-}
-
-pub fn (mut mra MessageReactionAdd) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'user_id' {
-				mra.user_id = v.str()
-			}
-			'channel_id' {
-				mra.channel_id = v.str()
-			}
-			'message_id' {
-				mra.message_id = v.str()
-			}
-			'guild_id' {
-				mra.guild_id = v.str()
-			}
-			'member' {
-				mra.member = from_json<Member>(v.as_map())
-			}
-			'emoji' {
-				mra.emoji = from_json<Emoji>(v.as_map())
-			}
-			else {}
-		}
-	}
 }
 
 pub struct MessageReactionRemove {
@@ -409,51 +187,11 @@ pub mut:
 	emoji      Emoji
 }
 
-pub fn (mut mra MessageReactionRemove) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'user_id' {
-				mra.user_id = v.str()
-			}
-			'channel_id' {
-				mra.channel_id = v.str()
-			}
-			'message_id' {
-				mra.message_id = v.str()
-			}
-			'guild_id' {
-				mra.guild_id = v.str()
-			}
-			'emoji' {
-				mra.emoji = from_json<Emoji>(v.as_map())
-			}
-			else {}
-		}
-	}
-}
-
 pub struct MessageReactionRemoveAll {
 pub mut:
 	channel_id string
 	message_id string
 	guild_id   string
-}
-
-pub fn (mut mra MessageReactionRemoveAll) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'channel_id' {
-				mra.channel_id = v.str()
-			}
-			'message_id' {
-				mra.message_id = v.str()
-			}
-			'guild_id' {
-				mra.guild_id = v.str()
-			}
-			else {}
-		}
-	}
 }
 
 pub struct MessageReactionRemoveEmoji {
@@ -464,26 +202,6 @@ pub mut:
 	emoji      Emoji
 }
 
-pub fn (mut mra MessageReactionRemoveEmoji) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'channel_id' {
-				mra.channel_id = v.str()
-			}
-			'message_id' {
-				mra.message_id = v.str()
-			}
-			'guild_id' {
-				mra.guild_id = v.str()
-			}
-			'emoji' {
-				mra.emoji = from_json<Emoji>(v.as_map())
-			}
-			else {}
-		}
-	}
-}
-
 pub struct TypingStart {
 pub mut:
 	channel_id string
@@ -491,29 +209,6 @@ pub mut:
 	user_id    string
 	timestamp  int
 	member     Member
-}
-
-pub fn (mut ts TypingStart) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'channel_id' {
-				ts.channel_id = v.str()
-			}
-			'guild_id' {
-				ts.guild_id = v.str()
-			}
-			'user_id' {
-				ts.user_id = v.str()
-			}
-			'timestamp' {
-				ts.timestamp = v.int()
-			}
-			'member' {
-				ts.member = from_json<Member>(v.as_map())
-			}
-			else {}
-		}
-	}
 }
 
 pub type UserUpdate = User
@@ -526,41 +221,10 @@ pub mut:
 	endpoint string
 }
 
-pub fn (mut vsu VoiceServerUpdate) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'token' {
-				vsu.token = v.str()
-			}
-			'guild_id' {
-				vsu.guild_id = v.str()
-			}
-			'endpoint' {
-				vsu.endpoint = v.str()
-			}
-			else {}
-		}
-	}
-}
-
 pub struct WebhooksUpdate {
 pub mut:
 	guild_id   string
 	channel_id string
-}
-
-pub fn (mut wu WebhooksUpdate) from_json(f map[string]json.Any) {
-	for k, v in f {
-		match k {
-			'guild_id' {
-				wu.guild_id = v.str()
-			}
-			'channel_id' {
-				wu.channel_id = v.str()
-			}
-			else {}
-		}
-	}
 }
 
 pub type InteractionCreate = Interaction
@@ -573,81 +237,68 @@ fn on_hello(mut client Client, hello &packets.Hello) {
 // Deals with packets from gateway. Publishing to client eventbus
 fn on_dispatch(mut client Client, packet &packets.Packet) {
 	event_name := packet.event.to_lower()
-	mut data := packet.data.as_map()
+	data := packet.data
 	client.events.publish('dispatch', client, packet)
 	match event_name {
 		'ready' {
-			mut obj := Ready{}
-			obj.from_json(data)
+			obj := json.decode(Ready, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'channel_create' {
-			mut obj := ChannelCreate{}
-			obj.from_json(data)
+			obj := json.decode(ChannelCreate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'channel_update' {
-			mut obj := ChannelUpdate{}
-			obj.from_json(data)
+			obj := json.decode(ChannelUpdate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'channel_delete' {
-			mut obj := ChannelDelete{}
-			obj.from_json(data)
+			obj := json.decode(ChannelDelete, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'channel_pins_update' {
-			mut obj := ChannelPinsUpdate{}
+			mut obj := json.decode(ChannelPinsUpdate, data) or { return }
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_create' {
-			mut obj := GuildCreate{}
-			obj.from_json(data)
+			obj := json.decode(GuildCreate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_update' {
-			mut obj := GuildUpdate{}
-			obj.from_json(data)
+			obj := json.decode(GuildUpdate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_delete' {
-			mut obj := GuildDelete{}
-			obj.from_json(data)
+			obj := json.decode(GuildDelete, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_ban_add' {
-			mut obj := GuildBanAdd{}
-			obj.from_json(data)
+			obj := json.decode(GuildBanAdd, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_ban_remove' {
-			mut obj := GuildBanRemove{}
-			obj.from_json(data)
+			obj := json.decode(GuildBanRemove, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_emojis_update' {
-			mut obj := GuildEmojisUpdate{}
-			obj.from_json(data)
+			obj := json.decode(GuildEmojisUpdate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_integrations_update' {
-			mut obj := GuildIntegrationsUpdate{}
-			obj.from_json(data)
+			obj := json.decode(GuildIntegrationsUpdate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_member_add' {
-			mut obj := GuildMemberAdd{}
-			obj.from_json(data)
+			obj := json.decode(GuildMemberAdd, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_member_remove' {
-			mut obj := GuildMemberRemove{}
-			obj.from_json(data)
+			obj := json.decode(GuildMemberRemove, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_member_update' {
-			mut obj := GuildMemberUpdate{}
+			mut obj := json.decode(GuildMemberUpdate, data) or { return }
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
@@ -655,103 +306,84 @@ fn on_dispatch(mut client Client, packet &packets.Packet) {
 			// TODO: Handle by nonce, return to rest
 		}
 		'guild_role_create' {
-			mut obj := GuildRoleCreate{}
-			obj.from_json(data)
+			obj := json.decode(GuildRoleCreate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_role_update' {
-			mut obj := GuildRoleUpdate{}
-			obj.from_json(data)
+			obj := json.decode(GuildRoleUpdate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'guild_role_delete' {
-			mut obj := GuildRoleDelete{}
-			obj.from_json(data)
+			obj := json.decode(GuildRoleDelete, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'invite_create' {
-			mut obj := InviteCreate{}
+			mut obj := json.decode(InviteCreate, data) or { return }
 			obj.from_json(data)
 			client.events.publish(event_name, client, obj)
 		}
 		'invite_delete' {
-			mut obj := InviteDelete{}
-			obj.from_json(data)
+			obj := json.decode(InviteDelete, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'message_create' {
-			mut obj := MessageCreate{}
-			obj.from_json(data)
+			obj := json.decode(MessageCreate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'message_update' {
-			mut obj := MessageUpdate{}
-			obj.from_json(data)
+			obj := json.decode(MessageUpdate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'message_delete' {
-			mut obj := MessageDelete{}
-			obj.from_json(data)
+			obj := json.decode(MessageDelete, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'message_delete_bulk' {
-			mut obj := MessageDeleteBulk{}
-			obj.from_json(data)
+			obj := json.decode(MessageDeleteBulk, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'message_reaction_add' {
-			mut obj := MessageReactionAdd{}
-			obj.from_json(data)
+			obj := json.decode(MessageReactionAdd, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'message_reaction_remove' {
-			mut obj := MessageReactionRemove{}
-			obj.from_json(data)
+			obj := json.decode(MessageReactionRemove, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'message_reaction_remove_all' {
-			mut obj := MessageReactionRemoveAll{}
-			obj.from_json(data)
+			obj := json.decode(MessageReactionRemoveAll, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'message_reaction_remove_emoji' {
-			mut obj := MessageReactionRemoveEmoji{}
-			obj.from_json(data)
+			obj := json.decode(MessageReactionRemoveEmoji, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'presence_update' {
-			mut obj := PresenceUpdate{}
-			obj.from_json(data)
+			obj := json.decode(PresenceUpdate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'typing_start' {
-			mut obj := TypingStart{}
-			obj.from_json(data)
+			obj := json.decode(TypingStart, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'user_update' {
-			mut obj := UserUpdate{}
-			obj.from_json(data)
+			obj := json.decode(UserUpdate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'voice_state_update' {
-			mut obj := VoiceStateUpdate{}
-			obj.from_json(data)
+			obj := json.decode(VoiceStateUpdate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'voice_server_update' {
-			mut obj := VoiceServerUpdate{}
-			obj.from_json(data)
+			obj := json.decode(VoiceServerUpdate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'webhooks_update' {
-			mut obj := WebhooksUpdate{}
-			obj.from_json(data)
+			obj := json.decode(WebhooksUpdate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		'interaction_create' {
-			mut obj := InteractionCreate{}
-			obj.from_json(data)
+			obj := json.decode(InteractionCreate, data) or { return }
 			client.events.publish(event_name, client, obj)
 		}
 		else {
