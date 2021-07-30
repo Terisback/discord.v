@@ -1,35 +1,37 @@
 module gateway
 
 import time
+import json
 import gateway.packets
 
 // Handles hello from Websocket
 fn (mut shard Shard) handle_hello(packet packets.Packet) {
-	mut hello := packets.Hello{}
-	hello.from_json(packet.data)
+	hello := json.decode(packets.Hello, packet.data) or {
+		// shard log error
+		return
+	}
 	shard.heartbeat_interval = hello.heartbeat_interval
 	if shard.resuming {
-		mut resume := packets.Resume{
-			token: shard.token
-			session_id: shard.session_id
-			sequence: shard.sequence
-		}
 		message := packets.Packet{
 			op: .resume
-			data: resume.to_json_any()
-		}.to_json()
-		shard.ws.write_string(message) or { panic(err) }
+			data: json.encode(packets.Resume{
+				token: shard.token
+				session_id: shard.session_id
+				sequence: shard.sequence
+			})
+		}
+		shard.ws.write_string(json.encode(message)) or { panic(err) }
 		shard.resuming = false
 	} else {
 		message := packets.Packet{
 			op: .identify
-			data: packets.Identify{
+			data: json.encode(packets.Identify{
 				token: shard.token
 				intents: shard.intents
 				shard: [shard.id, shard.total_count]
-			}.to_json_any()
-		}.to_json()
-		shard.ws.write_string(message) or { panic(err) }
+			})
+		}
+		shard.ws.write_string(json.encode(message)) or { panic(err) }
 	}
 	shard.last_heartbeat = time.now().unix_time_milli()
 }
@@ -42,4 +44,11 @@ fn (mut shard Shard) handle_heartbeat_ack(packet packets.Packet) {
 // Handles invalid_session from Websocket
 fn (mut shard Shard) handle_invalid_session(packet packets.Packet) {
 	shard.resuming = packet.data.bool()
+}
+
+fn (mut shard Shard) handle_reconnect(packet packets.Packet) {
+	shard.resuming = true
+	shard.ws.close(int(CloseCode.normal_closure), 'Reconnect') or {
+		shard.log.info('#$shard.id Unhandled opcode: ${int(packet.op)} ($packet.op)')
+	}
 }

@@ -2,11 +2,12 @@ module gateway
 
 import time
 import log
-import x.websocket
+import json
+import net.websocket
 import eventbus
 import gateway.packets
 
-const (
+pub const (
 	default_gateway = 'wss://gateway.discord.gg/?v=8&encoding=json'
 )
 
@@ -124,10 +125,9 @@ fn (mut shard Shard) run_heartbeat() {
 			}
 			heartbeat := packets.Packet{
 				op: .heartbeat
-				data: shard.sequence
+				data: shard.sequence.str()
 			}
-			message := heartbeat.to_json()
-			shard.ws.write_string(message) or {
+			shard.ws.write_string(json.encode(heartbeat)) or {
 				shard.log.error('Something went when tried to write to websocket: $err')
 			}
 			shard.last_heartbeat = now

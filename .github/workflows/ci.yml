@@ -1,47 +1,27 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - "**.md"
 
 jobs:
-  # code-formatting:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Checkout V
-  #     uses: actions/checkout@v2
-  #     with:
-  #       repository: vlang/v
-  #   - name: Checkout VPM
-  #     uses: actions/checkout@v2
-  #     with:
-  #       path: vpm
-  #   - name: Build V
-  #     run: make
-  #   - name: v fmt -verify
-  #     run: |
-  #       cd vpm
-  #       ../v fmt -verify vpm.v user.v token.v package.v login.v db.v
-
-  ubuntu:
-    runs-on: ubuntu-18.04
+  compile:
+    name: Ping-pong example
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-    - name: Checkout V
+    - name: Checkout
       uses: actions/checkout@v2
       with:
-        repository: vlang/v
-    - name: Build V
-      run: make
-    - name: Checkout discord.v
-      uses: actions/checkout@v2
+        path: discordv
+    - name: Set up V version latest
+      uses: nocturlab/setup-vlang-action@v1
       with:
-        path: terisback/discordv
-    - name: Install dependencies
-      run: sudo apt-get install --quiet -y libssl-dev
-    - name: Build ping-pong example
-      run: |
-        ./v ./terisback/discordv/examples/ping-pong/main.v
-    - name: Build send-embed example
-      run: |
-        ./v ./terisback/discordv/examples/send-embed/main.v
-    - name: Build upload-image example
-      run: |
-        ./v ./terisback/discordv/examples/upload-image/main.v
+        v-version: latest
+      id: v
+    - name: Compile
+      run: v discordv/examples/ping-pong

@@ -3,7 +3,6 @@ module rest
 import sync
 import time
 import net.http
-import x.json2 as json
 
 [heap]
 struct RateLimiter {
@@ -97,16 +96,4 @@ pub mut:
 	message     string
 	retry_after f32
 	global      bool
-}
-
-pub fn (mut tmr TooManyRequests) from_json(f json.Any) {
-	mut obj := f.as_map()
-	for k, v in obj {
-		match k {
-			'message' { tmr.message = v.str() }
-			'retry_after' { tmr.retry_after = v.f32() }
-			'global' { tmr.global = v.bool() }
-			else {}
-		}
-	}
 }

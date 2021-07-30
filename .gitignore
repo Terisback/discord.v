@@ -1,11 +1,9 @@
-main
-build
-discordv
+/main
+/build
+/discordv
 *.exe
 *.ilk
 *.pdb
 *.so
 *.dylib
 *.dll
-
-.vscode

@@ -52,13 +52,13 @@ pub fn new(config Config) ?&Client {
 	}
 	client.log = m_log
 	for i in 0 .. config.shard_count {
-		mut shard := gateway.new_shard(
+		mut shard := gateway.new_shard(gateway.Config{
 			token: config.token
 			intents: config.intents
 			shard_id: i
 			shards_in_total: config.shard_count
 			dispatchers: config.dispatchers_on_shard
-		) ?
+		})
 		shard.log = client.log
 		$if dv_ws_debug ? {
 			shard.set_ws_log_level(.debug)
