@@ -1,7 +1,7 @@
 module gateway
 
 import x.json2 as json
-import x.websocket
+import net.websocket
 import gateway.packets
 
 // Handles open event for Websocket

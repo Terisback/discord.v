@@ -39,10 +39,10 @@ pub fn (mut rl RateLimiter) get_bucket(key string) &Bucket {
 pub fn (mut rl RateLimiter) get_wait_time(bucket &Bucket, min_remaining int) u64 {
 	now := time.utc().unix_time_milli() // TODO: check if abs(system time - discord time) > 2
 	if now < rl.global {
-		return rl.global - now
+		return rl.global - u64(now)
 	}
 	if bucket.remaining < min_remaining && bucket.reset > now {
-		return bucket.reset - now
+		return bucket.reset - u64(now)
 	}
 	return 0
 }

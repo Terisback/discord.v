@@ -2,7 +2,7 @@ module gateway
 
 import time
 import log
-import x.websocket
+import net.websocket
 import eventbus
 import gateway.packets
 
@@ -45,7 +45,7 @@ mut:
 	resuming bool
 	stop     chan bool = chan bool{}
 pub mut:
-	log &log.Logger
+	log &log.Log
 }
 
 // Create new Connection
@@ -115,7 +115,7 @@ fn (mut shard Shard) run_heartbeat() {
 			continue
 		}
 		now := time.now().unix_time_milli()
-		if now - shard.last_heartbeat > shard.heartbeat_interval {
+		if u64(now) - shard.last_heartbeat > shard.heartbeat_interval {
 			if shard.heartbeat_acked != true {
 				if shard.ws.state == .open {
 					shard.ws.close(1000, "heartbeat ack didn't come") or { panic(err) }
@@ -130,7 +130,7 @@ fn (mut shard Shard) run_heartbeat() {
 			shard.ws.write_string(message) or {
 				shard.log.error('Something went when tried to write to websocket: $err')
 			}
-			shard.last_heartbeat = now
+			shard.last_heartbeat = u64(now)
 			shard.heartbeat_acked = false
 		}
 	}

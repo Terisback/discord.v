@@ -31,7 +31,7 @@ fn (mut shard Shard) handle_hello(packet packets.Packet) {
 		}.to_json()
 		shard.ws.write_string(message) or { panic(err) }
 	}
-	shard.last_heartbeat = time.now().unix_time_milli()
+	shard.last_heartbeat = u64(time.now().unix_time_milli())
 }
 
 // Handles heartbeat_ack from Websocket

@@ -107,8 +107,8 @@ pub mut:
 }
 
 pub fn (mut gma GuildMemberAdd) from_json(f map[string]json.Any) {
-	if 'guild_id' in f {
-		gma.guild_id = f['guild_id'].str()
+	if guild_id := f['guild_id'] {
+		gma.guild_id = guild_id.str()
 	}
 	gma.member.from_json(f)
 }
@@ -120,10 +120,12 @@ pub mut:
 }
 
 pub fn (mut gmr GuildMemberRemove) from_json(f map[string]json.Any) {
-	if 'guild_id' in f {
-		gmr.guild_id = f['guild_id'].str()
+	if guild_id := f['guild_id'] {
+		gmr.guild_id = guild_id.str()
 	}
-	gmr.user.from_json(f['user'].as_map())
+	if user := f['user'] {
+		gmr.user.from_json(user.as_map())
+	}
 }
 
 pub struct GuildMemberUpdate {

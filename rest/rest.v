@@ -54,7 +54,7 @@ pub fn (mut rst REST) do(req http.Request) ?http.Response {
 		mut obj := json.raw_decode(resp.text.replace('\n', '')) or { panic(err) }
 		mut tmr := TooManyRequests{}
 		tmr.from_json(obj)
-		rst.rl.global = time.utc().unix_time_milli() + u64(tmr.retry_after) * 1000
+		rst.rl.global = u64(time.utc().unix_time_milli()) + u64(tmr.retry_after) * 1000
 		time.sleep(i64(tmr.retry_after) * 1000 * time.millisecond)
 		return rst.do(req)
 	}

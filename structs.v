@@ -884,7 +884,9 @@ pub fn (embed []Embed) to_json() json.Any {
 }
 
 pub fn (embed Embed) iszero() bool {
-	return embed.to_json().str() == Embed{}.to_json().str()
+	left := embed.to_json()
+	right := Embed{}
+	return left.str() == right.to_json().str()
 }
 
 pub struct EmbedFooter {
@@ -1786,8 +1788,8 @@ pub fn (mut user User) from_json(f map[string]json.Any) {
 			else {}
 		}
 	}
-	if 'avatar' in f {
-		hash := f['avatar'].str()
+	if avatar := f['avatar'] {
+		hash := avatar.str()
 		user.avatar = Avatar{
 			user_id: user.id
 			hash: hash
@@ -1937,7 +1939,7 @@ pub fn (mut integration Integration) from_json(f map[string]json.Any) {
 pub struct Interaction {
 pub mut:
 	id         string
-	@type      InteractionType [json: "type"]
+	@type      InteractionType                   [json: 'type']
 	data       ApplicationCommandInteractionData
 	guild_id   string
 	channel_id string
@@ -2025,7 +2027,7 @@ pub fn (mut acido ApplicationCommandInteractionDataOption) from_json(f map[strin
 pub struct Webhook {
 pub mut:
 	id             string
-	@type          WebhookType [json: "type"]
+	@type          WebhookType [json: 'type']
 	guild_id       string
 	channel_id     string
 	user           User

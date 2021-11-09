@@ -29,12 +29,19 @@ mut:
 	shards []&gateway.Shard
 pub mut:
 	rest     &rest.REST
-	log      &log.Logger
+	log      &log.Log
 	userdata voidptr
 }
 
 // Creates a new Discord client
 pub fn new(config Config) ?&Client {
+	mut m_log := &log.Log{}
+	$if dv_debug ? {
+		m_log.set_level(.debug)
+	} $else {
+		m_log.set_level(.warn)
+	}
+
 	mut client := &Client{
 		token: config.token
 		intents: config.intents
@@ -42,15 +49,9 @@ pub fn new(config Config) ?&Client {
 		userdata: config.userdata
 		events: eventbus.new()
 		rest: rest.new(config.token)
-		log: &log.Log{}
+		log: m_log
 	}
-	mut m_log := &log.Log{}
-	$if dv_debug ? {
-		m_log.set_level(.debug)
-	} $else {
-		m_log.set_level(.warn)
-	}
-	client.log = m_log
+
 	for i in 0 .. config.shard_count {
 		mut shard := gateway.new_shard(
 			token: config.token
@@ -91,7 +92,8 @@ pub fn (mut client Client) shard(guild_id string) &gateway.Shard {
 }
 
 pub fn (mut client Client) session_id(guild_id string) string {
-	return client.shard(guild_id).get_session_id()
+	mut shard := client.shard(guild_id)
+	return shard.get_session_id()
 }
 
 // Needed for logging purposes

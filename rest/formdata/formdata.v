@@ -6,7 +6,7 @@ import encoding.base64
 
 // Copied mime types from net.http module
 const (
-	mime_types = map{
+	mime_types = {
 		'.css':  'text/css; charset=utf-8'
 		'.gif':  'image/gif'
 		'.htm':  'text/html; charset=utf-8'
