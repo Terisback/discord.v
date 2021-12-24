@@ -1,6 +1,6 @@
 module gateway
 
-import eventbus
+import eb
 
 pub struct DispatchArgs {
 pub:
@@ -12,10 +12,10 @@ pub:
 pub struct Dispatcher {
 	packages chan DispatchArgs
 mut:
-	event_bus &eventbus.EventBus
+	event_bus &eb.EventBus
 }
 
-pub fn new_dispatcher(event_bus &eventbus.EventBus, packages chan DispatchArgs) &Dispatcher {
+pub fn new_dispatcher(event_bus &eb.EventBus, packages chan DispatchArgs) &Dispatcher {
 	return &Dispatcher{
 		event_bus: event_bus
 		packages: packages

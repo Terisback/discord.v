@@ -3,7 +3,7 @@ module gateway
 import time
 import log
 import net.websocket
-import eventbus
+import eb
 import gateway.packets
 
 const (
@@ -31,7 +31,7 @@ mut:
 	reciever     voidptr
 	events       chan DispatchArgs
 	dispatchers  []&Dispatcher
-	eb           &eventbus.EventBus
+	eb           &eb.EventBus
 	ws           &websocket.Client
 	ws_log_level log.Level = .info
 
@@ -60,7 +60,7 @@ pub fn new_shard(config Config) ?&Shard {
 		total_count: config.shards_in_total
 		ws: ws
 		events: chan DispatchArgs{}
-		eb: eventbus.new()
+		eb: eb.new()
 		log: &log.Log{}
 	}
 	for _ in 0 .. config.dispatchers {

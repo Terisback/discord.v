@@ -3,7 +3,7 @@ module discordv
 import log
 import term
 import time
-import eventbus
+import eb
 import gateway
 import rest
 
@@ -25,7 +25,7 @@ pub struct Client {
 pub:
 	shard_count int
 mut:
-	events &eventbus.EventBus
+	events &eb.EventBus
 	shards []&gateway.Shard
 pub mut:
 	rest     &rest.REST
@@ -47,7 +47,7 @@ pub fn new(config Config) ?&Client {
 		intents: config.intents
 		shard_count: config.shard_count
 		userdata: config.userdata
-		events: eventbus.new()
+		events: eb.new()
 		rest: rest.new(config.token)
 		log: m_log
 	}

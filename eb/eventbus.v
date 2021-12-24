@@ -1,4 +1,4 @@
-module eventbus
+module eb
 
 // discord.v event handler function
 pub type EventHandlerFn = fn (client voidptr, event voidptr)
