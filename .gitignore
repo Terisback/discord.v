@@ -8,4 +8,4 @@ discordv
 *.dylib
 *.dll
 
-.vscode
+vls.log
