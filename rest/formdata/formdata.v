@@ -80,23 +80,23 @@ pub fn (f FormData) content_type() string {
 // Encode FormData, returns body of http request
 pub fn (f FormData) encode() string {
 	mut builder := strings.new_builder(200)
-	builder.write_b(`\n`)
+	builder.write_byte(`\n`)
 	for k, v in f.fields {
 		builder.write_string('--$f.boundary\n')
 		match v {
 			string {
 				builder.write_string("Content-Disposition: form-data; name=\"$k\"\n")
-				builder.write_b(`\n`)
+				builder.write_byte(`\n`)
 				builder.write_string(v)
-				builder.write_b(`\n`)
+				builder.write_byte(`\n`)
 			}
 			FormFile {
 				builder.write_string("Content-Disposition: form-data; name=\"$k\"; filename=\"$v.filename\"\n")
 				builder.write_string('Content-Type: $v.content_type\n')
 				builder.write_string('Content-Transfer-Encoding: base64\n')
-				builder.write_b(`\n`)
+				builder.write_byte(`\n`)
 				builder.write_string(base64.encode(v.data))
-				builder.write_b(`\n`)
+				builder.write_byte(`\n`)
 			}
 		}
 	}
