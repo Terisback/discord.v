@@ -1,11 +1,11 @@
 module discordv
 
-import math.mathutil as m
+import math
 import net.urllib
 import json
 import x.json2
-import rest
-import rest.formdata
+import terisback.discordv.rest
+import terisback.discordv.rest.formdata
 
 // Optional query for guild_audit_log.
 // 'limit' must be [1, 100], default 50.
@@ -27,14 +27,14 @@ pub fn (query GuildAuditLogQuery) query() string {
 	if query.before != '' {
 		values.add('before', query.before)
 	}
-	values.add('limit', m.min(m.max(1, query.limit), 100).str())
+	values.add('limit', math.min(math.max(1, query.limit), 100).str())
 	return values.encode()
 }
 
 // Returns an AuditLog struct for the guild. Requires the 'VIEW_AUDIT_LOG' permission.
 pub fn (mut client Client) guild_audit_log(guild_id string, query GuildAuditLogQuery) ?AuditLog {
 	mut req := client.rest.req(.get, '/guilds/$guild_id/audit-logs') ?
-	req.url += '${query.query()}'
+	req.url += '$query.query()'
 
 	resp := client.rest.do(req) ?
 	if resp.status_code != 200 {
@@ -44,7 +44,7 @@ pub fn (mut client Client) guild_audit_log(guild_id string, query GuildAuditLogQ
 		return error(err_text)
 	}
 
-	return json.decode(AuditLog, resp.text)
+	return json.decode(AuditLog, resp.text) or {}
 }
 
 // MessageSend stores all parameters you can send with channel_message_send.
