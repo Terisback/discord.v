@@ -11,7 +11,7 @@ fn main() {
 		return
 	}
 	// Creating new client
-	mut client := vd.new(token: token) ?
+	mut client := vd.new(token: token)?
 	// Add message create handler
 	client.on_message_create(reply_with_embed)
 	// Open connection and wait till close
@@ -24,7 +24,7 @@ fn reply_with_embed(mut client vd.Client, evt &vd.MessageCreate) {
 			embed: vd.Embed{
 				title: 'V UI'
 				description: 'Example embed, all kinds of fields should work. Feel free to be free)'
-				image: {
+				image: vd.EmbedImage{
 					url: 'https://raw.githubusercontent.com/vlang/ui/master/examples/screenshot.png'
 				}
 				fields: [
