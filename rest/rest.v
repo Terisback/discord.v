@@ -51,7 +51,7 @@ pub fn (mut rst REST) do(req http.Request) ?http.Response {
 	}
 	bucket.release(resp.header)
 	if resp.status_code == 429 {
-		mut obj := json.raw_decode(resp.text.replace('\n', '')) or { panic(err) }
+		mut obj := json.raw_decode(resp.body.replace('\n', '')) or { panic(err) }
 		mut tmr := TooManyRequests{}
 		tmr.from_json(obj)
 		rst.rl.global = u64(time.utc().unix_time_milli()) + u64(tmr.retry_after) * 1000

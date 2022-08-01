@@ -689,7 +689,7 @@ pub fn (mut st Sticker) from_json(f map[string]json.Any) {
 	}
 }
 
-pub type MessageFlag = byte
+pub type MessageFlag = u8
 
 pub const (
 	crossposted            = MessageFlag(1 << 0)
@@ -782,7 +782,7 @@ pub fn (mut m Message) from_json(f map[string]json.Any) {
 				m.stickers = from_json_arr<Sticker>(v.arr())
 			}
 			'flags' {
-				m.flags = MessageFlag(byte(v.int()))
+				m.flags = MessageFlag(u8(v.int()))
 			}
 			else {}
 		}
@@ -1140,7 +1140,7 @@ pub fn (mut emoji Emoji) from_json(f map[string]json.Any) {
 pub struct File {
 pub mut:
 	filename string
-	data     []byte
+	data     []u8
 }
 
 pub struct UnavailableGuild {
