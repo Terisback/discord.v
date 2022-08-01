@@ -44,7 +44,7 @@ pub fn (mut client Client) guild_audit_log(guild_id string, query GuildAuditLogQ
 		return error(err_text)
 	}
 
-	return json.decode(AuditLog, resp.text) or {}
+	return json.decode(AuditLog, resp.body) or {}
 }
 
 // MessageSend stores all parameters you can send with channel_message_send.
