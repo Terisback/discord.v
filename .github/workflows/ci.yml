@@ -24,24 +24,26 @@ jobs:
   ubuntu:
     runs-on: ubuntu-18.04
     steps:
-    - name: Checkout V
-      uses: actions/checkout@v2
-      with:
-        repository: vlang/v
-    - name: Build V
-      run: make
-    - name: Checkout discord.v
-      uses: actions/checkout@v2
-      with:
-        path: terisback/discordv
-    - name: Install dependencies
-      run: sudo apt-get install --quiet -y libssl-dev
-    - name: Build ping-pong example
-      run: |
-        ./v ./terisback/discordv/examples/ping-pong/main.v
-    - name: Build send-embed example
-      run: |
-        ./v ./terisback/discordv/examples/send-embed/main.v
-    - name: Build upload-image example
-      run: |
-        ./v ./terisback/discordv/examples/upload-image/main.v
+      - name: Checkout V
+        uses: actions/checkout@v2
+        with:
+          repository: vlang/v
+      - name: Build V
+        run: make
+      - name: Checkout discord.v
+        uses: actions/checkout@v2
+        with:
+          path: terisback/discordv
+      - name: Symlink to ~/.vmodules
+        run: ln -s $PWD/terisback ~/.vmodules/terisback
+      - name: Install dependencies
+        run: sudo apt-get install --quiet -y libssl-dev
+      - name: Build ping-pong example
+        run: |
+          ./v ./terisback/discordv/examples/ping-pong/main.v
+      - name: Build send-embed example
+        run: |
+          ./v ./terisback/discordv/examples/send-embed/main.v
+      - name: Build upload-image example
+        run: |
+          ./v ./terisback/discordv/examples/upload-image/main.v
