@@ -62,7 +62,7 @@ pub fn (mut ale AuditLogEntry) from_json(f map[string]json.Any) {
 				ale.id = v.str()
 			}
 			'action_type' {
-				ale.action_type = AuditLogEvent(v.int())
+				ale.action_type = unsafe{AuditLogEvent(v.int())}
 			}
 			'options' {
 				ale.options = from_json<AuditEntryInfo>(v.as_map())
@@ -206,7 +206,7 @@ pub fn (mut activity Activity) from_json(f map[string]json.Any) {
 				activity.name = v.str()
 			}
 			'type' {
-				activity.@type = ActivityType(v.int())
+				activity.@type = unsafe{ActivityType(v.int())}
 			}
 			'url' {
 				activity.url = v.str()
@@ -405,7 +405,7 @@ pub fn (mut po PermissionOverwrite) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'id' { po.id = v.str() }
-			'type' { po.@type = PermissionOverwriteType(v.int()) }
+			'type' { po.@type = unsafe{PermissionOverwriteType(v.int())} }
 			'allow' { po.allow = v.str() }
 			'deny' { po.deny = v.str() }
 			else {}
@@ -436,7 +436,7 @@ pub fn (mut cm ChannelMention) from_json(f map[string]json.Any) {
 		match k {
 			'id' { cm.id = v.str() }
 			'guild_id' { cm.guild_id = v.str() }
-			'type' { cm.@type = ChannelType(v.int()) }
+			'type' { cm.@type = unsafe{ChannelType(v.int())} }
 			'name' { cm.name = v.str() }
 			else {}
 		}
@@ -472,7 +472,7 @@ pub fn (mut channel Channel) from_json(f map[string]json.Any) {
 				channel.id = v.str()
 			}
 			'type' {
-				channel.@type = ChannelType(v.int())
+				channel.@type = unsafe{ChannelType(v.int())}
 			}
 			'guild_id' {
 				channel.guild_id = v.str()
@@ -595,7 +595,7 @@ pub mut:
 fn (mut m MessageActivity) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
-			'type' { m.@type = MessageActivityType(v.int()) }
+			'type' { m.@type = unsafe{MessageActivityType(v.int())} }
 			'party_id' { m.party_id = v.str() }
 			else {}
 		}
@@ -683,7 +683,7 @@ pub fn (mut st Sticker) from_json(f map[string]json.Any) {
 			'tags' { st.tags = v.str() }
 			'asset' { st.asset = v.str() }
 			'preview_asset' { st.preview_asset = v.str() }
-			'format_type' { st.format_type = StickerType(v.int()) }
+			'format_type' { st.format_type = unsafe{StickerType(v.int())} }
 			else {}
 		}
 	}
@@ -763,7 +763,7 @@ pub fn (mut m Message) from_json(f map[string]json.Any) {
 				m.webhook_id = v.str()
 			}
 			'type' {
-				m.@type = MessageType(v.int())
+				m.@type = unsafe{MessageType(v.int())}
 			}
 			'activity' {
 				m.activity = from_json<MessageActivity>(v.as_map())
@@ -1315,9 +1315,9 @@ pub const (
 
 pub struct PresenceClientStatus {
 pub mut:
-	desktop PresenceStatus = discordv.offline
-	mobile  PresenceStatus = discordv.offline
-	web     PresenceStatus = discordv.offline
+	desktop PresenceStatus = offline
+	mobile  PresenceStatus = offline
+	web     PresenceStatus = offline
 }
 
 pub fn (mut pcs PresenceClientStatus) from_json(f map[string]json.Any) {
@@ -1432,13 +1432,13 @@ pub fn (mut guild Guild) from_json(f map[string]json.Any) {
 				guild.widget_channel_id = v.str()
 			}
 			'verification_level' {
-				guild.verification_level = GuildVerificationLevel(v.int())
+				guild.verification_level = unsafe{GuildVerificationLevel(v.int())}
 			}
 			'default_message_notifications' {
-				guild.default_message_notifications = GuildMessageNotificationsLevel(v.int())
+				guild.default_message_notifications = unsafe{GuildMessageNotificationsLevel(v.int())}
 			}
 			'explicit_content_filter' {
-				guild.explicit_content_filter = GuildExplicitContentFilterLevel(v.int())
+				guild.explicit_content_filter = unsafe{GuildExplicitContentFilterLevel(v.int())}
 			}
 			'roles' {
 				guild.roles = from_json_arr<Role>(v.arr())
@@ -1453,7 +1453,7 @@ pub fn (mut guild Guild) from_json(f map[string]json.Any) {
 				}
 			}
 			'mfa_level' {
-				guild.mfa_level = MFALevel(v.int())
+				guild.mfa_level = unsafe{MFALevel(v.int())}
 			}
 			'application_id' {
 				guild.application_id = v.str()
@@ -1509,7 +1509,7 @@ pub fn (mut guild Guild) from_json(f map[string]json.Any) {
 				guild.banner = v.str()
 			}
 			'premium_tier' {
-				guild.premium_tier = GuildPremiumTier(v.int())
+				guild.premium_tier = unsafe{GuildPremiumTier(v.int())}
 			}
 			'premium_subscription_count' {
 				guild.premium_subscription_count = v.int()
@@ -1783,7 +1783,7 @@ pub fn (mut user User) from_json(f map[string]json.Any) {
 			'verified' { user.verified = v.bool() }
 			'email' { user.email = v.str() }
 			'flags' { user.flags = UserFlag(v.int()) }
-			'premium_type' { user.premium_type = PremiumType(v.int()) }
+			'premium_type' { user.premium_type = unsafe{PremiumType(v.int())} }
 			'public_flags' { user.public_flags = UserFlag(v.int()) }
 			else {}
 		}
@@ -1906,7 +1906,7 @@ pub fn (mut integration Integration) from_json(f map[string]json.Any) {
 				integration.enable_emoticons = v.bool()
 			}
 			'expire_behavior' {
-				integration.expire_behavior = IntegrationExpireBehavior(v.int())
+				integration.expire_behavior = unsafe{IntegrationExpireBehavior(v.int())}
 			}
 			'expire_grace_period' {
 				integration.expire_grace_period = v.int()
@@ -1952,7 +1952,7 @@ pub fn (mut inter Interaction) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'id' { inter.id = v.str() }
-			'type' { inter.@type = InteractionType(v.int()) }
+			'type' { inter.@type = unsafe{InteractionType(v.int())} }
 			'data' { inter.data = from_json<ApplicationCommandInteractionData>(v.as_map()) }
 			'guild_id' { inter.guild_id = v.str() }
 			'channel_id' { inter.channel_id = v.str() }
@@ -2041,7 +2041,7 @@ pub fn (mut webhook Webhook) from_json(f map[string]json.Any) {
 	for k, v in f {
 		match k {
 			'id' { webhook.id = v.str() }
-			'type' { webhook.@type = WebhookType(v.int()) }
+			'type' { webhook.@type = unsafe{WebhookType(v.int())} }
 			'guild_id' { webhook.guild_id = v.str() }
 			'channel_id' { webhook.channel_id = v.str() }
 			'user' { webhook.user = from_json<User>(v.as_map()) }

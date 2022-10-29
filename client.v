@@ -34,7 +34,7 @@ pub mut:
 }
 
 // Creates a new Discord client
-pub fn new(config Config) ?&Client {
+pub fn new(config Config) !&Client {
 	mut m_log := &log.Log{}
 	$if dv_debug ? {
 		m_log.set_level(.debug)
@@ -59,7 +59,7 @@ pub fn new(config Config) ?&Client {
 			shard_id: i
 			shards_in_total: config.shard_count
 			dispatchers: config.dispatchers_on_shard
-		) ?
+		) !
 		shard.log = client.log
 		$if dv_ws_debug ? {
 			shard.set_ws_log_level(.debug)

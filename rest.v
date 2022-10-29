@@ -38,7 +38,7 @@ pub fn (mut client Client) guild_audit_log(guild_id string, query GuildAuditLogQ
 
 	resp := client.rest.do(req) ?
 	if resp.status_code != 200 {
-		response_error := rest.ResponseCode(resp.status_code)
+		response_error := unsafe{rest.ResponseCode(resp.status_code)}
 		err_text := 'Status code is $resp.status_code ($response_error).\n'
 		client.log.error(err_text + 'Request: $req.data')
 		return error(err_text)
@@ -89,7 +89,7 @@ pub fn (mut client Client) channel_message_send(channel_id string, message Messa
 
 	resp := client.rest.do(req) ?
 	if resp.status_code != 200 {
-		response_error := rest.ResponseCode(resp.status_code)
+		response_error := unsafe{rest.ResponseCode(resp.status_code)}
 		err_text := 'Status code is $resp.status_code ($response_error).\n'
 		client.log.error(err_text + 'Request: $req.data')
 		return error(err_text)
@@ -102,7 +102,7 @@ pub fn (mut client Client) channel_message_delete(channel_id string, message_id 
 
 	resp := client.rest.do(req) ?
 	if resp.status_code != 204 {
-		response_error := rest.ResponseCode(resp.status_code)
+		response_error := unsafe{rest.ResponseCode(resp.status_code)}
 		err_text := 'Status code is $resp.status_code ($response_error).\n'
 		return error(err_text)
 	}

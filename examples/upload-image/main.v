@@ -11,9 +11,9 @@ fn main() {
 		return
 	}
 	// Read image
-	image := os.read_bytes(os.dir(os.executable()) + '/v_logo.png')?
+	image := os.read_bytes(os.dir(os.executable()) + '/v_logo.png')!
 	// Creating new client
-	mut client := vd.new(token: token)?
+	mut client := vd.new(token: token)!
 	// Add image as userdata
 	client.userdata = &image
 	// Add message create handler
