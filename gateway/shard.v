@@ -49,9 +49,9 @@ pub mut:
 }
 
 // Create new Connection
-pub fn new_shard(config Config) ?&Shard {
+pub fn new_shard(config Config) !&Shard {
 	gateway := if config.gateway != '' { config.gateway } else { gateway.default_gateway }
-	mut ws := websocket.new_client(gateway) ?
+	mut ws := websocket.new_client(gateway) !
 	mut shard := &Shard{
 		gateway: gateway
 		token: config.token

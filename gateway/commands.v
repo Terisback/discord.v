@@ -58,7 +58,7 @@ pub fn (data VoiceChannelJoinData) to_json() json.Any {
 
 // initiates a voice session to a voice channel, but does not complete it.
 // if channel_id is empty, bot gonna disconnect.
-pub fn (mut shard Shard) channel_voice_join_manual(guild_id string, channel_id string, mute bool, deaf bool) ? {
+pub fn (mut shard Shard) channel_voice_join_manual(guild_id string, channel_id string, mute bool, deaf bool) ! {
 	mut command := packets.Packet{
 		op: .voice_state_update
 		data: VoiceChannelJoinData{
@@ -68,6 +68,6 @@ pub fn (mut shard Shard) channel_voice_join_manual(guild_id string, channel_id s
 			self_deaf: deaf
 		}.to_json()
 	}.str()
-	shard.ws.write_string(command) ?
+	shard.ws.write_string(command) !
 	shard.log.info('Connected to voice channel [guild_id: $guild_id, channel_id: $channel_id]')
 }
