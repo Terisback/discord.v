@@ -22,28 +22,31 @@ jobs:
   #       ../v fmt -verify vpm.v user.v token.v package.v login.v db.v
 
   ubuntu:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
-      - name: Checkout V
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup V
+        uses: vlang/setup-v
         with:
-          repository: vlang/v
-      - name: Build V
-        run: make
-      - name: Checkout discord.v
-        uses: actions/checkout@v2
-        with:
-          path: terisback/discordv
+          check-latest: true
+          stable: true
+
       - name: Symlink to ~/.vmodules
-        run: ln -s $PWD/terisback ~/.vmodules/terisback
+        run: |
+          mkdir -p ~/.vmodules/
+          ln -s $PWD ~/.vmodules/
+
       - name: Install dependencies
         run: sudo apt-get install --quiet -y libssl-dev
+
       - name: Build ping-pong example
         run: |
-          ./v ./terisback/discordv/examples/ping-pong/main.v
+          ./v ./examples/ping-pong/main.v
       - name: Build send-embed example
         run: |
-          ./v ./terisback/discordv/examples/send-embed/main.v
+          ./v ./examples/send-embed/main.v
       - name: Build upload-image example
         run: |
-          ./v ./terisback/discordv/examples/upload-image/main.v
+          ./v ./examples/upload-image/main.v
