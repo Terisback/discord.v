@@ -33,17 +33,17 @@ pub fn (query GuildAuditLogQuery) query() string {
 
 // Returns an AuditLog struct for the guild. Requires the 'VIEW_AUDIT_LOG' permission.
 pub fn (mut client Client) guild_audit_log(guild_id string, query GuildAuditLogQuery) !AuditLog {
-	path := '/guilds/$guild_id/audit-logs'
+	path := '/guilds/${guild_id}/audit-logs'
 	mut req := client.rest.req(.get, path) or {
-		return error('Could not make GET request to $path')
+		return error('Could not make GET request to ${path}')
 	}
-	req.url += '$query.query()'
+	req.url += '${query.query()}'
 
-	resp := client.rest.do(req) !
+	resp := client.rest.do(req)!
 	if resp.status_code != 200 {
-		response_error := unsafe{rest.ResponseCode(resp.status_code)}
-		err_text := 'Status code is $resp.status_code ($response_error).\n'
-		client.log.error(err_text + 'Request: $req.data')
+		response_error := unsafe { rest.ResponseCode(resp.status_code) }
+		err_text := 'Status code is ${resp.status_code} (${response_error}).\n'
+		client.log.error(err_text + 'Request: ${req.data}')
 		return error(err_text)
 	}
 
@@ -77,9 +77,9 @@ pub fn (ms MessageSend) to_json() json2.Any {
 
 // Post a message to a guild text or DM channel. If operating on a guild channel, this endpoint requires the SEND_MESSAGES permission to be present on the current user.
 pub fn (mut client Client) channel_message_send(channel_id string, message MessageSend) ! {
-	path := '/channels/$channel_id/messages'
+	path := '/channels/${channel_id}/messages'
 	mut req := client.rest.req(.post, path) or {
-		return error('Could not make POST request to $path')
+		return error('Could not make POST request to ${path}')
 	}
 
 	if message.file.filename != '' {
@@ -93,26 +93,26 @@ pub fn (mut client Client) channel_message_send(channel_id string, message Messa
 		req.data = message.to_json().str()
 	}
 
-	resp := client.rest.do(req) !
+	resp := client.rest.do(req)!
 	if resp.status_code != 200 {
-		response_error := unsafe{rest.ResponseCode(resp.status_code)}
-		err_text := 'Status code is $resp.status_code ($response_error).\n'
-		client.log.error(err_text + 'Request: $req.data')
+		response_error := unsafe { rest.ResponseCode(resp.status_code) }
+		err_text := 'Status code is ${resp.status_code} (${response_error}).\n'
+		client.log.error(err_text + 'Request: ${req.data}')
 		return error(err_text)
 	}
 }
 
 // Delete message from a channel
 pub fn (mut client Client) channel_message_delete(channel_id string, message_id string) ! {
-	path := '/channels/$channel_id/messages/$message_id'
+	path := '/channels/${channel_id}/messages/${message_id}'
 	mut req := client.rest.req(.delete, path) or {
-		return error('Could not make DELETE request to "$path"')
+		return error('Could not make DELETE request to "${path}"')
 	}
 
 	resp := client.rest.do(req)!
 	if resp.status_code != 204 {
-		response_error := unsafe{rest.ResponseCode(resp.status_code)}
-		err_text := 'Status code is $resp.status_code ($response_error).\n'
+		response_error := unsafe { rest.ResponseCode(resp.status_code) }
+		err_text := 'Status code is ${resp.status_code} (${response_error}).\n'
 		return error(err_text)
 	}
 }
