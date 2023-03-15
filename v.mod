@@ -1,5 +1,5 @@
 Module {
-	name: 'discord.v'
+	name: 'discordv'
 	description: 'Discord for V'
 	author: 'Terisback terisbackno@gmail.com'
 	version: '0.1.0'
