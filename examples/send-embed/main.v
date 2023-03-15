@@ -1,7 +1,7 @@
 module main
 
 import os
-import terisback.discordv as vd
+import discordv as vd
 
 fn main() {
 	// Getting token from env variable

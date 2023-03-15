@@ -42,10 +42,10 @@ v install --git https://github.com/kintrix007/discordv
 <!-- ### Install via git
 
 ```sh
-git clone https://github.com/kintrix007/discordv.git ~/.vmodules/kintrix007/discordv
+git clone https://github.com/kintrix007/discordv.git ~/.vmodules/discordv
 ``` -->
 
-And then import `kintrix007.discordv` wherever you like
+And then import `discordv` wherever you like
 
 ## TODO()
 
