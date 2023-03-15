@@ -6,7 +6,7 @@ import x.json2 as json
 
 const (
 	api            = 'https://discord.com/api/v8'
-	bot_user_agent = 'DiscordBot (https://github.com/Terisback/discord.v, v0.1.0)'
+	bot_user_agent = 'DiscordBot (https://github.com/kintrix007/discordv, v0.1.0)'
 )
 
 // REST struct allows making requests to api with rate limiting

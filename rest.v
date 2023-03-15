@@ -4,8 +4,8 @@ import math
 import net.urllib
 import json
 import x.json2
-import terisback.discordv.rest
-import terisback.discordv.rest.formdata
+import discordv.rest
+import discordv.rest.formdata
 
 // Optional query for guild_audit_log.
 // 'limit' must be [1, 100], default 50.
