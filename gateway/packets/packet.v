@@ -15,7 +15,7 @@ pub fn (mut p Packet) from_json(f json.Any) {
 	mut obj := f.as_map()
 	for k, v in obj {
 		match k {
-			'op' { p.op = unsafe{Op(v.int())} }
+			'op' { p.op = unsafe { Op(v.int()) } }
 			's' { p.sequence = v.int() }
 			't' { p.event = v.str() }
 			'd' { p.data = v }

@@ -74,7 +74,7 @@ pub fn (mut f FormData) add_file(name string, filename string, data []byte) {
 
 // Returns http header to include it into request
 pub fn (f FormData) content_type() string {
-	return 'multipart/form-data; charset=utf-8; boundary=$f.boundary'
+	return 'multipart/form-data; charset=utf-8; boundary=${f.boundary}'
 }
 
 // Encode FormData, returns body of http request
@@ -82,17 +82,17 @@ pub fn (f FormData) encode() string {
 	mut builder := strings.new_builder(200)
 	builder.write_byte(`\n`)
 	for k, v in f.fields {
-		builder.write_string('--$f.boundary\n')
+		builder.write_string('--${f.boundary}\n')
 		match v {
 			string {
-				builder.write_string("Content-Disposition: form-data; name=\"$k\"\n")
+				builder.write_string("Content-Disposition: form-data; name=\"${k}\"\n")
 				builder.write_byte(`\n`)
 				builder.write_string(v)
 				builder.write_byte(`\n`)
 			}
 			FormFile {
-				builder.write_string("Content-Disposition: form-data; name=\"$k\"; filename=\"$v.filename\"\n")
-				builder.write_string('Content-Type: $v.content_type\n')
+				builder.write_string("Content-Disposition: form-data; name=\"${k}\"; filename=\"${v.filename}\"\n")
+				builder.write_string('Content-Type: ${v.content_type}\n')
 				builder.write_string('Content-Transfer-Encoding: base64\n')
 				builder.write_byte(`\n`)
 				builder.write_string(base64.encode(v.data))
@@ -100,6 +100,6 @@ pub fn (f FormData) encode() string {
 			}
 		}
 	}
-	builder.write_string('--$f.boundary--')
+	builder.write_string('--${f.boundary}--')
 	return builder.str()
 }

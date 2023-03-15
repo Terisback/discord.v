@@ -27,16 +27,16 @@ pub fn new(token string) &REST {
 
 // Create new discord api request
 pub fn new_request(token string, method http.Method, path string) ?http.Request {
-	mut req := http.new_request(method, rest.api + path, '') ?
-	req.add_header(.authorization, 'Bot $token')
+	mut req := http.new_request(method, rest.api + path, '')?
+	req.add_header(.authorization, 'Bot ${token}')
 	req.add_header(.user_agent, rest.bot_user_agent)
 	return req
 }
 
 // Create new discord api request
 pub fn (mut rst REST) req(method http.Method, path string) ?http.Request {
-	mut req := http.new_request(method, rest.api + path, '') ?
-	req.add_header(.authorization, 'Bot $rst.token')
+	mut req := http.new_request(method, rest.api + path, '')?
+	req.add_header(.authorization, 'Bot ${rst.token}')
 	req.add_header(.user_agent, rest.bot_user_agent)
 	return req
 }

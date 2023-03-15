@@ -54,7 +54,7 @@ pub fn (mut gb GuildBan) from_json(f map[string]json.Any) {
 				gb.guild_id = v.str()
 			}
 			'user' {
-				gb.user = from_json<User>(v.as_map())
+				gb.user = from_json[User](v.as_map())
 			}
 			else {}
 		}
@@ -77,7 +77,7 @@ pub fn (mut geu GuildEmojisUpdate) from_json(f map[string]json.Any) {
 				geu.guild_id = v.str()
 			}
 			'emojis' {
-				geu.emojis = from_json_arr<Emoji>(v.arr())
+				geu.emojis = from_json_arr[Emoji](v.arr())
 			}
 			else {}
 		}
@@ -151,7 +151,7 @@ pub fn (mut gmu GuildMemberUpdate) from_json(f map[string]json.Any) {
 				}
 			}
 			'user' {
-				gmu.user = from_json<User>(v.as_map())
+				gmu.user = from_json[User](v.as_map())
 			}
 			'nick' {
 				gmu.nick = v.str()
@@ -189,7 +189,7 @@ pub fn (mut gmc GuildMembersChunk) from_json(f map[string]json.Any) {
 				gmc.guild_id = v.str()
 			}
 			'members' {
-				gmc.members = from_json_arr<Member>(v.arr())
+				gmc.members = from_json_arr[Member](v.arr())
 			}
 			'chunk_index' {
 				gmc.chunk_index = v.int()
@@ -204,7 +204,7 @@ pub fn (mut gmc GuildMembersChunk) from_json(f map[string]json.Any) {
 				}
 			}
 			'presences' {
-				gmc.presences = from_json_arr<PresenceUpdate>(v.arr())
+				gmc.presences = from_json_arr[PresenceUpdate](v.arr())
 			}
 			'nonce' {
 				gmc.nonce = v.str()
@@ -227,7 +227,7 @@ pub fn (mut gr GuildRole) from_json(f map[string]json.Any) {
 				gr.guild_id = v.str()
 			}
 			'role' {
-				gr.role = from_json<Role>(v.as_map())
+				gr.role = from_json[Role](v.as_map())
 			}
 			else {}
 		}
@@ -289,7 +289,7 @@ pub fn (mut ic InviteCreate) from_json(f map[string]json.Any) {
 				ic.guild_id = v.str()
 			}
 			'inviter' {
-				ic.inviter = from_json<User>(v.as_map())
+				ic.inviter = from_json[User](v.as_map())
 			}
 			'max_age' {
 				ic.max_age = v.int()
@@ -298,7 +298,7 @@ pub fn (mut ic InviteCreate) from_json(f map[string]json.Any) {
 				ic.max_uses = v.int()
 			}
 			'target_user' {
-				ic.target_user = from_json<User>(v.as_map())
+				ic.target_user = from_json[User](v.as_map())
 			}
 			'temporary' {
 				ic.temporary = v.bool()
@@ -392,10 +392,10 @@ pub fn (mut mra MessageReactionAdd) from_json(f map[string]json.Any) {
 				mra.guild_id = v.str()
 			}
 			'member' {
-				mra.member = from_json<Member>(v.as_map())
+				mra.member = from_json[Member](v.as_map())
 			}
 			'emoji' {
-				mra.emoji = from_json<Emoji>(v.as_map())
+				mra.emoji = from_json[Emoji](v.as_map())
 			}
 			else {}
 		}
@@ -427,7 +427,7 @@ pub fn (mut mra MessageReactionRemove) from_json(f map[string]json.Any) {
 				mra.guild_id = v.str()
 			}
 			'emoji' {
-				mra.emoji = from_json<Emoji>(v.as_map())
+				mra.emoji = from_json[Emoji](v.as_map())
 			}
 			else {}
 		}
@@ -479,7 +479,7 @@ pub fn (mut mra MessageReactionRemoveEmoji) from_json(f map[string]json.Any) {
 				mra.guild_id = v.str()
 			}
 			'emoji' {
-				mra.emoji = from_json<Emoji>(v.as_map())
+				mra.emoji = from_json[Emoji](v.as_map())
 			}
 			else {}
 		}
@@ -511,7 +511,7 @@ pub fn (mut ts TypingStart) from_json(f map[string]json.Any) {
 				ts.timestamp = v.int()
 			}
 			'member' {
-				ts.member = from_json<Member>(v.as_map())
+				ts.member = from_json[Member](v.as_map())
 			}
 			else {}
 		}
@@ -757,7 +757,7 @@ fn on_dispatch(mut client Client, packet &packets.Packet) {
 			client.events.publish(event_name, client, obj)
 		}
 		else {
-			client.log.info('Unhandled event: $event_name')
+			client.log.info('Unhandled event: ${event_name}')
 		}
 	}
 }
