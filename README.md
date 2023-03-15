@@ -93,7 +93,7 @@ And then import `kintrix007.discordv` wherever you like
 ### The Main one
 - [ ] Make a cool library
 
-## Contact
+<!-- ## Contact
 
-Feel free to contribute ;)  
-<!-- You can contact me at discord: TERISBACK#9125 -->
+Feel free to contribute ;)
+You can contact me at discord: TERISBACK#9125 -->
