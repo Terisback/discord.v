@@ -4,15 +4,15 @@
 
 <p align="center">
 Yet another feature-rich Discord Bot Framework written in V <i>(<b>WIP</b>)</i><br>
-<a href="https://discordv.terisback.ru/discordv.html">
+<!-- <a href="https://discordv.terisback.ru/discordv.html">
   <img src="https://img.shields.io/badge/docs-2F3136?style=flat&logo=v">
-</a>
+</a> -->
 </p>
 
 ## Example
 
 ```v
-import terisback.discordv as vd
+import kintrix007.discordv as vd
 
 fn main() {
     mut client := vd.new(token: 'token') ?
@@ -26,7 +26,7 @@ fn on_ping(mut client vd.Client, evt &vd.MessageCreate) {
     }
 }
 ```
-More [examples](https://github.com/Terisback/discord.v/blob/master/examples/)
+More [examples](https://github.com/kintrix007/discordv/blob/master/examples/)
 
 ## How to install
 
@@ -35,17 +35,17 @@ More [examples](https://github.com/Terisback/discord.v/blob/master/examples/)
 
 ### Install via vpm
 
-```bash
-v install Terisback.discordv
+```sh
+v install --git https://github.com/kintrix007/discordv
 ```
 
-### Install via git
+<!-- ### Install via git
 
-```bash
-git clone https://github.com/Terisback/discord.v.git ~/.vmodules/terisback/discordv
-```
+```sh
+git clone https://github.com/kintrix007/discordv.git ~/.vmodules/kintrix007/discordv
+``` -->
 
-And then import `terisback.discordv` wherever you like
+And then import `kintrix007.discordv` wherever you like
 
 ## TODO()
 
@@ -96,4 +96,4 @@ And then import `terisback.discordv` wherever you like
 ## Contact
 
 Feel free to contribute ;)  
-You can contact me at discord: TERISBACK#9125
+<!-- You can contact me at discord: TERISBACK#9125 -->
