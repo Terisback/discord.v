@@ -6,19 +6,19 @@ import gateway.packets
 
 // Handles open event for Websocket
 fn on_open(mut ws websocket.Client, mut shard Shard) ! {
-	shard.log.info('#$shard.id Successfully connected to gateway')
+	shard.log.info('#${shard.id} Successfully connected to gateway')
 }
 
 // Handles error event for Websocket
 fn on_error(mut ws websocket.Client, error string, mut shard Shard) ! {
-	shard.log.error('#$shard.id Gateway error: $error')
+	shard.log.error('#${shard.id} Gateway error: ${error}')
 }
 
 // Handles message event for Websocket
 fn on_message(mut ws websocket.Client, msg &websocket.Message, mut shard Shard) ! {
 	match msg.opcode {
 		.text_frame {
-			mut obj := json.raw_decode(msg.payload.bytestr()) !
+			mut obj := json.raw_decode(msg.payload.bytestr())!
 			mut packet := packets.Packet{}
 			packet.from_json(obj)
 			shard.sequence = packet.sequence
@@ -37,24 +37,24 @@ fn on_message(mut ws websocket.Client, msg &websocket.Message, mut shard Shard) 
 				}
 				.reconnect {
 					shard.resuming = true
-					shard.ws.close(int(CloseCode.normal_closure), 'Reconnect') !
+					shard.ws.close(int(CloseCode.normal_closure), 'Reconnect')!
 				}
 				else {
 					thing := packets.Op(packet.op)
-					shard.log.info('#$shard.id Unhandled opcode: $packet.op ($thing)')
+					shard.log.info('#${shard.id} Unhandled opcode: ${packet.op} (${thing})')
 				}
 			}
 		}
 		else {
-			shard.log.info('#$shard.id Unhandled websocket opcode: $msg.opcode')
+			shard.log.info('#${shard.id} Unhandled websocket opcode: ${msg.opcode}')
 		}
 	}
 }
 
 // Handles close event for Websocket
 fn on_close(mut ws websocket.Client, code int, reason string, mut shard Shard) ! {
-	error := unsafe{CloseCode(code)}
-	shard.log.warn('#$shard.id Gateway closed [code: $code ($error), reason: $reason]')
+	error := unsafe { CloseCode(code) }
+	shard.log.warn('#${shard.id} Gateway closed [code: ${code} (${error}), reason: ${reason}]')
 }
 
 // Websocket close codes

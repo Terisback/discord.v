@@ -51,7 +51,7 @@ pub mut:
 // Create new Connection
 pub fn new_shard(config Config) !&Shard {
 	gateway := if config.gateway != '' { config.gateway } else { gateway.default_gateway }
-	mut ws := websocket.new_client(gateway) !
+	mut ws := websocket.new_client(gateway)!
 	mut shard := &Shard{
 		gateway: gateway
 		token: config.token
@@ -79,8 +79,8 @@ pub fn (mut shard Shard) run() thread {
 	for mut dispatcher in shard.dispatchers {
 		dispatcher.run()
 	}
-	go shard.run_websocket()
-	return go shard.run_heartbeat()
+	spawn shard.run_websocket()
+	return spawn shard.run_heartbeat()
 }
 
 fn (mut shard Shard) run_websocket() {
@@ -89,10 +89,10 @@ fn (mut shard Shard) run_websocket() {
 	}
 	for !shard.running {
 		shard.ws.connect() or {
-			shard.log.warn('Websocket #$shard.id: Unable to connect to gateway')
+			shard.log.warn('Websocket #${shard.id}: Unable to connect to gateway')
 			continue
 		}
-		shard.ws.listen() or { shard.log.warn('#$shard.id Websocket listen: $err') }
+		shard.ws.listen() or { shard.log.warn('#${shard.id} Websocket listen: ${err}') }
 		time.sleep(5 * time.second)
 	}
 }
@@ -128,7 +128,7 @@ fn (mut shard Shard) run_heartbeat() {
 			}
 			message := heartbeat.to_json()
 			shard.ws.write_string(message) or {
-				shard.log.error('Something went when tried to write to websocket: $err')
+				shard.log.error('Something went when tried to write to websocket: ${err}')
 			}
 			shard.last_heartbeat = u64(now)
 			shard.heartbeat_acked = false
@@ -138,7 +138,7 @@ fn (mut shard Shard) run_heartbeat() {
 
 // Send publish from Websocket
 fn (mut shard Shard) dispatch(data voidptr) {
-	if shard.reciever != voidptr(0) {
+	if shard.reciever != unsafe { nil } {
 		shard.events <- DispatchArgs{
 			reciever: shard.reciever
 			data: data

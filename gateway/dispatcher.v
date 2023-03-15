@@ -27,7 +27,7 @@ pub fn (mut d Dispatcher) run() {
 		return
 	}
 
-	go d.loop()
+	spawn d.loop()
 }
 
 pub fn (mut d Dispatcher) stop() {

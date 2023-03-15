@@ -68,6 +68,6 @@ pub fn (mut shard Shard) channel_voice_join_manual(guild_id string, channel_id s
 			self_deaf: deaf
 		}.to_json()
 	}.str()
-	shard.ws.write_string(command) !
-	shard.log.info('Connected to voice channel [guild_id: $guild_id, channel_id: $channel_id]')
+	shard.ws.write_string(command)!
+	shard.log.info('Connected to voice channel [guild_id: ${guild_id}, channel_id: ${channel_id}]')
 }

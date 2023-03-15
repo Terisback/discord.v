@@ -32,6 +32,7 @@ pub fn (query GuildAuditLogQuery) query() string {
 }
 
 // Returns an AuditLog struct for the guild. Requires the 'VIEW_AUDIT_LOG' permission.
+<<<<<<< HEAD
 pub fn (mut client Client) guild_audit_log(guild_id string, query GuildAuditLogQuery) !AuditLog {
 	path := '/guilds/${guild_id}/audit-logs'
 	mut req := client.rest.req(.get, path) or {
@@ -40,6 +41,13 @@ pub fn (mut client Client) guild_audit_log(guild_id string, query GuildAuditLogQ
 	req.url += '${query.query()}'
 
 	resp := client.rest.do(req)!
+=======
+pub fn (mut client Client) guild_audit_log(guild_id string, query GuildAuditLogQuery) ?AuditLog {
+	mut req := client.rest.req(.get, '/guilds/${guild_id}/audit-logs')?
+	req.url += '${query.query()}'
+
+	resp := client.rest.do(req)?
+>>>>>>> master
 	if resp.status_code != 200 {
 		response_error := unsafe { rest.ResponseCode(resp.status_code) }
 		err_text := 'Status code is ${resp.status_code} (${response_error}).\n'
