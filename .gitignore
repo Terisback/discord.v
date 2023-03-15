@@ -1,6 +1,6 @@
-main
-build
-discordv
+/main/
+/build/
+/discordv/
 *.exe
 *.ilk
 *.pdb
@@ -9,3 +9,6 @@ discordv
 *.dll
 
 vls.log
+
+# VSCode workspace settings
+.vscode/
