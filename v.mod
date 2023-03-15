@@ -4,6 +4,6 @@ Module {
 	author: 'Terisback terisbackno@gmail.com'
 	version: '0.1.0'
 	license: 'MIT'
-	repo_url: 'https://github.com/terisback/discord.v'
+	repo_url: 'https://github.com/kintrix007/discordv'
 	dependencies: []
 }
