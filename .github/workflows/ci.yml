@@ -43,10 +43,10 @@ jobs:
 
       - name: Build ping-pong example
         run: |
-          ./v ./examples/ping-pong/main.v
+          v ./examples/ping-pong/main.v
       - name: Build send-embed example
         run: |
-          ./v ./examples/send-embed/main.v
+          v ./examples/send-embed/main.v
       - name: Build upload-image example
         run: |
-          ./v ./examples/upload-image/main.v
+          v ./examples/upload-image/main.v
