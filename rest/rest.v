@@ -42,7 +42,7 @@ pub fn (mut rst REST) req(method http.Method, path string) ?http.Request {
 }
 
 // Make a request taking into account the rate limits
-pub fn (mut rst REST) do(req http.Request) ?http.Response {
+pub fn (mut rst REST) do(req http.Request) !http.Response {
 	key := req.url
 	mut bucket := rst.rl.lock_bucket(key)
 	resp := req.do() or {
