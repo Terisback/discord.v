@@ -1,13 +1,9 @@
-![discord.v](https://user-images.githubusercontent.com/26527529/98575853-c348d300-22ca-11eb-86f6-d22cc9b1e0cf.png)
+# discord.v
 
-#  
-
-<p align="center">
-Yet another feature-rich Discord Bot Framework written in V <i>(<b>WIP</b>)</i><br>
-<a href="https://discordv.terisback.ru/discordv.html">
-  <img src="https://img.shields.io/badge/docs-2F3136?style=flat&logo=v">
-</a>
-</p>
+> [!CAUTION]
+> I dropped the support of this lib at the end of 2021. The reason is that I don't care anymore about V, fixing "bugs" around new syntax and catching segfaults from socket interactions is not fun. Feel free to fork and keep alive if you need it.  
+>
+> __There is another beginning at [DarpHome/discord.v](https://github.com/DarpHome/discord.v), please check them.__
 
 ## Example
 
